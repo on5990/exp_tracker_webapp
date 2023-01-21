@@ -1,5 +1,17 @@
+@import "variables";
+@import "index-form";
+@import "navbar";
+@import "dashboard";
 body {
+  font-family: "Lusitana";
   margin: 0;
   padding: 0;
-  background-color: green;
+}
+.indexMain {
+  background-color: $blue-1;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

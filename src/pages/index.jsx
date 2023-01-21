@@ -1,6 +1,6 @@
 import Head from "next/head";
-import Image from "next/image";
 import { Inter } from "@next/font/google";
+import Authentication from "../components/Authentication";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -8,10 +8,12 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Create Next App</title>
+        <title>Expense tracker</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main></main>
+      <main className="indexMain">
+        <Authentication />
+      </main>
     </>
   );
 }
