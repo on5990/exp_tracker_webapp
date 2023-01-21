@@ -1,0 +1,15 @@
+.mainLayout {
+  background-color: $light-green-1;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  min-height: 100vw;
+  width: 100vw;
+  .pageContent {
+    margin-top: 40px;
+    width: 94%;
+    margin-left: 3%;
+    margin-right: 3%;
+    color: $dark-2;
+  }
+}

@@ -1,7 +1,10 @@
 @import "variables";
 @import "index-form";
-@import "navbar";
 @import "dashboard";
+@import "main-layout";
+@import "greybox";
+@import "header";
+@import "category";
 body {
   font-family: "Lusitana";
   margin: 0;
@@ -15,4 +18,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.mainTitle {
+  margin: 0;
+  // background-color: grey;
+  padding: 0;
+  padding-top: 5px;
+}
+hr {
+  padding: 0;
+  margin: 0;
 }

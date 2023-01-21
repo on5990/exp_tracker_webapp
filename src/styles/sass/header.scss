@@ -1,0 +1,43 @@
+.navHeader {
+  top: 0;
+  left: 0;
+  position: fixed;
+  //   z-index: 1;
+  background-color: $blue-1;
+  color: $light-1;
+  display: flex;
+  height: auto;
+  width: 100%;
+  .navbar {
+    // background-color: green;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    ul {
+      cursor: pointer;
+      width: 40%;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 0;
+      padding: 0;
+      li {
+        font-size: 1.2rem;
+        padding: 0.5rem;
+        .navLink {
+          margin: 0;
+          padding: 0;
+          text-decoration: none;
+          color: $light-1;
+          &:hover {
+            font-weight: bold;
+            color: $dark-2;
+          }
+        }
+        p {
+        }
+      }
+    }
+  }
+}

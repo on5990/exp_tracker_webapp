@@ -1,0 +1,75 @@
+.category {
+  background-color: $dark-2;
+  width: auto;
+  height: 30px;
+  border-radius: 5px;
+  margin-right: 0.5vw;
+  p {
+    margin: 0;
+    padding: 3px;
+  }
+}
+.newCategory {
+  background-color: $green-1;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 30px;
+  width: auto;
+  border-radius: 5px;
+  font-family: $font-1;
+  font-size: 1.1rem;
+  color: $light-1;
+  cursor: pointer;
+  p {
+    margin: 0;
+    padding: 0;
+  }
+  &:hover {
+    transition: background-color 0.5s;
+    background-color: $green-2;
+  }
+  &:active {
+    transition: background-color 0s;
+    background-color: $green-3;
+  }
+}
+.categoryForm {
+  height: 30px;
+  display: flex;
+  background-color: $green-1;
+  align-items: center;
+  padding-right: 1vw;
+  padding-left: 1vw;
+  border-radius: 5px;
+  justify-content: flex-start;
+  input {
+    height: 20px;
+    border: none;
+    border-radius: 5px;
+    font-family: $font-1;
+  }
+  button {
+    height: 20px;
+    width: 30px;
+    color: $light-1;
+    margin-left: 1vw;
+    border-radius: 5px;
+    background-color: $green-1;
+    border: none;
+    cursor: pointer;
+    &:hover {
+      transition: background-color 0.5s;
+      background-color: $green-2;
+    }
+    &:active {
+      transition: background-color 0s;
+      background-color: $green-3;
+    }
+    p {
+      margin: 0;
+      padding: 0;
+    }
+  }
+}
