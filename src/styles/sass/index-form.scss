@@ -5,6 +5,8 @@
   width: auto;
   min-width: 400px;
   margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
   padding-top: 5vh;
   padding-bottom: 5vh;
   justify-self: center;
@@ -22,7 +24,6 @@
     }
     p {
       text-align: center;
-      // transform: translateX(-8%);
     }
     h1 {
       font-weight: bold;
@@ -55,7 +56,6 @@
       background-color: $green-1;
       border: none;
       color: $light-1;
-      // font-weight: bold;
       font-size: 1.2rem;
       font-family: $font-1;
       margin-top: 10px;

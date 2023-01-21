@@ -9,6 +9,8 @@
   width: auto;
   min-width: 400px;
   margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
   padding-top: 5vh;
   padding-bottom: 5vh;
   justify-self: center;
@@ -111,7 +113,8 @@ body {
 
 .indexMain {
   background-color: #03919b;
-  height: 100vh;
+  height: auto;
+  min-height: 100vh;
   width: 100vw;
   display: flex;
   align-items: center;
