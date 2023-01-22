@@ -1,4 +1,7 @@
 import React from "react";
+import DeleteBill from "./DeleteBill";
+import EditBill from "./EditBill";
+import PayBill from "./PayBill";
 const head = [
   { id: 1, name: "Descripción" },
   { id: 2, name: "Tipo" },
@@ -70,9 +73,9 @@ function BillsTable() {
                 <td>{item.state}</td>
                 <td>
                   <div className="cellBtnDiv">
-                    <button>Pagar</button>
-                    <button>Editar</button>
-                    <button>Eliminar</button>
+                    <PayBill />
+                    <EditBill />
+                    <DeleteBill />
                   </div>
                 </td>
               </tr>

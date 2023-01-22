@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import Modal from "../modal/Modal";
 
 function AddExpense() {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,7 +12,14 @@ function AddExpense() {
   }
   return (
     <>
-      <button className="buttonActive">+ Agregar gasto</button>
+      <button className="buttonActive" onClick={openModal}>
+        + Agregar gasto
+      </button>
+      <Modal
+        title={"Agregar gasto"}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+      ></Modal>
     </>
   );
 }

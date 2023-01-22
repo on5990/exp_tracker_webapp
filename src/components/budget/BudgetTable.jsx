@@ -1,4 +1,6 @@
 import React from "react";
+import DeleteBudget from "./DeleteBudget";
+import EditBudget from "./EditBudget";
 
 const head = [
   { id: 1, name: "Categoría" },
@@ -66,8 +68,8 @@ function BudgetTable() {
                 <td>{item.state}</td>
                 <td>
                   <div className="cellBtnDiv">
-                    <button>Editar</button>
-                    <button>Eliminar</button>
+                    <EditBudget />
+                    <DeleteBudget />
                   </div>
                 </td>
               </tr>

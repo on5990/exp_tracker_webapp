@@ -466,6 +466,91 @@ table .cellBtnDiv button:active {
   box-shadow: 0 0 6px #2a9f97;
 }
 
+.modal {
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  min-height: 100vh;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal.isOpen {
+  display: flex;
+}
+
+.modalContainer {
+  background-color: green;
+  display: flex;
+  width: 40vw;
+  height: auto;
+  flex-direction: column;
+  color: #eeeeee;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.modalContainer .modalBar {
+  background-color: #03919b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.modalContainer .modalBar .titleDiv {
+  width: 80%;
+  padding-left: 5vw;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modalContainer .modalBar .titleDiv h1 {
+  font-size: 1.3rem;
+  font-weight: normal;
+  justify-self: center;
+  box-sizing: border-box;
+}
+.modalContainer .modalBar .xDiv {
+  width: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.modalContainer .modalBar .xDiv button {
+  background-color: #03919b;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  width: 30px;
+  height: 30px;
+  font-weight: bold;
+  font-family: "Lusitana";
+  font-size: 1.1rem;
+  margin-right: 0.5vw;
+  color: #eeeeee;
+}
+.modalContainer .modalBar .xDiv button:hover {
+  transition: background-color 0.5s;
+  background-color: #24847e;
+}
+.modalContainer .modalBar .xDiv button:active {
+  transition: background-color 0s;
+  background-color: #0e625d;
+}
+.modalContainer .modalContent {
+  background-color: #535857;
+  height: auto;
+  min-height: 10vh;
+}
+
+.modalP {
+  font-size: 1.2rem;
+}
+
 body {
   font-family: "Lusitana";
   margin: 0;

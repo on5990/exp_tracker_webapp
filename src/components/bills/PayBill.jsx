@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from "../modal/Modal";
 
-function AddBill() {
+function PayBill() {
   const [isOpen, setIsOpen] = useState(false);
   function openModal() {
     setIsOpen(true);
@@ -11,11 +11,9 @@ function AddBill() {
   }
   return (
     <>
-      <button className="buttonActive" onClick={openModal}>
-        + Agregar cuenta
-      </button>
+      <button onClick={openModal}>Pagar</button>
       <Modal
-        title={"Agregar cuenta"}
+        title={"Marcar como pagado"}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
       ></Modal>
@@ -23,4 +21,4 @@ function AddBill() {
   );
 }
 
-export default AddBill;
+export default PayBill;
