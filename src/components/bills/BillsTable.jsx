@@ -1,4 +1,5 @@
 import React from "react";
+import BillHistory from "./BillHistory";
 import DeleteBill from "./DeleteBill";
 import EditBill from "./EditBill";
 import PayBill from "./PayBill";
@@ -51,38 +52,41 @@ const content = [
 function BillsTable() {
   return (
     <>
-      <table>
-        <thead>
-          <tr>
-            {head.map((item) => {
-              return <th key={item.id}>{item.name}</th>;
+      <div className="tableContainer">
+        <table>
+          <thead>
+            <tr>
+              {head.map((item) => {
+                return <th key={item.id}>{item.name}</th>;
+              })}
+            </tr>
+          </thead>
+          <tbody>
+            {content.map((item) => {
+              return (
+                <tr key={item.id}>
+                  <td>{item.description}</td>
+                  <td>{item.type}</td>
+                  <td>{item.amount}</td>
+                  <td>{item.firstPayment}</td>
+                  <td>{item.finalPayment}</td>
+                  <td>{item.lastPayment}</td>
+                  <td>{item.nextPayment}</td>
+                  <td>{item.state}</td>
+                  <td>
+                    <div className="cellBtnDiv">
+                      <PayBill />
+                      <BillHistory />
+                      <EditBill />
+                      <DeleteBill />
+                    </div>
+                  </td>
+                </tr>
+              );
             })}
-          </tr>
-        </thead>
-        <tbody>
-          {content.map((item) => {
-            return (
-              <tr key={item.id}>
-                <td>{item.description}</td>
-                <td>{item.type}</td>
-                <td>{item.amount}</td>
-                <td>{item.firstPayment}</td>
-                <td>{item.finalPayment}</td>
-                <td>{item.lastPayment}</td>
-                <td>{item.nextPayment}</td>
-                <td>{item.state}</td>
-                <td>
-                  <div className="cellBtnDiv">
-                    <PayBill />
-                    <EditBill />
-                    <DeleteBill />
-                  </div>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </>
   );
 }

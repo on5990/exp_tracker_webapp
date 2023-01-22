@@ -405,13 +405,23 @@
   width: 20vw;
 }
 
+.tableContainer {
+  overflow-x: scroll;
+}
+.tableContainer ::-webkit-scrollbar {
+  height: 50px;
+  background-color: blue;
+}
+.tableContainer ::-webkit-scrollbar-track {
+  background-color: #303333;
+}
+
 table {
   width: 100%;
   border: none;
   border-collapse: collapse;
   border-spacing: 0;
   border-radius: 8px 8px 0px 0px;
-  overflow: hidden;
   color: #eeeeee;
 }
 table tr {
@@ -429,6 +439,11 @@ table th {
   height: 40px;
   font-size: 1.1rem;
   font-weight: normal;
+}
+@media (orientation: portrait) {
+  table th {
+    min-width: 25vw;
+  }
 }
 table td {
   padding-left: 0.5vw;
@@ -492,6 +507,11 @@ table .cellBtnDiv button:active {
   color: #eeeeee;
   border-radius: 10px;
   overflow: hidden;
+}
+@media (orientation: portrait) {
+  .modalContainer {
+    width: 80vw;
+  }
 }
 .modalContainer .modalBar {
   background-color: #03919b;

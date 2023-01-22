@@ -22,6 +22,9 @@
   color: $light-1;
   border-radius: 10px;
   overflow: hidden;
+  @media (orientation: portrait) {
+    width: 80vw;
+  }
   .modalBar {
     background-color: $blue-1;
     display: flex;

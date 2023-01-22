@@ -1,10 +1,24 @@
+.tableContainer {
+  overflow-x: scroll;
+  ::-webkit-scrollbar {
+    height: 50px;
+    background-color: blue;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: $dark-2;
+  }
+}
+// ::-webkit-scrollbar {
+//   width: 10px;
+//   border-radius: 5px;
+// }
+
 table {
   width: 100%;
   border: none;
   border-collapse: collapse;
   border-spacing: 0;
   border-radius: 8px 8px 0px 0px;
-  overflow: hidden;
   color: $light-1;
   tr {
     width: 100%;
@@ -21,6 +35,9 @@ table {
     height: 40px;
     font-size: 1.1rem;
     font-weight: normal;
+    @media (orientation: portrait) {
+      min-width: 25vw;
+    }
   }
   td {
     padding-left: 0.5vw;
