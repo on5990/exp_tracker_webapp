@@ -1,4 +1,5 @@
 .mainLayout {
+  display: flex;
   background-color: $light-green-1;
   height: auto;
   margin: 0;
@@ -6,7 +7,7 @@
   min-height: 100vw;
   width: 100vw;
   .pageContent {
-    margin-top: 40px;
+    margin-top: 6vh;
     width: 94%;
     margin-left: 3%;
     margin-right: 3%;

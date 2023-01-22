@@ -106,6 +106,7 @@
 }
 
 .mainLayout {
+  display: flex;
   background-color: #b4cecc;
   height: auto;
   margin: 0;
@@ -114,7 +115,7 @@
   width: 100vw;
 }
 .mainLayout .pageContent {
-  margin-top: 40px;
+  margin-top: 6vh;
   width: 94%;
   margin-left: 3%;
   margin-right: 3%;
@@ -164,27 +165,35 @@
 .navHeader {
   top: 0;
   left: 0;
+  margin: 0;
+  padding: 0;
   position: fixed;
+  z-index: 1;
   background-color: #03919b;
   color: #eeeeee;
   display: flex;
-  height: auto;
+  height: 5vh;
+  flex-wrap: wrap;
   width: 100%;
 }
 .navHeader .navbar {
-  width: 100%;
+  padding-left: 30%;
+  width: 70%;
+  max-height: 100%;
   display: flex;
-  justify-content: center;
+  box-sizing: border-box;
+  justify-content: space-around;
 }
 .navHeader .navbar ul {
   cursor: pointer;
-  width: 40%;
+  width: 80%;
   list-style: none;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   margin: 0;
   padding: 0;
+  transform: scale(1);
 }
 .navHeader .navbar ul li {
   font-size: 1.2rem;
@@ -200,6 +209,44 @@
   font-weight: bold;
   color: #303333;
 }
+.navHeader .userSection {
+  width: 30%;
+  max-height: 100%;
+  height: auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding-right: 2vw;
+  justify-content: flex-end;
+}
+.navHeader .userSection p {
+  font-size: 1.1rem;
+  margin: 0;
+  padding: 0;
+  margin-right: 1vw;
+  text-overflow: ellipsis;
+}
+.navHeader .userSection button {
+  cursor: pointer;
+  background-color: #687271;
+  color: #eeeeee;
+  border: none;
+  height: 80%;
+  width: auto;
+  font-family: "Lusitana";
+  font-size: 1.1rem;
+  border-radius: 5px;
+}
+.navHeader .userSection button:hover {
+  transition: background-color 0.5s;
+  background-color: #535857;
+}
+.navHeader .userSection button:active {
+  transition: background-color 0s;
+  background-color: #303333;
+}
+
 .category {
   background-color: #303333;
   width: auto;

@@ -1,27 +1,39 @@
 .navHeader {
   top: 0;
   left: 0;
+  margin: 0;
+  padding: 0;
   position: fixed;
-  //   z-index: 1;
+  z-index: 1;
   background-color: $blue-1;
   color: $light-1;
   display: flex;
-  height: auto;
+  height: 5vh;
+  // max-height: 30px;
+  flex-wrap: wrap;
+  // overflow: hidden;
   width: 100%;
   .navbar {
     // background-color: green;
-    width: 100%;
+    padding-left: 30%;
+    width: 70%;
+    max-height: 100%;
     display: flex;
-    justify-content: center;
+    box-sizing: border-box;
+    justify-content: space-around;
     ul {
+      // background-color: blue;
       cursor: pointer;
-      width: 40%;
+      width: 80%;
       list-style: none;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: space-around;
       margin: 0;
+      // transform: translateX(20%);
       padding: 0;
+      // flex-wrap: wrap;
+      transform: scale(1);
       li {
         font-size: 1.2rem;
         padding: 0.5rem;
@@ -35,8 +47,44 @@
             color: $dark-2;
           }
         }
-        p {
-        }
+      }
+    }
+  }
+  .userSection {
+    // background-color: red;
+    width: 30%;
+    max-height: 100%;
+    height: auto;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding-right: 2vw;
+    justify-content: flex-end;
+    p {
+      font-size: 1.1rem;
+      margin: 0;
+      padding: 0;
+      margin-right: 1vw;
+      text-overflow: ellipsis;
+    }
+    button {
+      cursor: pointer;
+      background-color: $dark-4;
+      color: $light-1;
+      border: none;
+      height: 80%;
+      width: auto;
+      font-family: $font-1;
+      font-size: 1.1rem;
+      border-radius: 5px;
+      &:hover {
+        transition: background-color 0.5s;
+        background-color: $dark-3;
+      }
+      &:active {
+        transition: background-color 0s;
+        background-color: $dark-2;
       }
     }
   }
