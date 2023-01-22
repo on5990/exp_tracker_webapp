@@ -5,6 +5,8 @@
 @import "greybox";
 @import "header";
 @import "category";
+@import "option-div";
+@import "table";
 body {
   font-family: "Lusitana";
   margin: 0;
@@ -21,11 +23,12 @@ body {
 }
 .mainTitle {
   margin: 0;
-  // background-color: grey;
   padding: 0;
+  margin-left: 2vw;
   padding-top: 5px;
 }
 hr {
   padding: 0;
   margin: 0;
+  margin-bottom: 1vh;
 }

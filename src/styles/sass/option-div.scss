@@ -1,0 +1,74 @@
+.optionDiv {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 100%;
+  margin-bottom: 2vh;
+  height: auto;
+  box-sizing: border-box;
+  button {
+    cursor: pointer;
+    border: none;
+    height: 30px;
+    width: auto;
+    border-radius: 5px;
+    color: $light-1;
+    font-family: $font-1;
+    font-size: 1.1rem;
+  }
+  .dualButton {
+    background-color: $dark-3;
+    border-radius: 5px;
+    height: 30px;
+    width: auto;
+  }
+  .buttonActive {
+    background-color: $blue-1;
+    &:hover {
+      transition: background-color 0.5s;
+      background-color: $green-2;
+    }
+    &:active {
+      transition: background-color 0s;
+      background-color: $green-3;
+      box-shadow: 0 0 6px $green-1;
+    }
+  }
+  .buttonStatic {
+    background-color: $blue-1;
+  }
+  .buttonIgnored {
+    background-color: $dark-3;
+    &:hover {
+      color: $blue-2;
+    }
+  }
+  .searchDiv {
+    background-color: $dark-3;
+    height: 30px;
+    border-radius: 5px;
+    padding-left: 0.5vw;
+    padding-right: 0.5vw;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: $light-1;
+    font-size: 1.1rem;
+    .filterItem {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      input {
+        margin-left: 0.5vw;
+        border-radius: 5px;
+        margin-right: 0.5vw;
+      }
+    }
+    .searchItem {
+      input {
+        width: 20vw;
+      }
+    }
+  }
+}

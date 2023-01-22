@@ -5,7 +5,8 @@ function Charts() {
   return (
     <>
       <MainLayout>
-        <h1>CHARTS</h1>
+        <h1 className="mainTitle">Gráficos</h1>
+        <hr />
       </MainLayout>
     </>
   );

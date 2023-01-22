@@ -1,5 +1,9 @@
 import React, { Component } from "react";
 import AddCategory from "../../components/expense/AddCategory";
+import AddExpense from "../../components/expense/AddExpense";
+import ExpenseTable from "../../components/expense/ExpenseTable";
+import FilterExpense from "../../components/expense/FilterExpense";
+import SwitchBtn from "../../components/expense/SwitchBtn";
 import MainLayout from "../../components/layout/MainLayout";
 
 function Dashboard() {
@@ -49,6 +53,12 @@ function Dashboard() {
             <AddCategory />
           </div>
         </div>
+        <div className="optionDiv">
+          <AddExpense />
+          <SwitchBtn />
+          <FilterExpense />
+        </div>
+        <ExpenseTable />
       </MainLayout>
     </>
   );

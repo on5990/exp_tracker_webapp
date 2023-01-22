@@ -4,6 +4,7 @@
   height: 30px;
   border-radius: 5px;
   margin-right: 0.5vw;
+  margin-top: 1vh;
   p {
     margin: 0;
     padding: 3px;
@@ -22,6 +23,7 @@
   font-size: 1.1rem;
   color: $light-1;
   cursor: pointer;
+  margin-top: 1vh;
   p {
     margin: 0;
     padding: 0;
@@ -33,6 +35,7 @@
   &:active {
     transition: background-color 0s;
     background-color: $green-3;
+    box-shadow: 0 0 6px $green-1;
   }
 }
 .categoryForm {
@@ -66,6 +69,7 @@
     &:active {
       transition: background-color 0s;
       background-color: $green-3;
+      box-shadow: 0 0 6px $green-1;
     }
     p {
       margin: 0;
