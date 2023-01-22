@@ -47,6 +47,7 @@
   padding-left: 1vw;
   border-radius: 5px;
   justify-content: flex-start;
+  margin-top: 1vh;
   input {
     height: 20px;
     border: none;
@@ -54,13 +55,14 @@
     font-family: $font-1;
   }
   button {
-    height: 20px;
-    width: 30px;
+    height: 25px;
+    width: 40px;
     color: $light-1;
     margin-left: 1vw;
     border-radius: 5px;
     background-color: $green-1;
     border: none;
+    box-sizing: border-box;
     cursor: pointer;
     &:hover {
       transition: background-color 0.5s;
@@ -74,6 +76,7 @@
     p {
       margin: 0;
       padding: 0;
+      font-size: 1rem;
     }
   }
 }
