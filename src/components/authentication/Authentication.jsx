@@ -3,7 +3,7 @@ import Login from "./Login";
 import Signup from "./Signup";
 
 function Authentication() {
-  const [showLogin, setShowLogin] = useState(false);
+  const [showLogin, setShowLogin] = useState(true);
   const loginProps = {
     setShowLogin: setShowLogin,
   };

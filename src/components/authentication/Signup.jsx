@@ -73,6 +73,19 @@ function Signup(props) {
     if (pass) {
       const signup = async () => {
         console.log("PASS");
+        const response = await fetch("/api/auth/signup", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: trEmail,
+            password: trPass,
+          }),
+        });
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`);
+        }
         setData((prev) => {
           return { ...prev, email: "", password: "", confirmation: "" };
         });

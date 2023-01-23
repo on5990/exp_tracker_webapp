@@ -98,6 +98,11 @@
   background-color: #0e625d;
   box-shadow: 0 0 6px #2a9f97;
 }
+.indexForm .formDiv .errorMsg {
+  font-size: 1.1rem;
+  background-color: #a80606;
+  box-shadow: 0 0 6px #f93a3a;
+}
 .indexForm .formDiv span {
   cursor: pointer;
 }

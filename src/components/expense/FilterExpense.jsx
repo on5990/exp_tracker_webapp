@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 
 function FilterExpense() {
+  const [timeType, setTimeType] = useState(null);
+  const [timeItem, setTimeItem] = useState(null);
   return (
     <>
       <div className="searchDiv">

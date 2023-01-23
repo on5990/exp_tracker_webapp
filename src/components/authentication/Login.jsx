@@ -1,9 +1,10 @@
 import formatHelpers from "@/helpers/formatHelpers";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 function Login(props) {
   const { setShowLogin } = props;
   const [data, setData] = useState({ email: "", password: "" });
+  const [errorMsg, setErrorMsg] = useState(true);
   const [errors, setErrors] = useState({ emailError: "", passError: "" });
   function renderSignup() {
     setShowLogin(false);
@@ -14,6 +15,13 @@ function Login(props) {
       return { ...prev, emailError: "", passError: "" };
     });
   }
+  useEffect(() => {
+    if (errorMsg) {
+      setTimeout(() => {
+        setErrorMsg(false);
+      }, 5000);
+    }
+  }, [errorMsg]);
   function handleSubmit(event) {
     event.preventDefault();
     let pass = true;
@@ -39,6 +47,20 @@ function Login(props) {
     if (pass) {
       const login = async () => {
         console.log("PASS");
+        const response = await fetch("/api/auth/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: trEmail,
+            password: trPass,
+          }),
+        });
+        if (!response.ok) {
+          setErrorMsg(true);
+          throw new Error(`Error: ${response.status}`);
+        }
         setData((prev) => {
           return { ...prev, email: "", password: "" };
         });
@@ -93,6 +115,11 @@ function Login(props) {
             <button type="submit" className="formBtn" onClick={handleSubmit}>
               Ingresar
             </button>
+            {errorMsg && (
+              <div className="errorMsg">
+                <p>Usuario o contraseña incorrectos</p>
+              </div>
+            )}
           </form>
           <p>
             ¿No tiene una cuenta?{" "}

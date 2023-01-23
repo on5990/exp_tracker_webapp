@@ -96,6 +96,11 @@
       background-color: $green-3;
       box-shadow: 0 0 6px $green-1;
     }
+    .errorMsg {
+      font-size: 1.1rem;
+      background-color: $red-2;
+      box-shadow: 0 0 6px $red-1;
+    }
     span {
       cursor: pointer;
       &:hover {
