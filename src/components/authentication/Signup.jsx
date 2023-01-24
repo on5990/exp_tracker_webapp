@@ -1,7 +1,7 @@
-import formatHelpers from "@/lib/formatHelpers";
+import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
+import { encryptData } from "@/lib/frontendHelpers/encryptData.tsx";
 import React, { useState } from "react";
 import { useEffect } from "react";
-
 function Signup(props) {
   const { setShowLogin } = props;
   const [data, setData] = useState({
@@ -72,24 +72,33 @@ function Signup(props) {
     }
     if (pass) {
       const signup = async () => {
-        console.log("PASS");
+        const encryptedData = encryptData({
+          email: trEmail,
+          password: trPass,
+        });
         const response = await fetch("/api/auth/signup", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            email: trEmail,
-            password: trPass,
+            encryptedData: encryptedData,
           }),
         });
-        console.log(response);
         console.log(await response.json());
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
         }
         setData((prev) => {
           return { ...prev, email: "", password: "", confirmation: "" };
+        });
+        setErrors((prev) => {
+          return {
+            ...prev,
+            emailError: "",
+            passError: "",
+            confirmationError: "",
+          };
         });
         setShowSuccess(true);
       };

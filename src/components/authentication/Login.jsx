@@ -1,10 +1,12 @@
-import formatHelpers from "@/lib/formatHelpers";
+import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
+import { encryptData } from "@/lib/frontendHelpers/encryptData.tsx";
 import React, { useEffect, useState } from "react";
 
 function Login(props) {
   const { setShowLogin } = props;
   const [data, setData] = useState({ email: "", password: "" });
-  const [errorMsg, setErrorMsg] = useState(true);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [disableSubmit, setDisableSubmit] = useState(false);
   const [errors, setErrors] = useState({ emailError: "", passError: "" });
   function renderSignup() {
     setShowLogin(false);
@@ -19,6 +21,11 @@ function Login(props) {
     if (errorMsg) {
       setTimeout(() => {
         setErrorMsg(false);
+      }, 5000);
+    }
+    if (disableSubmit) {
+      setTimeout(() => {
+        setDisableSubmit(false);
       }, 5000);
     }
   }, [errorMsg]);
@@ -47,19 +54,27 @@ function Login(props) {
     if (pass) {
       const login = async () => {
         console.log("PASS");
+        const encryptedData = encryptData({
+          email: trEmail,
+          password: trPass,
+        });
         const response = await fetch("/api/auth/login", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            email: trEmail,
-            password: trPass,
+            encryptedData: encryptedData,
           }),
         });
-        if (!response.ok) {
-          setErrorMsg(true);
-          throw new Error(`Error: ${response.status}`);
+        console.log(await response.json());
+        if (response.status === 404) {
+          setErrorMsg("Usuario no existe");
+        } else if (response.status === 401) {
+          setErrorMsg("Contraseña incorrecta");
+          setDisableSubmit(true);
+        } else if (response.status === 400) {
+          setErrorMsg("Ocurrió un error, intente más tarde");
         }
         setData((prev) => {
           return { ...prev, email: "", password: "" };
@@ -112,12 +127,14 @@ function Login(props) {
             />
             <br />
             <p className="error">{errors.passError}</p>
-            <button type="submit" className="formBtn" onClick={handleSubmit}>
-              Ingresar
-            </button>
+            {!disableSubmit && (
+              <button type="submit" className="formBtn" onClick={handleSubmit}>
+                Ingresar
+              </button>
+            )}
             {errorMsg && (
               <div className="errorMsg">
-                <p>Usuario o contraseña incorrectos</p>
+                <p>{errorMsg}</p>
               </div>
             )}
           </form>
