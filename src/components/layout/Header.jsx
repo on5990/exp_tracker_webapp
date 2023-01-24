@@ -1,7 +1,21 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 
 function Header() {
+  const router = useRouter();
+  function logout() {
+    const closeSession = async () => {
+      const response = await fetch("/api/auth/logout", {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        router.push("/dashboard");
+      }
+      console.log(await response.json());
+    };
+    closeSession();
+  }
   return (
     <>
       <header className="navHeader">
@@ -27,12 +41,11 @@ function Header() {
                 Gráficos
               </Link>
             </li>
-            {/* <li></li> */}
           </ul>
         </nav>
         <div className="userSection">
           <p>Oscar Navarro Mondaca</p>
-          <button>Salir</button>
+          <button onClick={logout}>Salir</button>
         </div>
       </header>
     </>

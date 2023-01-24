@@ -178,6 +178,7 @@
   color: #eeeeee;
   display: flex;
   height: 5vh;
+  min-height: 35px;
   flex-wrap: wrap;
   width: 100%;
 }
@@ -238,6 +239,7 @@
   color: #eeeeee;
   border: none;
   height: 80%;
+  min-height: 30px;
   width: auto;
   font-family: "Lusitana";
   font-size: 1.1rem;

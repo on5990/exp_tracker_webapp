@@ -1,6 +1,7 @@
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
 import { encryptData } from "@/lib/frontendHelpers/encryptData.tsx";
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 function Login(props) {
   const { setShowLogin } = props;
@@ -8,6 +9,7 @@ function Login(props) {
   const [errorMsg, setErrorMsg] = useState("");
   const [disableSubmit, setDisableSubmit] = useState(false);
   const [errors, setErrors] = useState({ emailError: "", passError: "" });
+  const router = useRouter();
   function renderSignup() {
     setShowLogin(false);
     setData((prev) => {
@@ -75,6 +77,8 @@ function Login(props) {
           setDisableSubmit(true);
         } else if (response.status === 400) {
           setErrorMsg("Ocurrió un error, intente más tarde");
+        } else if (response.status === 200) {
+          router.push("/dashboard");
         }
         setData((prev) => {
           return { ...prev, email: "", password: "" };

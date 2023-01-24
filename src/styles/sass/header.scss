@@ -9,6 +9,7 @@
   color: $light-1;
   display: flex;
   height: 5vh;
+  min-height: 35px;
   // max-height: 30px;
   flex-wrap: wrap;
   // overflow: hidden;
@@ -74,6 +75,7 @@
       color: $light-1;
       border: none;
       height: 80%;
+      min-height: 30px;
       width: auto;
       font-family: $font-1;
       font-size: 1.1rem;
