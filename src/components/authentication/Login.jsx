@@ -1,4 +1,4 @@
-import formatHelpers from "@/helpers/formatHelpers";
+import formatHelpers from "@/lib/formatHelpers";
 import React, { useEffect, useState } from "react";
 
 function Login(props) {

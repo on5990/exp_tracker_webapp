@@ -1,4 +1,4 @@
-import formatHelpers from "@/helpers/formatHelpers";
+import formatHelpers from "@/lib/formatHelpers";
 import React, { useState } from "react";
 import { useEffect } from "react";
 
@@ -83,6 +83,8 @@ function Signup(props) {
             password: trPass,
           }),
         });
+        console.log(response);
+        console.log(await response.json());
         if (!response.ok) {
           throw new Error(`Error: ${response.status}`);
         }
