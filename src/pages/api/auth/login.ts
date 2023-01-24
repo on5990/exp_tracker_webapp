@@ -4,6 +4,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import User from "@/models/User";
 import { decryptData } from "@/lib/backendHelpers/decryptData";
 import { json } from "stream/consumers";
+import authService from "@/services/auth.service";
 
 async function login(req: NextApiRequest, res: NextApiResponse) {
   const { method, body } = req;
@@ -13,7 +14,7 @@ async function login(req: NextApiRequest, res: NextApiResponse) {
     try {
       const jsonData = decryptData(encryptedData);
       const { email, password } = jsonData;
-      const user = await User.findOne({ email }).exec();
+      const user = await authService.findUser(email);
       if (!user) {
         res.status(404);
         return res.json({ success: false, error: "User not found" });
@@ -23,9 +24,11 @@ async function login(req: NextApiRequest, res: NextApiResponse) {
         res.status(401);
         return res.json({ success: false, error: "Password incorrect" });
       } else {
+        const accessToken = authService.createToken(user);
+        console.log("XXXXXXXXXXX", user.id, accessToken);
+        res.status(200);
+        return res.json({ success: true, data: { email } });
       }
-      res.status(200);
-      return res.json({ success: true, data: { email } });
     } catch (error) {
       res.status(400);
       return res.json({ success: false, error });

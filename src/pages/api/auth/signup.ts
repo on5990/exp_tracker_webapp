@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import dbConnect from "@/lib/backendHelpers/dbConnect";
 import User from "@/models/User";
 import { decryptData } from "@/lib/backendHelpers/decryptData";
+import authService from "@/services/auth.service";
 
 async function signup(req: NextApiRequest, res: NextApiResponse) {
   const { method, body } = req;
@@ -11,11 +12,13 @@ async function signup(req: NextApiRequest, res: NextApiResponse) {
   if (method === "POST") {
     try {
       const jsonData = decryptData(encryptedData);
+      const userExist = await authService.findUser(jsonData.email);
+      if (userExist) {
+        res.status(409);
+        return res.json({ success: false, error: "Usuario ya existe" });
+      }
       const hashedPass = await bcrypt.hash(jsonData.password, 10);
-      const user = await User.create({
-        email: jsonData.email,
-        password: hashedPass,
-      });
+      const user = await authService.createUser(jsonData.email, hashedPass);
       return res
         .status(200)
         .json({ success: true, data: { email: user.email } });
@@ -23,6 +26,6 @@ async function signup(req: NextApiRequest, res: NextApiResponse) {
       return res.status(400).json({ success: false, error });
     }
   }
-  return res.status(400).json({ success: false, error: "Invalid route" });
+  return res.status(400).json({ success: false, error: "Ruta inválida" });
 }
 export default signup;

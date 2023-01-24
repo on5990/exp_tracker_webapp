@@ -20,7 +20,7 @@ function Login(props) {
   useEffect(() => {
     if (errorMsg) {
       setTimeout(() => {
-        setErrorMsg(false);
+        setErrorMsg("");
       }, 5000);
     }
     if (disableSubmit) {
@@ -28,7 +28,7 @@ function Login(props) {
         setDisableSubmit(false);
       }, 5000);
     }
-  }, [errorMsg]);
+  }, [errorMsg, disableSubmit]);
   function handleSubmit(event) {
     event.preventDefault();
     let pass = true;

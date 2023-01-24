@@ -15,13 +15,19 @@ function Signup(props) {
     confirmationError: "",
   });
   const [showSuccess, setShowSuccess] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   useEffect(() => {
     if (showSuccess) {
       setTimeout(() => {
         setShowSuccess(false);
       }, 5000);
     }
-  }, [showSuccess]);
+    if (errorMsg) {
+      setTimeout(() => {
+        setErrorMsg("");
+      }, 5000);
+    }
+  }, [showSuccess, errorMsg]);
   function renderLogin() {
     setShowLogin(true);
     setData((prev) => {
@@ -56,7 +62,11 @@ function Signup(props) {
     } else if (!formatHelpers.isSafe(trPass)) {
       pass = false;
       setErrors((prev) => {
-        return { ...prev, passError: "Esta contraseña no es segura" };
+        return {
+          ...prev,
+          passError:
+            "Esta contraseña no es segura, debe tener una longitud mínima de 9 caracteres y debe contener letras mayúsculas, minúsuculas, números y caracteres especiales (!@#$%^&*)",
+        };
       });
     }
     if (trConf === "") {
@@ -86,8 +96,12 @@ function Signup(props) {
           }),
         });
         console.log(await response.json());
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status}`);
+        if (response.status === 409) {
+          setErrorMsg("Este e-mail ya está registrado");
+        } else if (response.status === 400) {
+          setErrorMsg("Ocurrió un error, intente más tarde");
+        } else if (response.status === 200) {
+          setShowSuccess(true);
         }
         setData((prev) => {
           return { ...prev, email: "", password: "", confirmation: "" };
@@ -100,7 +114,6 @@ function Signup(props) {
             confirmationError: "",
           };
         });
-        setShowSuccess(true);
       };
       signup();
     }
@@ -129,7 +142,7 @@ function Signup(props) {
               }}
             />
             <br />
-            <p className="error">{errors.emailError}</p>
+            {errors.emailError && <p className="error">{errors.emailError}</p>}
             <label htmlFor="password">Contraseña</label>
             <br />
             <input
@@ -148,7 +161,7 @@ function Signup(props) {
               }}
             />
             <br />
-            <p className="error">{errors.passError}</p>
+            {errors.passError && <p className="error">{errors.passError}</p>}
             <label>Confirmar contraseña</label>
             <br />
             <input
@@ -167,10 +180,17 @@ function Signup(props) {
               }}
             />
             <br />
-            <p className="error">{errors.confirmationError}</p>
+            {errors.confirmationError && (
+              <p className="error">{errors.confirmationError}</p>
+            )}
             <button type="submit" className="formBtn" onClick={handleSubmit}>
               Aceptar
             </button>
+            {errorMsg && (
+              <div className="errorMsg">
+                <p>{errorMsg}</p>
+              </div>
+            )}
             {showSuccess && (
               <div className="successMsg">
                 <p>Registro realizado con éxito</p>
