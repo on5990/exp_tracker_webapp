@@ -53,7 +53,7 @@ function BillsTable() {
   return (
     <>
       <div className="tableContainer">
-        <table>
+        <table className="infoTable">
           <thead>
             <tr>
               {head.map((item) => {

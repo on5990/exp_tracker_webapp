@@ -413,34 +413,28 @@
 }
 
 .tableContainer {
-  overflow-x: scroll;
-}
-.tableContainer ::-webkit-scrollbar {
-  height: 50px;
-  background-color: blue;
-}
-.tableContainer ::-webkit-scrollbar-track {
-  background-color: #303333;
+  overflow-y: auto;
 }
 
-table {
+.infoTable {
   width: 100%;
   border: none;
+  overflow: hidden;
   border-collapse: collapse;
   border-spacing: 0;
   border-radius: 8px 8px 0px 0px;
   color: #eeeeee;
 }
-table tr {
+.infoTable tr {
   width: 100%;
 }
-table tr:nth-child(even) {
+.infoTable tr:nth-child(even) {
   background-color: #535857;
 }
-table tr:nth-child(odd) {
+.infoTable tr:nth-child(odd) {
   background-color: #687271;
 }
-table th {
+.infoTable th {
   background-color: #03919b;
   min-width: 10vw;
   height: 40px;
@@ -448,11 +442,11 @@ table th {
   font-weight: normal;
 }
 @media (orientation: portrait) {
-  table th {
+  .infoTable th {
     min-width: 25vw;
   }
 }
-table td {
+.infoTable td {
   padding-left: 0.5vw;
   padding-right: 1vw;
   text-align: center;
@@ -461,14 +455,14 @@ table td {
   font-size: 0.9rem;
   min-height: auto;
 }
-table .cellBtnDiv {
+.infoTable .cellBtnDiv {
   display: flex;
   height: 30px;
   width: 100%;
   justify-content: flex-end;
   max-width: auto;
 }
-table .cellBtnDiv button {
+.infoTable .cellBtnDiv button {
   border: none;
   cursor: pointer;
   border-radius: 5px;
@@ -478,11 +472,11 @@ table .cellBtnDiv button {
   height: 25px;
   margin-left: 0.5vw;
 }
-table .cellBtnDiv button:hover {
+.infoTable .cellBtnDiv button:hover {
   transition: background-color 0.5s;
   background-color: #24847e;
 }
-table .cellBtnDiv button:active {
+.infoTable .cellBtnDiv button:active {
   transition: background-color 0s;
   background-color: #0e625d;
   box-shadow: 0 0 6px #2a9f97;

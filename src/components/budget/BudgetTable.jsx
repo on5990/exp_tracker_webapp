@@ -47,36 +47,38 @@ const content = [
 function BudgetTable() {
   return (
     <>
-      <table>
-        <thead>
-          <tr>
-            {head.map((item) => {
-              return <th key={item.id}>{item.name}</th>;
+      <div className="tableContainer">
+        <table className="infoTable">
+          <thead>
+            <tr>
+              {head.map((item) => {
+                return <th key={item.id}>{item.name}</th>;
+              })}
+            </tr>
+          </thead>
+          <tbody>
+            {content.map((item) => {
+              return (
+                <tr key={item.id}>
+                  <td>{item.category}</td>
+                  <td>{item.amount}</td>
+                  <td>{item.spent}</td>
+                  <td>{item.available}</td>
+                  <td>{item.overExpense}</td>
+                  <td>{item.lastUpdate}</td>
+                  <td>{item.state}</td>
+                  <td>
+                    <div className="cellBtnDiv">
+                      <EditBudget />
+                      <DeleteBudget />
+                    </div>
+                  </td>
+                </tr>
+              );
             })}
-          </tr>
-        </thead>
-        <tbody>
-          {content.map((item) => {
-            return (
-              <tr key={item.id}>
-                <td>{item.category}</td>
-                <td>{item.amount}</td>
-                <td>{item.spent}</td>
-                <td>{item.available}</td>
-                <td>{item.overExpense}</td>
-                <td>{item.lastUpdate}</td>
-                <td>{item.state}</td>
-                <td>
-                  <div className="cellBtnDiv">
-                    <EditBudget />
-                    <DeleteBudget />
-                  </div>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </>
   );
 }

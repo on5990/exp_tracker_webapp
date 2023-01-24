@@ -43,35 +43,37 @@ const content = [
 function ExpenseTable() {
   return (
     <>
-      <table className="expenseTable">
-        <thead>
-          <tr>
-            {head.map((item) => {
-              return <th key={item.id}>{item.name}</th>;
+      <div className="tableContainer">
+        <table className="infoTable">
+          <thead>
+            <tr>
+              {head.map((item) => {
+                return <th key={item.id}>{item.name}</th>;
+              })}
+            </tr>
+          </thead>
+          <tbody>
+            {content.map((item) => {
+              return (
+                <tr key={item.id}>
+                  <td>{item.description}</td>
+                  <td>{item.amount}</td>
+                  <td>{item.date}</td>
+                  <td>{item.category}</td>
+                  <td>
+                    <div className="cellBtnDiv">
+                      <button>Subir</button>
+                      <button>Descargar</button>
+                      <EditExpense />
+                      <DeleteExpense />
+                    </div>
+                  </td>
+                </tr>
+              );
             })}
-          </tr>
-        </thead>
-        <tbody>
-          {content.map((item) => {
-            return (
-              <tr key={item.id}>
-                <td>{item.description}</td>
-                <td>{item.amount}</td>
-                <td>{item.date}</td>
-                <td>{item.category}</td>
-                <td>
-                  <div className="cellBtnDiv">
-                    <button>Subir</button>
-                    <button>Descargar</button>
-                    <EditExpense />
-                    <DeleteExpense />
-                  </div>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </>
   );
 }
