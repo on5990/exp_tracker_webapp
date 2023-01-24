@@ -506,14 +506,16 @@ table .cellBtnDiv button:active {
 }
 
 .modalContainer {
-  background-color: green;
+  background-color: #535857;
   display: flex;
   width: 40vw;
   height: auto;
+  max-height: 80vh;
   flex-direction: column;
   color: #eeeeee;
   border-radius: 10px;
   overflow: hidden;
+  overflow-y: auto;
 }
 @media (orientation: portrait) {
   .modalContainer {
@@ -569,9 +571,10 @@ table .cellBtnDiv button:active {
   background-color: #0e625d;
 }
 .modalContainer .modalContent {
-  background-color: #535857;
-  height: auto;
-  min-height: 10vh;
+  padding-left: 1vw;
+  padding-right: 1vw;
+  padding-bottom: 1vh;
+  box-sizing: border-box;
 }
 
 .modalP {

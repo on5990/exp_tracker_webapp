@@ -15,11 +15,18 @@ function AddExpense() {
       <button className="buttonActive" onClick={openModal}>
         + Agregar gasto
       </button>
-      <Modal
-        title={"Agregar gasto"}
-        isOpen={isOpen}
-        setIsOpen={setIsOpen}
-      ></Modal>
+      <Modal title={"Agregar gasto"} isOpen={isOpen} setIsOpen={setIsOpen}>
+        <h1>+ Agregar gasto</h1> <h1>+ Agregar gasto</h1>{" "}
+        <h1>+ Agregar gasto</h1> <h1>+ Agregar gasto</h1>{" "}
+        <h1>+ Agregar gasto</h1> <h1>+ Agregar gasto</h1>{" "}
+        <h1>+ Agregar gasto</h1> <h1>+ Agregar gasto</h1>{" "}
+        <h1>+ Agregar gasto</h1>
+        <h1>+ Agregar gasto2</h1>
+        <h1>+ Agregar gasto2</h1>
+        <h1>+ Agregar gasto2</h1>
+        <h1>+ Agregar gasto2</h1>
+        <h1>+ Agregar gasto2</h1>
+      </Modal>
     </>
   );
 }
