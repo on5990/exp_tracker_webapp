@@ -12,12 +12,16 @@ function FilterExpense() {
       <div className="searchDiv">
         <div className="filterItem">
           <p>Filtrar</p>
-          <input
-            type="text"
-            name="time"
-            value={filter.time}
-            onChange={handleChange}
-          />
+          <select name="time" value={filter.time} onChange={handleChange}>
+            <option value={""}>{""}</option>
+            {filterTypes.map((item) => {
+              return (
+                <option key={item.id} value={item.value}>
+                  {item.label}
+                </option>
+              );
+            })}
+          </select>
         </div>
         <div className="filterItem">
           <p>Tipo</p>
