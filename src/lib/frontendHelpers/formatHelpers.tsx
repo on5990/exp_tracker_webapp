@@ -17,7 +17,34 @@ function isSafe(password: string): Boolean {
   let re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
   return re.test(password);
 }
+function validAmount(amount: number | any): Boolean {
+  try {
+    const num = parseFloat(amount);
+    if (num > 0) {
+      return true;
+    }
+    return false;
+  } catch (error) {
+    return false;
+  }
+}
+function formatTime(date: Date | any): string {
+  try {
+    let d = new Date(date);
+    d = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
+    const strDate = d.toISOString().slice(0, -5).split("T");
+    const dateSection = strDate[0].split("-").reverse().join("/");
+    const time = strDate[1].split(".")[0];
+    const output = `${dateSection} ${time}`;
+    return output;
+  } catch (error) {
+    return "";
+  }
+}
+
 export default {
   isEmail,
   isSafe,
+  formatTime,
+  validAmount,
 };

@@ -16,6 +16,7 @@ function PayBill() {
         title={"Marcar como pagado"}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
+        closeModal={closeModal}
       ></Modal>
     </>
   );

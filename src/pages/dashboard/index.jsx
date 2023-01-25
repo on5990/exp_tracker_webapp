@@ -1,11 +1,10 @@
-import React, { Component } from "react";
+import React from "react";
 import AddCategory from "../../components/expense/AddCategory";
 import AddExpense from "../../components/expense/AddExpense";
 import ExpenseTable from "../../components/expense/ExpenseTable";
 import FilterExpense from "../../components/expense/FilterExpense";
 import SwitchBtn from "../../components/expense/SwitchBtn";
 import MainLayout from "../../components/layout/MainLayout";
-import Modal from "../../components/modal/Modal";
 
 function Dashboard() {
   return (

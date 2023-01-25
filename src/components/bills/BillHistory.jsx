@@ -16,6 +16,7 @@ function BillHistory() {
         title={"Historial de pagos"}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
+        closeModal={closeModal}
       ></Modal>
     </>
   );

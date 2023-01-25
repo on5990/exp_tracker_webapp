@@ -16,6 +16,7 @@ function EditExpense() {
         title={"Editar gasto"}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
+        closeModal={closeModal}
       ></Modal>
     </>
   );

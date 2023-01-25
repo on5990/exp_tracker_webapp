@@ -16,6 +16,7 @@ function EditBill() {
         title={"Editar cuenta"}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
+        closeModal={closeModal}
       ></Modal>
     </>
   );

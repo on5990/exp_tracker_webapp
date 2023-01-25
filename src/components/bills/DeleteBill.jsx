@@ -16,6 +16,7 @@ function DeleteBill() {
         title={"Eliminar cuenta"}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
+        closeModal={closeModal}
       ></Modal>
     </>
   );

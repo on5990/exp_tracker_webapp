@@ -16,6 +16,7 @@ function DeleteBudget() {
         title={"Eliminar presupuesto"}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
+        closeModal={closeModal}
       ></Modal>
     </>
   );

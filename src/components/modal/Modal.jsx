@@ -1,21 +1,12 @@
 import React from "react";
+import ModalHeader from "./ModalHeader";
 
-function Modal({ children, title, isOpen, setIsOpen }) {
-  function closeModal() {
-    setIsOpen(false);
-  }
+function Modal({ children, title, isOpen, setIsOpen, closeModal }) {
   return (
     <>
       <div className={`modal ${isOpen && "isOpen"}`}>
         <div className="modalContainer">
-          <div className="modalBar">
-            <div className="titleDiv">
-              <h1>{title}</h1>
-            </div>
-            <div className="xDiv">
-              <button onClick={closeModal}>X</button>
-            </div>
-          </div>
+          <ModalHeader closeModal={closeModal} title={title} />
           <div className="modalContent">{children}</div>
         </div>
       </div>

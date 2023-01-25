@@ -12,7 +12,12 @@ function DeleteExpense() {
   return (
     <>
       <button onClick={openModal}>Eliminar</button>
-      <Modal title={"Eliminar gasto"} isOpen={isOpen} setIsOpen={setIsOpen}>
+      <Modal
+        title={"Eliminar gasto"}
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        closeModal={closeModal}
+      >
         <p className="modalP">
           Confirme que desea eliminar el registro de este gasto
         </p>

@@ -18,6 +18,7 @@ function AddBudget() {
         title={"Agregar presupuesto"}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
+        closeModal={closeModal}
       ></Modal>
     </>
   );

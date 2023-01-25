@@ -18,6 +18,7 @@ function AddBill() {
         title={"Agregar cuenta"}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
+        closeModal={closeModal}
       ></Modal>
     </>
   );

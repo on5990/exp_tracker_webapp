@@ -16,6 +16,7 @@ function EditBudget() {
         title={"Editar presupuesto"}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
+        closeModal={closeModal}
       ></Modal>
     </>
   );
