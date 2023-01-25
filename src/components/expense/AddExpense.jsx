@@ -23,11 +23,12 @@ function AddExpense() {
     category: "",
   });
   const [errors, setErrors] = useState({
-    descError: "something",
-    amountError: "somehting",
-    categoryError: "something",
+    descError: "",
+    amountError: "",
+    categoryError: "",
   });
-  console.log("DATE2", data.date);
+  // console.log("DATE2", data);
+  console.log("AMOUNT", formatHelpers.validAmount(data.amount));
   function openModal() {
     setIsOpen(true);
   }
@@ -43,13 +44,57 @@ function AddExpense() {
         category: "",
       };
     });
+    setErrors((prev) => {
+      return {
+        ...prev,
+        descError: "",
+        amountError: "",
+        categoryError: "",
+      };
+    });
+  }
+  function checkErrors() {
+    let pass = true;
+    if (data.description === "") {
+      pass = false;
+      setErrors((prev) => {
+        return { ...prev, descError: "Este campo es requerido" };
+      });
+    }
+    if (data.amount === "") {
+      pass = false;
+      setErrors((prev) => {
+        return { ...prev, amountError: "Este campo es requerido" };
+      });
+    } else if (!formatHelpers.validAmount(data.amount)) {
+      pass = false;
+      setErrors((prev) => {
+        return { ...prev, amountError: "Debe ingresar un número positivo" };
+      });
+    }
+    if (data.category === "") {
+      pass = false;
+      setErrors((prev) => {
+        return { ...prev, categoryError: "Este campo es requerido" };
+      });
+    }
+    return pass;
   }
   function handleSubmit(event) {
     event.preventDefault();
-    const submitData = async () => {};
-    submitData();
+    const pass = checkErrors();
+    const submitData = async () => {
+      console.log("PASS");
+    };
+    if (pass) {
+      submitData();
+    }
   }
-  function handleInputChange() {}
+  function handleInputChange(e) {
+    setData((prev) => {
+      return { ...prev, [e.target.name]: e.target.value };
+    });
+  }
   return (
     <>
       <button className="buttonActive" onClick={openModal}>
@@ -66,32 +111,38 @@ function AddExpense() {
           <textarea
             type="text"
             name="description"
+            maxLength={200}
             onChange={handleInputChange}
             value={data.description}
           />
-          {errors.descError && <p className="error">{errors.descError}</p>}
+          <div className="paragraphDiv">
+            {errors.descError && <p className="error">{errors.descError}</p>}
+            <p className="charCounter">{`${data.description.length}/${200}`}</p>
+          </div>
           <div className="modalFlexDiv">
             <div className="modalHalfDiv">
               <label htmlFor="amount">Cantidad</label>
               <input
                 type="text"
                 name="amount"
+                maxLength={20}
                 onChange={handleInputChange}
                 value={data.amount}
               />
               <br />
-              {errors.amountError && (
-                <p className="error">{errors.amountError}</p>
-              )}
+              <div className="paragraphDiv">
+                {errors.amountError && (
+                  <p className="error">{errors.amountError}</p>
+                )}
+                <p className="charCounter">{`${data.amount.length}/${20}`}</p>
+              </div>
             </div>
             <div className="modalHalfDiv lastHalf">
               <label htmlFor="category">Categoría</label>
               <select
                 name="category"
                 value={data.category}
-                onChange={(e) => {
-                  setData({ ...data, category: e.target.value });
-                }}
+                onChange={handleInputChange}
               >
                 <option value="">{""}</option>
                 {categories.map((cat) => {
@@ -103,15 +154,16 @@ function AddExpense() {
                 })}
               </select>
               <br />
-              {errors.categoryError && (
-                <p className="error">{errors.categoryError}</p>
-              )}
+              {/* {errors.categoryError && ( */}
+              <p className="error">{errors.categoryError}</p>
+              {/* )} */}
             </div>
           </div>
           <label htmlFor="date">Fecha</label>
           {data.amountError && <p className="error">{data.amountError}</p>}
           <div className="datePickerDiv">
             <Datetime
+              name="date"
               onChange={(date) =>
                 setData({
                   ...data,

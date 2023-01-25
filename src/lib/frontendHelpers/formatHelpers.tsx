@@ -20,7 +20,7 @@ function isSafe(password: string): Boolean {
 function validAmount(amount: number | any): Boolean {
   try {
     const num = parseFloat(amount);
-    if (num > 0) {
+    if (num > 0 && !isNaN(amount)) {
       return true;
     }
     return false;

@@ -587,7 +587,7 @@
 .modalForm .modalFlexDiv {
   width: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: flex-start;
   flex-wrap: wrap;
   height: auto;
@@ -609,17 +609,47 @@
   border-radius: 5px;
   box-sizing: border-box;
   resize: vertical;
+  font-size: 1.1rem;
+  font-family: "Lusitana";
+  border: none;
 }
 .modalForm select {
   width: 100%;
   height: 25px;
   border-radius: 5px;
+  font-family: "Lusitana";
+  font-size: 1rem;
 }
 .modalForm input {
   width: 100%;
   border-radius: 5px;
   height: 25px;
+  font-size: 1.1rem;
+  font-family: "Lusitana";
   box-sizing: border-box;
+  border: none;
+}
+.modalForm .paragraphDiv {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+}
+.modalForm .paragraphDiv .charCounter {
+  margin: 0;
+  padding: 0;
+  align-self: flex-end;
+  font-size: 0.9rem;
+  margin-left: 1vw;
+  text-align: end;
+}
+.modalForm .error {
+  padding: 0;
+  margin: 0;
+  margin-top: 0.5vh;
+  width: 100%;
+  color: #f93a3a;
+  font-size: 1.1rem;
 }
 .modalForm .lastHalf {
   padding-left: 2%;
@@ -650,15 +680,6 @@
 .modalForm .innerBtnBox .modalButton:active {
   transition: background-color 0s;
   background-color: #0e625d;
-}
-.modalForm .error {
-  padding: 0;
-  margin: 0;
-  margin-top: 0.5vh;
-  width: 100%;
-  color: #f93a3a;
-  font-size: 1.1rem;
-  font-weight: bold;
 }
 
 /*!
