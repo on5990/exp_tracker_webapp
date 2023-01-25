@@ -616,6 +616,7 @@
 .modalForm select {
   width: 100%;
   height: 25px;
+  max-height: 50px;
   border-radius: 5px;
   font-family: "Lusitana";
   font-size: 1rem;
@@ -640,7 +641,7 @@
   padding: 0;
   align-self: flex-end;
   font-size: 0.9rem;
-  margin-left: 1vw;
+  margin-left: 0.5vw;
   text-align: end;
 }
 .modalForm .error {
@@ -650,6 +651,7 @@
   width: 100%;
   color: #f93a3a;
   font-size: 1.1rem;
+  text-align: start;
 }
 .modalForm .lastHalf {
   padding-left: 2%;
@@ -680,6 +682,7 @@
 .modalForm .innerBtnBox .modalButton:active {
   transition: background-color 0s;
   background-color: #0e625d;
+  box-shadow: 0 0 6px #2a9f97;
 }
 
 /*!

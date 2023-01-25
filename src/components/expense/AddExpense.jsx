@@ -4,14 +4,23 @@ import Modal from "../modal/Modal";
 import Datetime from "react-datetime";
 import moment from "moment/moment";
 import "moment/locale/es";
-// import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
-import formatHelpers from "../../lib/frontendHelpers/formatHelpers.tsx";
+import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
+// import formatHelpers from "../../lib/frontendHelpers/formatHelpers.tsx";
 
 const categories = [
   { id: 1, label: "A", value: "A" },
   { id: 2, label: "B", value: "B" },
   { id: 3, label: "C", value: "C" },
   { id: 4, label: "D", value: "D" },
+  { id: 5, label: "D", value: "D" },
+  { id: 6, label: "D", value: "D" },
+  { id: 7, label: "D", value: "D" },
+  { id: 8, label: "D", value: "D" },
+  { id: 9, label: "D", value: "D" },
+  { id: 10, label: "D", value: "D" },
+  { id: 11, label: "D", value: "D" },
+  { id: 12, label: "D", value: "D" },
+  { id: 13, label: "D", value: "D" },
 ];
 
 function AddExpense() {
@@ -23,17 +32,17 @@ function AddExpense() {
     category: "",
   });
   const [errors, setErrors] = useState({
-    descError: "",
-    amountError: "",
-    categoryError: "",
+    description: "",
+    amount: "",
+    category: "",
   });
   // console.log("DATE2", data);
   console.log("AMOUNT", formatHelpers.validAmount(data.amount));
   function openModal() {
     setIsOpen(true);
   }
-  function closeModal(event) {
-    event.preventDefault();
+  function closeModal(e) {
+    e.preventDefault();
     setIsOpen(false);
     setData((prev) => {
       return {
@@ -47,9 +56,9 @@ function AddExpense() {
     setErrors((prev) => {
       return {
         ...prev,
-        descError: "",
-        amountError: "",
-        categoryError: "",
+        description: "",
+        amount: "",
+        category: "",
       };
     });
   }
@@ -58,45 +67,57 @@ function AddExpense() {
     if (data.description === "") {
       pass = false;
       setErrors((prev) => {
-        return { ...prev, descError: "Este campo es requerido" };
+        return { ...prev, description: "Este campo es requerido" };
       });
     }
     if (data.amount === "") {
       pass = false;
       setErrors((prev) => {
-        return { ...prev, amountError: "Este campo es requerido" };
+        return { ...prev, amount: "Este campo es requerido" };
       });
     } else if (!formatHelpers.validAmount(data.amount)) {
       pass = false;
       setErrors((prev) => {
-        return { ...prev, amountError: "Debe ingresar un número positivo" };
+        return { ...prev, amount: "Debe ingresar un número positivo" };
       });
     }
     if (data.category === "") {
       pass = false;
       setErrors((prev) => {
-        return { ...prev, categoryError: "Este campo es requerido" };
+        return { ...prev, category: "Este campo es requerido" };
       });
     }
     return pass;
   }
-  function handleSubmit(event) {
-    event.preventDefault();
+  function handleSubmit(e) {
+    e.preventDefault();
     const pass = checkErrors();
     const submitData = async () => {
       console.log("PASS");
     };
     if (pass) {
       submitData();
+      closeModal(e);
     }
   }
   function handleInputChange(e) {
     setData((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
+    if (errors[e.target.name] !== "") {
+      setErrors((prev) => {
+        return { ...prev, [e.target.name]: "" };
+      });
+    }
   }
   return (
     <>
+      {/* <select size="3">
+        <option value="option1">Option 1</option>
+        <option value="option2">Option 2</option>
+        <option value="option3">Option 3</option>
+        <option value="option4">Option 4</option>
+      </select> */}
       <button className="buttonActive" onClick={openModal}>
         + Agregar gasto
       </button>
@@ -116,7 +137,9 @@ function AddExpense() {
             value={data.description}
           />
           <div className="paragraphDiv">
-            {errors.descError && <p className="error">{errors.descError}</p>}
+            {errors.description && (
+              <p className="error">{errors.description}</p>
+            )}
             <p className="charCounter">{`${data.description.length}/${200}`}</p>
           </div>
           <div className="modalFlexDiv">
@@ -131,9 +154,7 @@ function AddExpense() {
               />
               <br />
               <div className="paragraphDiv">
-                {errors.amountError && (
-                  <p className="error">{errors.amountError}</p>
-                )}
+                {errors.amount && <p className="error">{errors.amount}</p>}
                 <p className="charCounter">{`${data.amount.length}/${20}`}</p>
               </div>
             </div>
@@ -154,9 +175,7 @@ function AddExpense() {
                 })}
               </select>
               <br />
-              {/* {errors.categoryError && ( */}
-              <p className="error">{errors.categoryError}</p>
-              {/* )} */}
+              {errors.category && <p className="error">{errors.category}</p>}
             </div>
           </div>
           <label htmlFor="date">Fecha</label>
