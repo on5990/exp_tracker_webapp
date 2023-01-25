@@ -46,21 +46,25 @@ function ExpenseTable() {
       <div className="tableContainer">
         <table className="infoTable">
           <thead>
-            <tr>
+            <tr className="tableTr">
               {head.map((item) => {
-                return <th key={item.id}>{item.name}</th>;
+                return (
+                  <th className="tableTh" key={item.id}>
+                    {item.name}
+                  </th>
+                );
               })}
             </tr>
           </thead>
           <tbody>
             {content.map((item) => {
               return (
-                <tr key={item.id}>
-                  <td>{item.description}</td>
-                  <td>{item.amount}</td>
-                  <td>{item.date}</td>
-                  <td>{item.category}</td>
-                  <td>
+                <tr className="tableTr" key={item.id}>
+                  <td className="tableTd">{item.description}</td>
+                  <td className="tableTd">{item.amount}</td>
+                  <td className="tableTd">{item.date}</td>
+                  <td className="tableTd">{item.category}</td>
+                  <td className="tableTd">
                     <div className="cellBtnDiv">
                       <button>Subir</button>
                       <button>Descargar</button>

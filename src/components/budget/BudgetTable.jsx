@@ -50,24 +50,28 @@ function BudgetTable() {
       <div className="tableContainer">
         <table className="infoTable">
           <thead>
-            <tr>
+            <tr className="tableTr">
               {head.map((item) => {
-                return <th key={item.id}>{item.name}</th>;
+                return (
+                  <th className="tableTh" key={item.id}>
+                    {item.name}
+                  </th>
+                );
               })}
             </tr>
           </thead>
           <tbody>
             {content.map((item) => {
               return (
-                <tr key={item.id}>
-                  <td>{item.category}</td>
-                  <td>{item.amount}</td>
-                  <td>{item.spent}</td>
-                  <td>{item.available}</td>
-                  <td>{item.overExpense}</td>
-                  <td>{item.lastUpdate}</td>
-                  <td>{item.state}</td>
-                  <td>
+                <tr className="tableTr" key={item.id}>
+                  <td className="tableTd">{item.category}</td>
+                  <td className="tableTd">{item.amount}</td>
+                  <td className="tableTd">{item.spent}</td>
+                  <td className="tableTd">{item.available}</td>
+                  <td className="tableTd">{item.overExpense}</td>
+                  <td className="tableTd">{item.lastUpdate}</td>
+                  <td className="tableTd">{item.state}</td>
+                  <td className="tableTd">
                     <div className="cellBtnDiv">
                       <EditBudget />
                       <DeleteBudget />

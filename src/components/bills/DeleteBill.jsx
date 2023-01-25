@@ -9,6 +9,10 @@ function DeleteBill() {
   function closeModal() {
     setIsOpen(false);
   }
+  function handleSubmit(e) {
+    e.preventDefault();
+    setIsOpen(false);
+  }
   return (
     <>
       <button onClick={openModal}>Eliminar</button>
@@ -17,7 +21,26 @@ function DeleteBill() {
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         closeModal={closeModal}
-      ></Modal>
+      >
+        <p className="modalP">
+          Confirme que desea eliminar esta cuenta, el historial también será
+          eliminado
+        </p>
+        <div className="outerBtnBox">
+          <div className="innerBtnBox">
+            <button
+              className="modalButton"
+              type="submit"
+              onClick={handleSubmit}
+            >
+              Aceptar
+            </button>
+            <button className="modalButton" onClick={closeModal}>
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </Modal>
     </>
   );
 }

@@ -113,7 +113,7 @@ function EditExpense() {
           </div>
           <div className="modalFlexDiv">
             <div className="modalHalfDiv">
-              <label htmlFor="amount">Cantidad</label>
+              <label htmlFor="amount">Cantidad de pagada</label>
               <input
                 type="text"
                 name="amount"
@@ -148,7 +148,6 @@ function EditExpense() {
             </div>
           </div>
           <label htmlFor="date">Fecha</label>
-          {data.amountError && <p className="error">{data.amountError}</p>}
           <div className="datePickerDiv">
             <Datetime
               name="date"

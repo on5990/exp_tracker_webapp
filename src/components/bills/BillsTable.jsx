@@ -55,25 +55,29 @@ function BillsTable() {
       <div className="tableContainer">
         <table className="infoTable">
           <thead>
-            <tr>
+            <tr className="tableTr">
               {head.map((item) => {
-                return <th key={item.id}>{item.name}</th>;
+                return (
+                  <th className="tableTh" key={item.id}>
+                    {item.name}
+                  </th>
+                );
               })}
             </tr>
           </thead>
           <tbody>
             {content.map((item) => {
               return (
-                <tr key={item.id}>
-                  <td>{item.description}</td>
-                  <td>{item.type}</td>
-                  <td>{item.amount}</td>
-                  <td>{item.firstPayment}</td>
-                  <td>{item.finalPayment}</td>
-                  <td>{item.lastPayment}</td>
-                  <td>{item.nextPayment}</td>
-                  <td>{item.state}</td>
-                  <td>
+                <tr className="tableTr" key={item.id}>
+                  <td className="tableTd">{item.description}</td>
+                  <td className="tableTd">{item.type}</td>
+                  <td className="tableTd">{item.amount}</td>
+                  <td className="tableTd">{item.firstPayment}</td>
+                  <td className="tableTd">{item.finalPayment}</td>
+                  <td className="tableTd">{item.lastPayment}</td>
+                  <td className="tableTd">{item.nextPayment}</td>
+                  <td className="tableTd">{item.state}</td>
+                  <td className="tableTd">
                     <div className="cellBtnDiv">
                       <PayBill />
                       <BillHistory />

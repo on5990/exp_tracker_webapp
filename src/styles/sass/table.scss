@@ -9,7 +9,7 @@
   border-spacing: 0;
   border-radius: 8px 8px 0px 0px;
   color: $light-1;
-  tr {
+  .tableTr {
     width: 100%;
     &:nth-child(even) {
       background-color: $dark-3;
@@ -18,7 +18,7 @@
       background-color: $dark-4;
     }
   }
-  th {
+  .tableTh {
     background-color: $blue-1;
     min-width: 10vw;
     height: 40px;
@@ -28,7 +28,7 @@
       min-width: 25vw;
     }
   }
-  td {
+  .tableTd {
     padding-left: 0.5vw;
     padding-right: 1vw;
     text-align: center;

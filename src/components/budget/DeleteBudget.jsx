@@ -6,8 +6,15 @@ function DeleteBudget() {
   function openModal() {
     setIsOpen(true);
   }
-  function closeModal() {
+  function closeModal(e) {
+    e.preventDefault();
     setIsOpen(false);
+  }
+  function handleSubmit(e) {
+    e.preventDefault();
+    const sendRequest = async () => {};
+    sendRequest();
+    closeModal(e);
   }
   return (
     <>
@@ -17,7 +24,23 @@ function DeleteBudget() {
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         closeModal={closeModal}
-      ></Modal>
+      >
+        <p className="modalP">Comfirme que desea eliminar este presupuesto</p>
+        <div className="outerBtnBox">
+          <div className="innerBtnBox">
+            <button
+              className="modalButton"
+              type="submit"
+              onClick={handleSubmit}
+            >
+              Aceptar
+            </button>
+            <button className="modalButton" onClick={closeModal}>
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </Modal>
     </>
   );
 }

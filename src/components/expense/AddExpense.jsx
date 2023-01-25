@@ -5,7 +5,6 @@ import Datetime from "react-datetime";
 import moment from "moment/moment";
 import "moment/locale/es";
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
-// import formatHelpers from "../../lib/frontendHelpers/formatHelpers.tsx";
 
 const categories = [
   { id: 1, label: "A", value: "A" },
@@ -147,7 +146,7 @@ function AddExpense() {
           </div>
           <div className="modalFlexDiv">
             <div className="modalHalfDiv">
-              <label htmlFor="amount">Cantidad</label>
+              <label htmlFor="amount">Cantidad de pagada</label>
               <input
                 type="text"
                 name="amount"
