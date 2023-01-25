@@ -1,18 +1,27 @@
 import React, { useState } from "react";
 import { filterTypes } from "./const/const";
 function FilterExpense() {
-  const [filterType, setFilterType] = useState("");
-  const [timeItem, setTimeItem] = useState(null);
+  const [filter, setFilter] = useState({ type: "", time: "" });
+  function handleChange(e) {
+    setFilter((prev) => {
+      return { ...prev, [e.target.name]: e.target.value };
+    });
+  }
   return (
     <>
       <div className="searchDiv">
         <div className="filterItem">
           <p>Filtrar</p>
-          <input />
+          <input
+            type="text"
+            name="time"
+            value={filter.time}
+            onChange={handleChange}
+          />
         </div>
         <div className="filterItem">
           <p>Tipo</p>
-          <select name="filterType" value={filterType}>
+          <select name="type" value={filter.type} onChange={handleChange}>
             <option value={""}>{""}</option>
             {filterTypes.map((item) => {
               return (
