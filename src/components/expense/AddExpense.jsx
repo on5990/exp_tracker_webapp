@@ -21,6 +21,15 @@ const categories = [
   { id: 11, label: "D", value: "D" },
   { id: 12, label: "D", value: "D" },
   { id: 13, label: "D", value: "D" },
+  { id: 14, label: "D", value: "D" },
+  { id: 15, label: "D", value: "D" },
+  { id: 16, label: "D", value: "D" },
+  { id: 17, label: "D", value: "D" },
+  { id: 18, label: "D", value: "D" },
+  { id: 19, label: "D", value: "D" },
+  { id: 20, label: "D", value: "D" },
+  { id: 21, label: "D", value: "D" },
+  { id: 22, label: "D", value: "D" },
 ];
 
 function AddExpense() {
@@ -89,6 +98,16 @@ function AddExpense() {
     }
     return pass;
   }
+  function handleInputChange(e) {
+    setData((prev) => {
+      return { ...prev, [e.target.name]: e.target.value };
+    });
+    if (errors[e.target.name] !== "") {
+      setErrors((prev) => {
+        return { ...prev, [e.target.name]: "" };
+      });
+    }
+  }
   function handleSubmit(e) {
     e.preventDefault();
     const pass = checkErrors();
@@ -100,24 +119,8 @@ function AddExpense() {
       closeModal(e);
     }
   }
-  function handleInputChange(e) {
-    setData((prev) => {
-      return { ...prev, [e.target.name]: e.target.value };
-    });
-    if (errors[e.target.name] !== "") {
-      setErrors((prev) => {
-        return { ...prev, [e.target.name]: "" };
-      });
-    }
-  }
   return (
     <>
-      {/* <select size="3">
-        <option value="option1">Option 1</option>
-        <option value="option2">Option 2</option>
-        <option value="option3">Option 3</option>
-        <option value="option4">Option 4</option>
-      </select> */}
       <button className="buttonActive" onClick={openModal}>
         + Agregar gasto
       </button>
@@ -179,7 +182,6 @@ function AddExpense() {
             </div>
           </div>
           <label htmlFor="date">Fecha</label>
-          {data.amountError && <p className="error">{data.amountError}</p>}
           <div className="datePickerDiv">
             <Datetime
               name="date"

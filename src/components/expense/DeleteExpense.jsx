@@ -9,6 +9,10 @@ function DeleteExpense() {
   function closeModal() {
     setIsOpen(false);
   }
+  function handleSubmit(e) {
+    e.preventDefault();
+    setIsOpen(false);
+  }
   return (
     <>
       <button onClick={openModal}>Eliminar</button>
@@ -21,6 +25,20 @@ function DeleteExpense() {
         <p className="modalP">
           Confirme que desea eliminar el registro de este gasto
         </p>
+        <div className="outerBtnBox">
+          <div className="innerBtnBox">
+            <button
+              className="modalButton"
+              type="submit"
+              onClick={handleSubmit}
+            >
+              Aceptar
+            </button>
+            <button className="modalButton" onClick={closeModal}>
+              Cancelar
+            </button>
+          </div>
+        </div>
       </Modal>
     </>
   );

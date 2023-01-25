@@ -38,16 +38,7 @@ function EditExpense() {
       };
     });
   }
-  function handleSubmit(e) {
-    e.preventDefault();
-    const pass = checkErrors();
-    const submitData = async () => {
-      console.log("PASS");
-    };
-    if (pass) {
-      submitData();
-    }
-  }
+
   function checkErrors() {
     let pass = true;
     if (data.description === "") {
@@ -83,6 +74,17 @@ function EditExpense() {
       setErrors((prev) => {
         return { ...prev, [e.target.name]: "" };
       });
+    }
+  }
+  function handleSubmit(e) {
+    e.preventDefault();
+    const pass = checkErrors();
+    const submitData = async () => {
+      console.log("PASS");
+    };
+    if (pass) {
+      submitData();
+      closeModal(e);
     }
   }
   return (
