@@ -407,11 +407,16 @@
   margin-left: 0.5vw;
   border-radius: 5px;
   margin-right: 0.5vw;
+  font-family: "Lusitana";
+  height: 20px;
 }
-.optionDiv .searchDiv .searchItem input {
-  width: 20vw;
+.optionDiv .searchDiv .filterItem select {
+  width: 10vw;
+  border-radius: 5px;
+  margin-left: 0.5vw;
+  height: 20px;
+  border: none;
 }
-
 .tableContainer {
   overflow-y: auto;
 }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-
+import { filterTypes } from "./const/const";
 function FilterExpense() {
-  const [timeType, setTimeType] = useState(null);
+  const [filterType, setFilterType] = useState("");
   const [timeItem, setTimeItem] = useState(null);
   return (
     <>
@@ -12,7 +12,16 @@ function FilterExpense() {
         </div>
         <div className="filterItem">
           <p>Tipo</p>
-          <input />
+          <select name="filterType" value={filterType}>
+            <option value={""}>{""}</option>
+            {filterTypes.map((item) => {
+              return (
+                <option key={item.id} value={item.value}>
+                  {item.label}
+                </option>
+              );
+            })}
+          </select>
         </div>
       </div>
     </>
