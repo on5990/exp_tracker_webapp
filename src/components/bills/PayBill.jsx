@@ -34,7 +34,6 @@ function PayBill() {
               <label htmlFor="sum">Cantidad de pagada</label>
               <input
                 type="text"
-                placeholder="Opcional"
                 name="sum"
                 maxLength={20}
                 onChange={handleInputChange}
@@ -50,7 +49,6 @@ function PayBill() {
               <label htmlFor="periods">Cantidad de cuotas</label>
               <input
                 type="text"
-                placeholder="Opcional"
                 name="periods"
                 maxLength={20}
                 onChange={handleInputChange}

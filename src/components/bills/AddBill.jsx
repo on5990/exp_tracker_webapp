@@ -107,7 +107,7 @@ function AddBill() {
               {errors.type && <p className="error">{errors.type}</p>}
             </div>
           </div>
-          <label htmlFor="date">Fecha del primer pago</label>
+          <label htmlFor="date">{`Fecha del primer pago (Opcional)`}</label>
           <div className="datePickerDiv">
             <Datetime
               name="date"

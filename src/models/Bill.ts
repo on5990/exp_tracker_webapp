@@ -13,6 +13,8 @@ const billSchema = new Schema(
     state: { type: String, required: true },
     // Not required if this bill has never been paid before
     lastPayment: { type: Date, required: false },
+    // Not required if the amount of payments is undefined
+    payments: { type: Number, required: false },
     _userId: {
       type: Schema.Types.ObjectId,
       required: [true, "userId is required"],

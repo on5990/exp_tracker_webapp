@@ -1,7 +1,7 @@
-const MONTHLY_UND = "Mensual-Indefinido";
-const YEARLY_UND = "Anual-Indefinido";
-const MONTHLY_FIXED = "Mensual-Fijo";
-const YEARLY_FIXED = "Anual-Fijo";
+const MONTHLY_UND = "Monthly-Undefined";
+const YEARLY_UND = "Yearly-Undefined";
+const MONTHLY_FIXED = "Monthly-Fixed";
+const YEARLY_FIXED = "Yearly-Fixed";
 
 const types = [
   {

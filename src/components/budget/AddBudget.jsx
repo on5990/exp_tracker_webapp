@@ -4,15 +4,15 @@ import { types } from "../bills/const/const";
 const categories = types;
 function AddBudget() {
   const [isOpen, setIsOpen] = useState(false);
-  const [data, setData] = useState({ amount: "", category: "" });
-  const [errors, setErrors] = useState({ amount: "aaa", category: "aaa" });
+  const [data, setData] = useState({ sum: "", category: "" });
+  const [errors, setErrors] = useState({ sum: "aaa", category: "aaa" });
   function openModal() {
     setIsOpen(true);
   }
   function closeModal(e) {
     e.preventDefault();
     setErrors((prev) => {
-      return { ...prev, amount: "", category: "" };
+      return { ...prev, sum: "", category: "" };
     });
     setIsOpen(false);
   }
@@ -48,17 +48,17 @@ function AddBudget() {
         closeModal={closeModal}
       >
         <form className="modalForm">
-          <label htmlFor="amount">Presupuesto</label>
+          <label htmlFor="sum">Presupuesto</label>
           <input
             type="text"
-            name="amount"
+            name="sum"
             maxLength={20}
             onChange={handleInputChange}
-            value={data.amount}
+            value={data.sum}
           />
           <div className="paragraphDiv">
-            {errors.amount && <p className="error">{errors.amount}</p>}
-            <p className="charCounter">{`${data.amount.length}/${20}`}</p>
+            {errors.sum && <p className="error">{errors.sum}</p>}
+            <p className="charCounter">{`${data.sum.length}/${20}`}</p>
           </div>
           <label htmlFor="category">Categoría</label>
           <select

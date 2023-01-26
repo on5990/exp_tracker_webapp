@@ -35,17 +35,15 @@ function AddExpense() {
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState({
     description: "",
-    amount: "",
-    date: new Date(),
+    sum: "",
+    spenAt: new Date(),
     category: "",
   });
   const [errors, setErrors] = useState({
     description: "",
-    amount: "",
+    sum: "",
     category: "",
   });
-  // console.log("DATE2", data);
-  console.log("AMOUNT", formatHelpers.validAmount(data.amount));
   function openModal() {
     setIsOpen(true);
   }
@@ -56,8 +54,8 @@ function AddExpense() {
       return {
         ...prev,
         description: "",
-        amount: "",
-        date: new Date(),
+        sum: "",
+        spentAt: new Date(),
         category: "",
       };
     });
@@ -65,7 +63,7 @@ function AddExpense() {
       return {
         ...prev,
         description: "",
-        amount: "",
+        sum: "",
         category: "",
       };
     });
@@ -78,15 +76,15 @@ function AddExpense() {
         return { ...prev, description: "Este campo es requerido" };
       });
     }
-    if (data.amount === "") {
+    if (data.sum === "") {
       pass = false;
       setErrors((prev) => {
-        return { ...prev, amount: "Este campo es requerido" };
+        return { ...prev, sum: "Este campo es requerido" };
       });
-    } else if (!formatHelpers.validAmount(data.amount)) {
+    } else if (!formatHelpers.validAmount(data.sum)) {
       pass = false;
       setErrors((prev) => {
-        return { ...prev, amount: "Debe ingresar un número positivo" };
+        return { ...prev, sum: "Debe ingresar un número positivo" };
       });
     }
     if (data.category === "") {
@@ -146,18 +144,18 @@ function AddExpense() {
           </div>
           <div className="modalFlexDiv">
             <div className="modalHalfDiv">
-              <label htmlFor="amount">Cantidad de pagada</label>
+              <label htmlFor="sum">Cantidad de pagada</label>
               <input
                 type="text"
-                name="amount"
+                name="sum"
                 maxLength={20}
                 onChange={handleInputChange}
-                value={data.amount}
+                value={data.sum}
               />
               <br />
               <div className="paragraphDiv">
-                {errors.amount && <p className="error">{errors.amount}</p>}
-                <p className="charCounter">{`${data.amount.length}/${20}`}</p>
+                {errors.sum && <p className="error">{errors.sum}</p>}
+                <p className="charCounter">{`${data.sum.length}/${20}`}</p>
               </div>
             </div>
             <div className="modalHalfDiv lastHalf">
@@ -180,17 +178,17 @@ function AddExpense() {
               {errors.category && <p className="error">{errors.category}</p>}
             </div>
           </div>
-          <label htmlFor="date">Fecha</label>
+          <label htmlFor="spentAt">Fecha</label>
           <div className="datePickerDiv">
             <Datetime
-              name="date"
+              name="spentAt"
               onChange={(date) =>
                 setData({
                   ...data,
-                  date: new Date(date._d),
+                  spentAt: new Date(date._d),
                 })
               }
-              value={data.date}
+              value={data.spentAt}
             />
           </div>
           <div className="outerBtnBox">
