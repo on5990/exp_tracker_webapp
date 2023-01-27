@@ -12,5 +12,8 @@ async function getById(id: mongoose.Types.ObjectId) {
   return await userRepository.getById(id);
 }
 // PENDIENTE
-async function update(data: any) {}
+async function update(id: mongoose.Types.ObjectId, data: any) {
+  const res = await userRepository.update(id, data);
+  return res;
+}
 export default { create, getByEmail, getById, update };

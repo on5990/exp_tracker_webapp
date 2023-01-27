@@ -23,7 +23,6 @@ async function update(id: mongoose.Types.ObjectId, data: any) {
   try {
     const res = await Bill.findByIdAndUpdate(id, { ...data });
     return res;
-    return res;
   } catch (error) {
     console.log(error);
   }
