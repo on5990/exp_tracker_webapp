@@ -1,30 +1,9 @@
-import Budget from "@/models/Budget";
-import mongoose from "mongoose";
-// FIND BUDGETS
-async function findBudgets(userId: mongoose.Types.ObjectId) {
-  try {
-  } catch (error) {
-    console.log(error);
-  }
-}
-// CREATE BUDGET
-async function createBudget(data: any) {
-  try {
-  } catch (error) {
-    console.log(error);
-  }
-}
-// UPDATE BUDGET
-async function updateBudget(data: any) {
-  try {
-  } catch (error) {
-    console.log(error);
-  }
-}
-// DELETE BUDGET
-async function deleteBudget(id: mongoose.Types.ObjectId) {
-  try {
-  } catch (error) {
-    console.log(error);
-  }
-}
+// PENDIENTE
+async function findBudgets() {}
+// PENDIENTE
+async function createBudget() {}
+// PENDIENTE
+async function updateBudget() {}
+// PENDIENTE
+async function deleteBudget() {}
+export default { findBudgets, createBudget, updateBudget, deleteBudget };

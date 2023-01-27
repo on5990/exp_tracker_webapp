@@ -1,20 +1,16 @@
-import User from "@/models/User";
+import userRepository from "@/repositories/user.repository";
+import mongoose from "mongoose";
 
 async function createUser(email: string, password: string) {
-  try {
-    return await User.create({
-      email,
-      password,
-    });
-  } catch (error) {
-    console.log(error);
-  }
+  const user = await userRepository.createUser(email, password);
+  return user;
 }
-async function findUser(email: string) {
-  try {
-    return await User.findOne({ email }).exec();
-  } catch (error) {
-    console.log(error);
-  }
+async function findUserByEmail(email: string) {
+  return await userRepository.findUserByEmail(email);
 }
-export default { createUser, findUser };
+async function findUserById(id: mongoose.Types.ObjectId) {
+  return await userRepository.findUserById(id);
+}
+// PENDIENTE
+async function updateUser(data: any) {}
+export default { createUser, findUserByEmail, findUserById, updateUser };

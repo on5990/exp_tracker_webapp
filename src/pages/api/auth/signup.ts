@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import dbConnect from "@/lib/backendHelpers/dbConnect";
 import User from "@/models/User";
 import { decryptData } from "@/lib/backendHelpers/decryptData";
-import authService from "@/services/auth.service";
+import authService from "@/repositories/user.repository";
 import authValidation from "@/lib/validations/auth.validation";
 
 async function signup(req: NextApiRequest, res: NextApiResponse) {
@@ -15,7 +15,7 @@ async function signup(req: NextApiRequest, res: NextApiResponse) {
         const { encryptedData } = body;
         await dbConnect();
         const jsonData = decryptData(encryptedData);
-        const userExist = await authService.findUser(jsonData.email);
+        const userExist = await authService.findUserByEmail(jsonData.email);
         if (userExist) {
           res.status(409);
           return res.json({ success: false, error: "Usuario ya existe" });

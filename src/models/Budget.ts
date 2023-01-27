@@ -3,6 +3,7 @@ import { Schema, model, models } from "mongoose";
 const budgetSchema = new Schema(
   {
     sum: { type: Number, required: [true, "sum is required"] },
+    usedAmount: { type: Number, required: [true, "usedAmount is required"] },
     state: { type: String, required: [true, "state is required"] },
     _categoryId: {
       type: Schema.Types.ObjectId,

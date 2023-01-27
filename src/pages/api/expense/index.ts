@@ -1,19 +1,31 @@
 import expenseValidation from "@/lib/validations/expense.validation";
+import authService from "@/repositories/user.repository";
+import mongoose from "mongoose";
 import { NextApiRequest, NextApiResponse } from "next";
 
 async function index(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const { method, body } = req;
+    const { method, body, headers } = req;
+    const payload = headers.payload && JSON.parse(headers.payload as string);
+    const userId = payload.id;
     switch (method) {
       case "GET":
-        // const {headers} = req;
-        // const payload =
-        //   headers.payload && JSON.parse(headers.payload as string);
-        // console.log("PAYLOAD", payload);
+        // GET INFO OF THE USER
+        const user = await authService.findUserById(
+          new mongoose.Types.ObjectId(userId)
+        );
+        // GET EXPENSES BY USER_ID
+        // GET CATEGORIES BY USER_ID
+        // CALC MONTHLY, WEEKLY, YEARLY TOTALS
+        // CALC TOTAL BY CATEGORY
+        // CALC TOTAL EXCESS BY GETTING THE BUDGET INFO
         res.status(200);
         return res.json({ success: true, data: "GET EXPENSE" });
       case "POST":
         await expenseValidation.addSchema.validateAsync(body);
+        // CREATE EXPENSE
+        // UPDATE BUDGET
+        // GET UPDATED INFO ABOUT EXPENSES
         res.status(200);
         return res.json({ success: true, data: "POST EXPENSE" });
       default:
