@@ -1,43 +1,40 @@
 import Bill from "@/models/Bill";
 import mongoose from "mongoose";
 // FIND BILLS
-// PENDIENTE
-async function findBills(userId: mongoose.Types.ObjectId) {
+async function getAll(userId: mongoose.Types.ObjectId) {
   try {
+    const bills = await Bill.find({ _userId: userId }).exec();
+    return bills;
   } catch (error) {
     console.log(error);
   }
 }
 // CREATE BILL
-// PENDIENTE
-async function createBill(data: any) {
+async function create(data: any) {
   try {
+    const bill = await Bill.create({ ...data });
+    return bill;
   } catch (error) {
     console.log(error);
   }
 }
 // UPDATE BILL
-// PENDIENTE
-async function updateBill(data: any) {
+async function update(id: mongoose.Types.ObjectId, data: any) {
   try {
+    const res = await Bill.findByIdAndUpdate(id, { ...data });
+    return res;
+    return res;
   } catch (error) {
     console.log(error);
   }
 }
 // DELETE BILL
-// PENDIENTE
-async function deleteBill(id: mongoose.Types.ObjectId) {
+async function remove(id: mongoose.Types.ObjectId) {
   try {
+    const res = await Bill.findByIdAndRemove(id);
+    return res;
   } catch (error) {
     console.log(error);
   }
 }
-// PAY BILL
-// PENDIENTE
-async function payBill(id: mongoose.Types.ObjectId) {
-  try {
-  } catch (error) {
-    console.log(error);
-  }
-}
-export default { findBills, createBill, updateBill, deleteBill, payBill };
+export default { getAll, create, update, remove };

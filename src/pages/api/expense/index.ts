@@ -1,5 +1,5 @@
 import expenseValidation from "@/lib/validations/expense.validation";
-import authService from "@/repositories/user.repository";
+import userService from "@/services/user.service";
 import mongoose from "mongoose";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -11,7 +11,7 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
     switch (method) {
       case "GET":
         // GET INFO OF THE USER
-        const user = await authService.findUserById(
+        const user = await userService.getById(
           new mongoose.Types.ObjectId(userId)
         );
         // GET EXPENSES BY USER_ID
@@ -24,6 +24,13 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
       case "POST":
         await expenseValidation.addSchema.validateAsync(body);
         // CREATE EXPENSE
+        const { _categoryId } = body;
+        const includeCategory = false;
+        if (_categoryId) {
+          // FIND CATEGORY
+          // IF NOT FOUND RES 404
+        }
+
         // UPDATE BUDGET
         // GET UPDATED INFO ABOUT EXPENSES
         res.status(200);

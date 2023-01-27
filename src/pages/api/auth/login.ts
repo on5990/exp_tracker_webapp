@@ -2,7 +2,7 @@ import dbConnect from "@/lib/backendHelpers/dbConnect";
 import bcrypt from "bcrypt";
 import { NextApiRequest, NextApiResponse } from "next";
 import { decryptData } from "@/lib/backendHelpers/decryptData";
-import authService from "@/repositories/user.repository";
+import userService from "@/services/user.service";
 import { setCookie } from "cookies-next";
 import JWT from "@/lib/backendHelpers/JWT";
 import authValidation from "@/lib/validations/auth.validation";
@@ -19,7 +19,7 @@ async function login(req: NextApiRequest, res: NextApiResponse) {
         const { encryptedData } = body;
         const jsonData = decryptData(encryptedData);
         const { email, password } = jsonData;
-        const user = await authService.findUserByEmail(email);
+        const user = await userService.getByEmail(email);
         if (!user) {
           res.status(404);
           return res.json({ success: false, error: "User not found" });

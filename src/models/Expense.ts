@@ -16,6 +16,10 @@ const expenseSchema = new Schema(
       default: new Date(),
       required: [true, "spentAt is required"],
     },
+    _userId: {
+      type: Schema.Types.ObjectId,
+      required: [true, "userId is required"],
+    },
     // Not required if the expense is not associated to a bill
     _billId: { type: Schema.Types.ObjectId, required: false },
     // Not required to avoid problems if the category is deleted

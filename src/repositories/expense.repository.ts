@@ -1,35 +1,39 @@
 import Expense from "@/models/Expense";
 import mongoose from "mongoose";
 // FIND EXPENSES
-// PENDIENTE
-async function findExpenses(userId: mongoose.Types.ObjectId) {
+async function getAll(userId: mongoose.Types.ObjectId) {
   try {
+    const expenses = await Expense.find({ _userId: userId }).exec();
+    return expenses;
   } catch (error) {
     console.log(error);
   }
 }
 // CREATE EXPENSE
-// PENDIENTE
-async function createExpense(data: any) {
+async function create(data: any) {
   try {
+    const expense = await Expense.create({ ...data });
+    return expense;
   } catch (error) {
     console.log(error);
   }
 }
 // UPDATE EXPENSE
-// PENDIENTE
-async function updateExpense(data: any) {
+async function update(id: mongoose.Types.ObjectId, data: any) {
   try {
+    const res = await Expense.findByIdAndUpdate(id, { ...data });
+    return res;
   } catch (error) {
     console.log(error);
   }
 }
 // DELETE EXPENSE
-// PENDIENTE
-async function deleteExpense(id: mongoose.Types.ObjectId) {
+async function remove(id: mongoose.Types.ObjectId) {
   try {
+    const res = await Expense.findByIdAndRemove(id);
+    return res;
   } catch (error) {
     console.log(error);
   }
 }
-export default { findExpenses, createExpense, updateExpense, deleteExpense };
+export default { getAll, create, update, remove };

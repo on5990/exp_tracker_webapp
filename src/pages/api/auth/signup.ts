@@ -1,9 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import bcrypt from "bcrypt";
 import dbConnect from "@/lib/backendHelpers/dbConnect";
-import User from "@/models/User";
 import { decryptData } from "@/lib/backendHelpers/decryptData";
-import authService from "@/repositories/user.repository";
+import userService from "@/services/user.service";
 import authValidation from "@/lib/validations/auth.validation";
 
 async function signup(req: NextApiRequest, res: NextApiResponse) {
@@ -15,13 +14,13 @@ async function signup(req: NextApiRequest, res: NextApiResponse) {
         const { encryptedData } = body;
         await dbConnect();
         const jsonData = decryptData(encryptedData);
-        const userExist = await authService.findUserByEmail(jsonData.email);
+        const userExist = await userService.getByEmail(jsonData.email);
         if (userExist) {
           res.status(409);
           return res.json({ success: false, error: "Usuario ya existe" });
         }
         const hashedPass = await bcrypt.hash(jsonData.password, 10);
-        const user = await authService.createUser(jsonData.email, hashedPass);
+        const user = await userService.create(jsonData.email, hashedPass);
         res.status(200);
         return res.json({
           success: true,
