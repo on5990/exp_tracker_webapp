@@ -2,7 +2,6 @@ import expenseValidation from "@/lib/validations/expense.validation";
 import categoryService from "@/services/category.service";
 import expenseService from "@/services/expense.service";
 import userService from "@/services/user.service";
-import mongoose from "mongoose";
 import { NextApiRequest, NextApiResponse } from "next";
 
 interface Data {
@@ -21,20 +20,27 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
     switch (method) {
       case "GET":
         // GET INFO OF THE USER
-        const user = await userService.getById(
-          new mongoose.Types.ObjectId(userId)
-        );
+        const user = await userService.getById(userId);
         // GET EXPENSES BY USER_ID
         const expenses = await expenseService.getAll(userId);
         // GET CATEGORIES BY USER_ID
+        // const categories = await categoryService.getAll(userId);
         // CALC MONTHLY, WEEKLY, YEARLY TOTALS
         // CALC TOTAL BY CATEGORY
         // CALC TOTAL EXCESS BY GETTING THE BUDGET INFO
+        // PREPARE OUTPUT
+        const output = {
+          expenses,
+          // categories,
+          weeklyAvg: user.weeklyAvg,
+          monthlyAvg: user.monthlyAvg,
+          yearlyAvg: user.yearlyAvg,
+        };
         res.status(200);
-        return res.json({ success: true, data: { expenses } });
+        return res.json({ success: true, data: output });
       case "POST":
         await expenseValidation.addSchema.validateAsync(body);
-        // CREATE EXPENSE
+        // 1) CREATE EXPENSE
         const { description, sum, spentAt, _categoryId } = body;
         let data: Data = {
           description,
@@ -50,8 +56,8 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
           data = { ...data, _categoryId };
         }
         const expense = await expenseService.create(data);
-        // UPDATE BUDGET
-        // GET UPDATED INFO ABOUT EXPENSES
+        // 2)  UPDATE BUDGET
+        // 3) GET UPDATED INFO ABOUT EXPENSES
         res.status(200);
         return res.json({ success: true, data: { expense } });
       default:

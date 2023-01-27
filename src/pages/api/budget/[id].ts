@@ -4,7 +4,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { method, body, query } = req;
-    const id = query.id || "";
+    const id = query.id;
     const validId = mongoose.Types.ObjectId.isValid(id as string);
     if (!validId) {
       res.status(400);

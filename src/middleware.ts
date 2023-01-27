@@ -8,9 +8,9 @@ export async function middleware(request: NextRequest) {
   const validToken = await JWT.verifyToken(token);
   // const validToken = token ? await JWT.verifyToken(token) : false;
 
-  console.log("PATHNAME", request.nextUrl.pathname);
-  console.log("TOKEN", token);
-  console.log("VERIFICATION", validToken);
+  // console.log("PATHNAME", request.nextUrl.pathname);
+  // console.log("TOKEN", token);
+  // console.log("VERIFICATION", validToken);
   if (request.nextUrl.pathname === "/api/auth/logout" && !validToken) {
     return NextResponse.redirect(
       new URL("/api/auth/unauthorized", request.url)

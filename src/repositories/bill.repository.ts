@@ -1,7 +1,6 @@
 import Bill from "@/models/Bill";
-import mongoose from "mongoose";
 // FIND BILLS
-async function getAll(userId: mongoose.Types.ObjectId) {
+async function getAll(userId: string) {
   try {
     const bills = await Bill.find({ _userId: userId }).exec();
     return bills;
@@ -19,7 +18,7 @@ async function create(data: any) {
   }
 }
 // UPDATE BILL
-async function update(id: mongoose.Types.ObjectId, data: any) {
+async function update(id: string, data: any) {
   try {
     const res = await Bill.findByIdAndUpdate(id, { ...data });
     return res;
@@ -28,7 +27,7 @@ async function update(id: mongoose.Types.ObjectId, data: any) {
   }
 }
 // DELETE BILL
-async function remove(id: mongoose.Types.ObjectId) {
+async function remove(id: string) {
   try {
     const res = await Bill.findByIdAndRemove(id);
     return res;

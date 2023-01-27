@@ -1,8 +1,12 @@
 import expenseRepository from "@/repositories/expense.repository";
-import mongoose from "mongoose";
+
+async function getOne(id: string) {
+  const expense = await expenseRepository.getOne(id);
+  return expense;
+}
 
 // PENDIENTE
-async function getAll(userId: mongoose.Types.ObjectId) {
+async function getAll(userId: string) {
   const expenses = await expenseRepository.getAll(userId);
   return expenses;
 }
@@ -12,13 +16,13 @@ async function create(data: any) {
   return expense;
 }
 // PENDIENTE
-async function update(id: mongoose.Types.ObjectId, data: any) {
+async function update(id: string, data: any) {
   const res = await expenseRepository.update(id, data);
   return res;
 }
 // PENDIENTE
-async function remove(id: mongoose.Types.ObjectId) {
+async function remove(id: string) {
   const res = await expenseRepository.remove(id);
   return res;
 }
-export default { getAll, create, update, remove };
+export default { getAll, getOne, create, update, remove };

@@ -1,8 +1,7 @@
 import Category from "@/models/Category";
-import mongoose from "mongoose";
 
 // FIND CATEGORY
-async function getOne(id: mongoose.Types.ObjectId) {
+async function getOne(id: string) {
   try {
     const category = await Category.findById(id).exec();
     return category;
@@ -11,7 +10,7 @@ async function getOne(id: mongoose.Types.ObjectId) {
   }
 }
 // FIND CATEGORIES
-async function getAll(userId: mongoose.Types.ObjectId) {
+async function getAll(userId: string) {
   try {
     const categories = await Category.find({ _userId: userId }).exec();
     return categories;
@@ -29,7 +28,7 @@ async function create(data: any) {
   }
 }
 // DELETE CATEGORY
-async function remove(id: mongoose.Types.ObjectId) {
+async function remove(id: string) {
   try {
     const res = await Category.findByIdAndRemove(id);
     return res;

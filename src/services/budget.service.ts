@@ -1,8 +1,7 @@
 import budgetRepository from "@/repositories/budget.repository";
-import mongoose from "mongoose";
 
 // PENDIENTE
-async function getAll(userId: mongoose.Types.ObjectId) {
+async function getAll(userId: string) {
   const budgets = await budgetRepository.getAll(userId);
   return budgets;
 }
@@ -12,12 +11,12 @@ async function create(data: any) {
   return budget;
 }
 // PENDIENTE
-async function update(id: mongoose.Types.ObjectId, data: any) {
+async function update(id: string, data: any) {
   const res = await budgetRepository.update(id, data);
   return res;
 }
 // PENDIENTE
-async function remove(id: mongoose.Types.ObjectId) {
+async function remove(id: string) {
   const res = await budgetRepository.remove(id);
   return res;
 }

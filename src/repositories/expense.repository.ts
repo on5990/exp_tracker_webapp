@@ -1,7 +1,14 @@
 import Expense from "@/models/Expense";
-import mongoose from "mongoose";
+async function getOne(id: string) {
+  try {
+    const expense = await Expense.findById(id).exec();
+    return expense;
+  } catch (error) {
+    console.log(error);
+  }
+}
 // FIND EXPENSES
-async function getAll(userId: mongoose.Types.ObjectId) {
+async function getAll(userId: string) {
   try {
     const expenses = await Expense.find({ _userId: userId }).exec();
     return expenses;
@@ -19,7 +26,7 @@ async function create(data: any) {
   }
 }
 // UPDATE EXPENSE
-async function update(id: mongoose.Types.ObjectId, data: any) {
+async function update(id: string, data: any) {
   try {
     const res = await Expense.findByIdAndUpdate(id, { ...data });
     return res;
@@ -28,7 +35,7 @@ async function update(id: mongoose.Types.ObjectId, data: any) {
   }
 }
 // DELETE EXPENSE
-async function remove(id: mongoose.Types.ObjectId) {
+async function remove(id: string) {
   try {
     const res = await Expense.findByIdAndRemove(id);
     return res;
@@ -36,4 +43,4 @@ async function remove(id: mongoose.Types.ObjectId) {
     console.log(error);
   }
 }
-export default { getAll, create, update, remove };
+export default { getAll, getOne, create, update, remove };

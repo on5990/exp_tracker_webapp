@@ -1,7 +1,6 @@
 import Budget from "@/models/Budget";
-import mongoose from "mongoose";
 // FIND BUDGETS
-async function getAll(userId: mongoose.Types.ObjectId) {
+async function getAll(userId: string) {
   try {
     const budgets = await Budget.find({ _userId: userId }).exec();
     return budgets;
@@ -19,7 +18,7 @@ async function create(data: any) {
   }
 }
 // UPDATE BUDGET
-async function update(id: mongoose.Types.ObjectId, data: any) {
+async function update(id: string, data: any) {
   try {
     const res = await Budget.findByIdAndUpdate(id, { ...data });
     return res;
@@ -28,7 +27,7 @@ async function update(id: mongoose.Types.ObjectId, data: any) {
   }
 }
 // DELETE BUDGET
-async function remove(id: mongoose.Types.ObjectId) {
+async function remove(id: string) {
   try {
     const res = await Budget.findByIdAndRemove(id);
     return res;
