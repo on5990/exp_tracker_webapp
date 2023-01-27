@@ -3,18 +3,20 @@ import bcrypt from "bcrypt";
 import { NextApiRequest, NextApiResponse } from "next";
 import { decryptData } from "@/lib/backendHelpers/decryptData";
 import authService from "@/services/auth.service";
-import { setCookie, getCookie } from "cookies-next";
+import { setCookie } from "cookies-next";
 import JWT from "@/lib/backendHelpers/JWT";
+import authValidation from "@/lib/validations/auth.validation";
 
 const cookieAge = 2592000;
 
 async function login(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { method, body } = req;
-    const { encryptedData } = body;
     await dbConnect();
     switch (method) {
       case "POST":
+        await authValidation.authSchema.validateAsync(body);
+        const { encryptedData } = body;
         const jsonData = decryptData(encryptedData);
         const { email, password } = jsonData;
         const user = await authService.findUser(email);
@@ -32,14 +34,17 @@ async function login(req: NextApiRequest, res: NextApiResponse) {
             req,
             res,
             maxAge: cookieAge,
-            httpOnly: true,
+            httpOnly: false,
           });
           res.status(200);
-          res.json({ success: true, data: { email } });
+          return res.json({
+            success: true,
+            data: { msg: `${user.email} logged in` },
+          });
         }
       default:
         res.status(404);
-        res.json({ success: false, error: "Route not found" });
+        return res.json({ success: false, error: "Route not found" });
     }
   } catch (error) {
     res.status(400);

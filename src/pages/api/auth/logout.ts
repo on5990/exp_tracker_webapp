@@ -8,7 +8,7 @@ function logout(req: NextApiRequest, res: NextApiResponse) {
       case "DELETE":
         deleteCookie("access-token", { req, res });
         res.status(200);
-        return res.json({ success: true, msg: "Sesión terminada" });
+        return res.json({ success: true, data: { msg: "Sesión terminada" } });
       default:
         res.status(404);
         return res.json({ success: false, error: "Route not found" });

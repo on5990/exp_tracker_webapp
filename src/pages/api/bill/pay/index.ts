@@ -1,9 +1,11 @@
+import billValidation from "@/lib/validations/bill.validation";
 import { NextApiRequest, NextApiResponse } from "next";
-async function pay(req: NextApiRequest, res: NextApiResponse) {
+async function index(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const { method } = req;
+    const { method, body } = req;
     switch (method) {
       case "POST":
+        await billValidation.paySchema.validateAsync(body);
         res.status(200);
         return res.json({ success: true, data: "PAY BILL" });
       default:
@@ -15,4 +17,4 @@ async function pay(req: NextApiRequest, res: NextApiResponse) {
     return res.json({ success: false, error });
   }
 }
-export default pay;
+export default index;

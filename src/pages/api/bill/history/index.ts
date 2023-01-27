@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-async function history(req: NextApiRequest, res: NextApiResponse) {
+async function index(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { method } = req;
     switch (method) {
@@ -15,4 +15,4 @@ async function history(req: NextApiRequest, res: NextApiResponse) {
     return res.json({ success: false, error });
   }
 }
-export default history;
+export default index;

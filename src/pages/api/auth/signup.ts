@@ -4,12 +4,14 @@ import dbConnect from "@/lib/backendHelpers/dbConnect";
 import User from "@/models/User";
 import { decryptData } from "@/lib/backendHelpers/decryptData";
 import authService from "@/services/auth.service";
+import authValidation from "@/lib/validations/auth.validation";
 
 async function signup(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { method, body } = req;
     switch (method) {
       case "POST":
+        await authValidation.authSchema.validateAsync(body);
         const { encryptedData } = body;
         await dbConnect();
         const jsonData = decryptData(encryptedData);
@@ -21,7 +23,10 @@ async function signup(req: NextApiRequest, res: NextApiResponse) {
         const hashedPass = await bcrypt.hash(jsonData.password, 10);
         const user = await authService.createUser(jsonData.email, hashedPass);
         res.status(200);
-        return res.json({ success: true, data: { email: user.email } });
+        return res.json({
+          success: true,
+          data: { msg: `User crated: ${user.email}` },
+        });
       default:
         res.status(404);
         return res.json({ success: false, error: "Route not found" });

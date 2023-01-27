@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-async function chart(req: NextApiRequest, res: NextApiResponse) {
+async function index(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { method } = req;
     switch (method) {
@@ -15,4 +15,4 @@ async function chart(req: NextApiRequest, res: NextApiResponse) {
     return res.json({ success: false, error });
   }
 }
-export default chart;
+export default index;

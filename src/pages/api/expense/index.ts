@@ -1,8 +1,9 @@
+import expenseValidation from "@/lib/validations/expense.validation";
 import { NextApiRequest, NextApiResponse } from "next";
 
 async function index(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const { method } = req;
+    const { method, body } = req;
     switch (method) {
       case "GET":
         // const {headers} = req;
@@ -12,14 +13,9 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
         res.status(200);
         return res.json({ success: true, data: "GET EXPENSE" });
       case "POST":
+        await expenseValidation.addSchema.validateAsync(body);
         res.status(200);
         return res.json({ success: true, data: "POST EXPENSE" });
-      case "PUT":
-        res.status(200);
-        return res.json({ success: true, data: "PUT EXPENSE" });
-      case "DELETE":
-        res.status(200);
-        return res.json({ success: true, data: "DELETE EXPENSE" });
       default:
         res.status(404);
         return res.json({ success: false, error: "Route not found" });
