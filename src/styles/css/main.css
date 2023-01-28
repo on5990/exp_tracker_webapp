@@ -255,16 +255,30 @@
 }
 
 .category {
+  cursor: pointer;
   background-color: #303333;
   width: auto;
   height: 30px;
   border-radius: 5px;
   margin-right: 0.5vw;
   margin-top: 1vh;
+  color: #eeeeee;
+  border: none;
 }
 .category p {
   margin: 0;
+  font-family: "Lusitana";
   padding: 3px;
+}
+.category:hover {
+  transition: background-color 1s;
+  transition: color 0.5s;
+  background-color: #687271;
+  box-shadow: 0 0 4px #2a9f97;
+}
+
+.activeCategory {
+  background-color: #03919b;
 }
 
 .newCategory {

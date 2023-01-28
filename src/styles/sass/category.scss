@@ -1,14 +1,28 @@
 .category {
+  cursor: pointer;
   background-color: $dark-2;
   width: auto;
   height: 30px;
   border-radius: 5px;
   margin-right: 0.5vw;
   margin-top: 1vh;
+  color: $light-1;
+  border: none;
   p {
     margin: 0;
+    font-family: $font-1;
     padding: 3px;
   }
+  &:hover {
+    transition: background-color 1s;
+    transition: color 0.5s;
+    background-color: $dark-4;
+    box-shadow: 0 0 4px $green-1;
+    // color: $dark-2;
+  }
+}
+.activeCategory {
+  background-color: $blue-1;
 }
 .newCategory {
   background-color: $green-1;

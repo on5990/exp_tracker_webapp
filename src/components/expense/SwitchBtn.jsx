@@ -2,13 +2,19 @@ import React from "react";
 import { useState } from "react";
 import { CATEGORY, SPECIFIC } from "../../global/constants";
 
-function SwitchBtn() {
+function SwitchBtn({ setParameters }) {
   const [activeBtn, setActiveBtn] = useState(SPECIFIC);
   function setSpecific() {
     setActiveBtn(SPECIFIC);
+    setParameters((prev) => {
+      return { ...prev, showType: SPECIFIC };
+    });
   }
   function setCategory() {
     setActiveBtn(CATEGORY);
+    setParameters((prev) => {
+      return { ...prev, showType: CATEGORY };
+    });
   }
   return (
     <>
