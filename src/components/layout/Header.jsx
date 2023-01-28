@@ -1,8 +1,16 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
+
+const sections = [
+  { id: "1", name: "Gastos", url: "/dashboard" },
+  { id: "2", name: "Cuentas", url: "/dashboard/bills" },
+  { id: "3", name: "Presupuesto", url: "/dashboard/budgets" },
+  { id: "4", name: "Gráficos", url: "/dashboard/charts" },
+];
 
 function Header() {
+  const [section, setSection] = useState("");
   const router = useRouter();
   function logout() {
     const closeSession = async () => {
@@ -16,13 +24,31 @@ function Header() {
     };
     closeSession();
   }
+  function handleClick(e) {
+    setSection(e.target.value);
+  }
+  console.log("SECTION", section);
   return (
     <>
       <header className="navHeader">
         <nav className="navbar">
           <ul className="navUl">
-            <li>
-              <Link className="navLink" href="/dashboard">
+            {sections.map((item) => {
+              return (
+                <li key={item.id} value={item.id} onClick={handleClick}>
+                  <Link
+                    className={`navLink ${
+                      section === item.id ? "activeLink" : ""
+                    }`}
+                    href={item.url}
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              );
+            })}
+            {/* <li>
+              <Link className="navLink"  href="/dashboard">
                 Gastos
               </Link>
             </li>
@@ -40,7 +66,7 @@ function Header() {
               <Link className="navLink" href="/dashboard/charts">
                 Gráficos
               </Link>
-            </li>
+            </li> */}
           </ul>
         </nav>
         <div className="userSection">

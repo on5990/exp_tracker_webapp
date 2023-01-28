@@ -1,3 +1,5 @@
+import { nanoid } from "nanoid";
+import { MONTHS } from "@/global/constants";
 /**
  * Check if the email has a valid format
  * @param {string} email
@@ -45,11 +47,49 @@ function formatTime(date: Date | any): string {
     return "";
   }
 }
-
+function generateYearArray(): Array<any> {
+  const startYear = 2022;
+  const years = Array.from({ length: 29 }, (_, i) =>
+    (startYear + i).toString()
+  );
+  const yearsArray = years.map((year) => {
+    return { id: year, value: year, label: year };
+  });
+  return yearsArray;
+}
+// function generateMonthArray(): Array<any> {
+//   const startYear = 2022;
+//   const length = 348;
+//   const months = Array.from(
+//     { length },
+//     (_, i) => `${i / 11} ${startYear + Math.floor(i / 11)}`
+//   );
+//   return months;
+// }
+function generateMonthArray(): Array<any> {
+  const startYear = 2022;
+  const length = 348;
+  const months = Array.from({ length }, (_, i) => {
+    return { year: startYear + Math.floor(i / 12), month: i % 12 };
+  });
+  const monthArray = months.map((item) => {
+    const month = MONTHS[item.month];
+    const monthNumber = item.month;
+    const year = item.year;
+    return {
+      id: nanoid(),
+      label: `${month}\t${year}`,
+      value: `${monthNumber},${year}`,
+    };
+  });
+  return monthArray;
+}
 export default {
   isEmail,
   isSafe,
   formatTime,
   validAmount,
   isPositiveInteger,
+  generateYearArray,
+  generateMonthArray,
 };

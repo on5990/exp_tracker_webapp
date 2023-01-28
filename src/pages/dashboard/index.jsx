@@ -22,7 +22,7 @@ function Dashboard() {
     // Search by month or year
     timeType: "",
     // Selected time expression
-    selectDate: "",
+    time: "",
     // List of expenses or list of totals by category
     showType: "",
   });
@@ -45,7 +45,6 @@ function Dashboard() {
             <li>Mes actual:</li>
             <li>Año actual:</li>
             <li>Exceso:</li>
-            <li>Gasto semanal promedio:</li>
             <li>Gasto mensual promedio:</li>
             <li>Gasto anual promedio:</li>
           </ul>
@@ -74,7 +73,10 @@ function Dashboard() {
         <div className="optionDiv">
           <AddExpense />
           <SwitchBtn setParameters={setParameters} />
-          <FilterExpense />
+          <FilterExpense
+            parameters={parameters}
+            setParameters={setParameters}
+          />
         </div>
         <ExpenseTable />
       </MainLayout>

@@ -49,6 +49,10 @@
           }
         }
       }
+      .activeLink {
+        font-weight: bold;
+        color: $dark-2;
+      }
     }
   }
   .userSection {
