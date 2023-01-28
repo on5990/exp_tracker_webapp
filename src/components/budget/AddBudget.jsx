@@ -1,20 +1,25 @@
 import React, { useState } from "react";
 import Modal from "../modal/Modal";
 import { types } from "../bills/const/const";
+import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
+
 const categories = types;
 function AddBudget() {
   const [isOpen, setIsOpen] = useState(false);
-  const [data, setData] = useState({ sum: "", category: "" });
-  const [errors, setErrors] = useState({ sum: "aaa", category: "aaa" });
+  const [data, setData] = useState({ sum: "", _categoryId: "" });
+  const [errors, setErrors] = useState({ sum: "", _categoryId: "" });
   function openModal() {
     setIsOpen(true);
   }
   function closeModal(e) {
     e.preventDefault();
-    setErrors((prev) => {
-      return { ...prev, sum: "", category: "" };
-    });
     setIsOpen(false);
+    setData((prev) => {
+      return { ...prev, sum: "", _categoryId: "" };
+    });
+    setErrors((prev) => {
+      return { ...prev, sum: "", _categoryId: "" };
+    });
   }
   function handleInputChange(e) {
     setData((prev) => {
@@ -26,11 +31,33 @@ function AddBudget() {
       });
     }
   }
-  function checkErrors() {}
+  function checkErrors() {
+    let pass = true;
+    if (data.sum === "") {
+      pass = false;
+      setErrors((prev) => {
+        return { ...prev, sum: "Este campo es requerido" };
+      });
+    } else if (!formatHelpers.validAmount(data.sum)) {
+      pass = false;
+      setErrors((prev) => {
+        return { ...prev, sum: "Debe ingresar un número positivo" };
+      });
+    }
+    if (data._categoryId === "") {
+      pass = false;
+      setErrors((prev) => {
+        return { ...prev, _categoryId: "Este campo es requerido" };
+      });
+    }
+    return pass;
+  }
   function handleSubmit(e) {
     e.preventDefault();
-    const sendData = async () => {};
-    let pass = true;
+    const pass = checkErrors();
+    const sendData = async () => {
+      console.log("PASS", data);
+    };
     if (pass) {
       sendData();
       closeModal(e);
@@ -60,22 +87,22 @@ function AddBudget() {
             {errors.sum && <p className="error">{errors.sum}</p>}
             <p className="charCounter">{`${data.sum.length}/${20}`}</p>
           </div>
-          <label htmlFor="category">Categoría</label>
+          <label htmlFor="_categoryId">Categoría</label>
           <select
-            name="category"
-            value={data.category}
+            name="_categoryId"
+            value={data._categoryId}
             onChange={handleInputChange}
           >
             <option value="">{""}</option>
             {categories.map((cat) => {
               return (
-                <option key={cat.id} value={cat.value}>
+                <option key={cat.id} value={`${cat.id}`}>
                   {cat.label}
                 </option>
               );
             })}
           </select>
-          {errors.category && <p className="error">{errors.category}</p>}
+          {errors._categoryId && <p className="error">{errors._categoryId}</p>}
           <div className="outerBtnBox">
             <div className="innerBtnBox">
               <button

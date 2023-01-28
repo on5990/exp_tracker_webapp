@@ -100,7 +100,9 @@ function AddBill() {
   }
   function handleSubmit(e) {
     e.preventDefault();
-    const sendData = async () => {};
+    const sendData = async () => {
+      console.log("PASS", data);
+    };
     let pass = checkErrors();
     if (pass) {
       sendData();

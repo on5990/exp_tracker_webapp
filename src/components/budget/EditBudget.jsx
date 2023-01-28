@@ -1,17 +1,21 @@
 import React, { useState } from "react";
 import Modal from "../modal/Modal";
+import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
 
 function EditBudget() {
   const [isOpen, setIsOpen] = useState(false);
-  const [data, setData] = useState({ amount: "" });
-  const [errors, setErrors] = useState({ amount: "aaa" });
+  const [data, setData] = useState({ sum: "" });
+  const [errors, setErrors] = useState({ sum: "" });
   function openModal() {
     setIsOpen(true);
   }
   function closeModal(e) {
     e.preventDefault();
     setErrors((prev) => {
-      return { ...prev, amount: "" };
+      return { ...prev, sum: "" };
+    });
+    setData((prev) => {
+      return { ...prev, sum: "" };
     });
     setIsOpen(false);
   }
@@ -25,11 +29,27 @@ function EditBudget() {
       });
     }
   }
-  function checkErrors() {}
+  function checkErrors() {
+    let pass = true;
+    if (data.sum === "") {
+      pass = false;
+      setErrors((prev) => {
+        return { ...prev, sum: "Este campo es requerido" };
+      });
+    } else if (!formatHelpers.validAmount(data.sum)) {
+      pass = false;
+      setErrors((prev) => {
+        return { ...prev, sum: "Debe ingresar un número positivo" };
+      });
+    }
+    return pass;
+  }
   function handleSubmit(e) {
     e.preventDefault();
-    const sendData = async () => {};
-    let pass = true;
+    const pass = checkErrors();
+    const sendData = async () => {
+      console.log("PASS", data);
+    };
     if (pass) {
       sendData();
       closeModal(e);
@@ -45,17 +65,17 @@ function EditBudget() {
         closeModal={closeModal}
       >
         <form className="modalForm">
-          <label htmlFor="amount">Presupuesto</label>
+          <label htmlFor="sum">Presupuesto</label>
           <input
             type="text"
-            name="amount"
+            name="sum"
             maxLength={20}
             onChange={handleInputChange}
-            value={data.amount}
+            value={data.sum}
           />
           <div className="paragraphDiv">
-            {errors.amount && <p className="error">{errors.amount}</p>}
-            <p className="charCounter">{`${data.amount.length}/${20}`}</p>
+            {errors.sum && <p className="error">{errors.sum}</p>}
+            <p className="charCounter">{`${data.sum.length}/${20}`}</p>
           </div>
           <div className="outerBtnBox">
             <div className="innerBtnBox">

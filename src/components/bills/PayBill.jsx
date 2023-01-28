@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Modal from "../modal/Modal";
 import Datetime from "react-datetime";
+import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
 
 function PayBill() {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,12 +13,59 @@ function PayBill() {
   function closeModal(e) {
     e.preventDefault();
     setIsOpen(false);
+    setData((prev) => {
+      return { ...prev, sum: "", date: new Date(), periods: "" };
+    });
+    setErrors((prev) => {
+      return { ...prev, sum: "", periods: "" };
+    });
   }
-  function handleInputChange() {}
-  function checkErrors() {}
+  function handleInputChange(e) {
+    setData((prev) => {
+      return { ...prev, [e.target.name]: e.target.value };
+    });
+    if (e.target.value !== "") {
+      setErrors((prev) => {
+        return { ...prev, [e.target.name]: "" };
+      });
+    }
+  }
+  function checkErrors() {
+    let pass = true;
+    if (data.sum === "") {
+      pass = false;
+      setErrors((prev) => {
+        return { ...prev, sum: "Este campo es requerido" };
+      });
+    } else if (!formatHelpers.validAmount(data.sum)) {
+      pass = false;
+      setErrors((prev) => {
+        return { ...prev, sum: "Debe ingresar un número positivo" };
+      });
+    }
+    if (data.periods === "") {
+      pass = false;
+      setErrors((prev) => {
+        return { ...prev, periods: "Este campo es requerido" };
+      });
+    } else if (!formatHelpers.isPositiveInteger(data.periods)) {
+      pass = false;
+      setErrors((prev) => {
+        return { ...prev, periods: "Debe ingresar un número entero positivo" };
+      });
+    }
+    return pass;
+  }
   function handleSubmit(e) {
     e.preventDefault();
-    setIsOpen(false);
+    const pass = checkErrors();
+    const sendData = async () => {
+      console.log("PASS", data);
+    };
+    if (pass) {
+      sendData();
+      closeModal(e);
+    }
   }
   return (
     <>

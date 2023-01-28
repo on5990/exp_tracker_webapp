@@ -17,7 +17,6 @@ const addSchema = Joi.object({
   payments: Joi.number().min(0),
 });
 const paySchema = Joi.object({
-  _id: Joi.any().required(),
   sum: Joi.number().greater(0).required(),
   periods: Joi.number().greater(0).required(),
   date: Joi.date().required(),
