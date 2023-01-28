@@ -11,6 +11,7 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
         await categoryValidation.addSchema.validateAsync(body);
         const category = await categoryService.createCustom(body.name, userId);
         // const category = await categoryService.createDefault(body.name);
+        // SUCCESSFUL REQUEST
         res.status(200);
         return res.json({ success: true, data: { category } });
       default:

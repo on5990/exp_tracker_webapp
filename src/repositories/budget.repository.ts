@@ -1,4 +1,13 @@
 import Budget from "@/models/Budget";
+
+async function getOne(id: string) {
+  try {
+    const budget = await Budget.findById(id).exec();
+    return budget;
+  } catch (error) {
+    console.log(error);
+  }
+}
 // FIND BUDGETS
 async function getAll(userId: string) {
   try {
@@ -35,4 +44,4 @@ async function remove(id: string) {
     console.log(error);
   }
 }
-export default { getAll, create, update, remove };
+export default { getAll, getOne, create, update, remove };

@@ -1,5 +1,9 @@
 import budgetRepository from "@/repositories/budget.repository";
 
+async function getOne(id: string) {
+  const budget = await budgetRepository.getOne(id);
+  return budget;
+}
 // PENDIENTE
 async function getAll(userId: string) {
   const budgets = await budgetRepository.getAll(userId);
@@ -20,4 +24,4 @@ async function remove(id: string) {
   const res = await budgetRepository.remove(id);
   return res;
 }
-export default { getAll, create, update, remove };
+export default { getAll, getOne, create, update, remove };

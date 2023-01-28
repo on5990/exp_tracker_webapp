@@ -7,28 +7,28 @@ import "moment/locale/es";
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
 
 const categories = [
-  { id: 1, label: "A", value: "A" },
-  { id: 2, label: "B", value: "B" },
-  { id: 3, label: "C", value: "C" },
-  { id: 4, label: "D", value: "D" },
-  { id: 5, label: "D", value: "D" },
-  { id: 6, label: "D", value: "D" },
-  { id: 7, label: "D", value: "D" },
-  { id: 8, label: "D", value: "D" },
-  { id: 9, label: "D", value: "D" },
-  { id: 10, label: "D", value: "D" },
-  { id: 11, label: "D", value: "D" },
-  { id: 12, label: "D", value: "D" },
-  { id: 13, label: "D", value: "D" },
-  { id: 14, label: "D", value: "D" },
-  { id: 15, label: "D", value: "D" },
-  { id: 16, label: "D", value: "D" },
-  { id: 17, label: "D", value: "D" },
-  { id: 18, label: "D", value: "D" },
-  { id: 19, label: "D", value: "D" },
-  { id: 20, label: "D", value: "D" },
-  { id: 21, label: "D", value: "D" },
-  { id: 22, label: "D", value: "D" },
+  { id: "1", label: "A", value: "A" },
+  { id: "2", label: "B", value: "B" },
+  { id: "3", label: "C", value: "C" },
+  { id: "4", label: "D", value: "D" },
+  { id: "5", label: "D", value: "D" },
+  { id: "6", label: "D", value: "D" },
+  { id: "7", label: "D", value: "D" },
+  { id: "8", label: "D", value: "D" },
+  { id: "9", label: "D", value: "D" },
+  { id: "10", label: "D", value: "D" },
+  { id: "11", label: "D", value: "D" },
+  { id: "12", label: "D", value: "D" },
+  { id: "13", label: "D", value: "D" },
+  { id: "14", label: "D", value: "D" },
+  { id: "15", label: "D", value: "D" },
+  { id: "16", label: "D", value: "D" },
+  { id: "17", label: "D", value: "D" },
+  { id: "18", label: "D", value: "D" },
+  { id: "19", label: "D", value: "D" },
+  { id: "20", label: "D", value: "D" },
+  { id: "21", label: "D", value: "D" },
+  { id: "22", label: "D", value: "D" },
 ];
 
 function AddExpense() {
@@ -36,8 +36,8 @@ function AddExpense() {
   const [data, setData] = useState({
     description: "",
     sum: "",
-    spenAt: new Date(),
-    category: "",
+    spentAt: new Date(),
+    _categoryId: "",
   });
   const [errors, setErrors] = useState({
     description: "",
@@ -56,7 +56,7 @@ function AddExpense() {
         description: "",
         sum: "",
         spentAt: new Date(),
-        category: "",
+        _categoryId: "",
       };
     });
     setErrors((prev) => {
@@ -64,7 +64,7 @@ function AddExpense() {
         ...prev,
         description: "",
         sum: "",
-        category: "",
+        _categoryId: "",
       };
     });
   }
@@ -87,10 +87,10 @@ function AddExpense() {
         return { ...prev, sum: "Debe ingresar un número positivo" };
       });
     }
-    if (data.category === "") {
+    if (data._categoryId === "") {
       pass = false;
       setErrors((prev) => {
-        return { ...prev, category: "Este campo es requerido" };
+        return { ...prev, _categoryId: "Este campo es requerido" };
       });
     }
     return pass;
@@ -109,7 +109,7 @@ function AddExpense() {
     e.preventDefault();
     const pass = checkErrors();
     const submitData = async () => {
-      console.log("PASS");
+      console.log("PASS", data);
     };
     if (pass) {
       submitData();
@@ -159,23 +159,25 @@ function AddExpense() {
               </div>
             </div>
             <div className="modalHalfDiv lastHalf">
-              <label htmlFor="category">Categoría</label>
+              <label htmlFor="_categoryId">Categoría</label>
               <select
-                name="category"
-                value={data.category}
+                name="_categoryId"
+                value={data._categoryId}
                 onChange={handleInputChange}
               >
                 <option value="">{""}</option>
                 {categories.map((cat) => {
                   return (
-                    <option key={cat.id} value={cat.value}>
+                    <option key={cat.id} value={cat.id}>
                       {cat.label}
                     </option>
                   );
                 })}
               </select>
               <br />
-              {errors.category && <p className="error">{errors.category}</p>}
+              {errors._categoryId && (
+                <p className="error">{errors._categoryId}</p>
+              )}
             </div>
           </div>
           <label htmlFor="spentAt">Fecha</label>

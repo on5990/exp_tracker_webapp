@@ -4,20 +4,26 @@ import { NextApiRequest, NextApiResponse } from "next";
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { method, query } = req;
-    let id = query.id;
-    const validId = mongoose.Types.ObjectId.isValid(id as string);
+    const id = query.id?.toString() || "";
+    // CHECK IF THE ID IS VALID
+    const validId = mongoose.Types.ObjectId.isValid(id);
     if (!validId) {
       res.status(400);
       return res.json({ success: false, error: "Invalid id" });
     }
+    // CHECK IF CATEGORY EXISTS
+    const category = await categoryService.getOne(id);
+    if (!category || category.isDefault) {
+      res.status(404);
+      return res.json({ success: false, error: "Category not found" });
+    }
     switch (method) {
       case "DELETE":
-        const cat = await categoryService.getOne(id as string);
-        if (!cat || cat.isDefault) {
-          res.status(404);
-          return res.json({ success: false, error: "Category not found" });
-        }
-        const dbRes = await categoryService.remove(id as string);
+        // DELETE
+        const dbRes = await categoryService.remove(id);
+        // DELETE BUDGETS ASSOCIATED TO THIS CATEGORY
+        // UPDATE _categoryId TO NULL FOR EXPENSES ASSOCIATED TO THIS CATEGORY
+        // SUCCESSFUL REQUEST
         res.status(200);
         return res.json({
           success: true,

@@ -1,6 +1,8 @@
 import expenseValidation from "@/lib/validations/expense.validation";
+import budgetService from "@/services/budget.service";
 import categoryService from "@/services/category.service";
 import expenseService from "@/services/expense.service";
+import mathService from "@/services/math.service";
 import userService from "@/services/user.service";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -24,18 +26,25 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
         // GET EXPENSES BY USER_ID
         const expenses = await expenseService.getAll(userId);
         // GET CATEGORIES BY USER_ID
-        // const categories = await categoryService.getAll(userId);
+        const categories = await categoryService.getAll(userId);
         // CALC MONTHLY, WEEKLY, YEARLY TOTALS
+        const weeklyTotal = mathService.calcWeeklyTotal(expenses || []);
+        const monthlyTotal = mathService.calcMonthlyTotal(expenses || []);
+        const yearlyTotal = mathService.calcYearlyTotal(expenses || []);
         // CALC TOTAL BY CATEGORY
+        const totalsByCategory = mathService.calcTotalByCat(expenses || []);
         // CALC TOTAL EXCESS BY GETTING THE BUDGET INFO
+        const budgets = await budgetService.getAll(userId);
+        const excess = mathService.calcTotalExcess(budgets || []);
         // PREPARE OUTPUT
         const output = {
           expenses,
-          // categories,
+          categories,
           weeklyAvg: user.weeklyAvg,
           monthlyAvg: user.monthlyAvg,
           yearlyAvg: user.yearlyAvg,
         };
+        // SUCCESSFUL REQUEST
         res.status(200);
         return res.json({ success: true, data: output });
       case "POST":
@@ -57,7 +66,9 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
         }
         const expense = await expenseService.create(data);
         // 2)  UPDATE BUDGET
-        // 3) GET UPDATED INFO ABOUT EXPENSES
+        // 3)  UPDATE AVERAGES LOCATED IN USER COLLECTION
+        // 4) GET UPDATED INFO ABOUT EXPENSES
+        // SUCCESSFUL REQUEST
         res.status(200);
         return res.json({ success: true, data: { expense } });
       default:

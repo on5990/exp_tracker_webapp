@@ -4,6 +4,7 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
     const { method } = req;
     switch (method) {
       case "GET":
+        // SUCCESSFUL REQUEST
         res.status(200);
         return res.json({ success: true, data: "EXPENSE CHARTS" });
       default:

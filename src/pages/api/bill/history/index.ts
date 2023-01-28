@@ -4,6 +4,8 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
     const { method } = req;
     switch (method) {
       case "GET":
+        // GET EXPENSES ASSOCIATED TO THE BILL
+        // SUCCESSFUL REQUEST
         res.status(200);
         return res.json({ success: true, data: "BILL HISTORY" });
       default:

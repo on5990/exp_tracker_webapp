@@ -32,6 +32,7 @@ function AddCategory() {
   }
   function handleSubmit() {
     if (category !== "") {
+      console.log("PASS", { name: category });
       setShowForm(false);
       setCategory("");
     }

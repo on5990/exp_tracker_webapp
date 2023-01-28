@@ -24,7 +24,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       res.status(400);
       return res.json({ success: false, error: "Invalid id" });
     }
-    // CHECK IF EXPENSE EXIST
+    // CHECK IF EXPENSE EXISTS
     const expense = await expenseService.getOne(id);
     if (!expense) {
       res.status(404);
@@ -49,8 +49,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         } else {
           data = { ...data, _categoryId };
         }
-        // UPDATE
+        // UPDATE EXPENSE
         const dbUpdate = await expenseService.update(id, data);
+        // UPDATE USER AVERAGES
+        // UPDATE BUDGETS
+        // FIND ALL INFO OF EXPENSES
         // SUCCESSFUL REQUEST
         res.status(200);
         return res.json({
@@ -60,6 +63,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       case "DELETE":
         // DELETE
         const dbDelete = await expenseService.remove(id);
+        // UPDATE USER AVERAGES
+        // UPDATE BUDGETS
+        // FIND ALL INFO OF EXPENSES
         // SUCCESSFUL REQUEST
         res.status(200);
         return res.json({

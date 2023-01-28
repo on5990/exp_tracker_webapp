@@ -4,6 +4,8 @@ async function month(req: NextApiRequest, res: NextApiResponse) {
     const { method } = req;
     switch (method) {
       case "GET":
+        // GET EXPENSES BY MONTH
+        // SUCCESSFUL REQUEST
         res.status(200);
         return res.json({ success: true, data: "BILL MONTH INFO" });
       default:

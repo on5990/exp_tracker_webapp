@@ -34,7 +34,10 @@ function AddBill() {
       return { ...prev, [e.target.name]: e.target.value };
     });
   }
-  function checkErrors() {}
+  function checkErrors() {
+    const pass = true;
+    // if
+  }
   function handleSubmit(e) {
     e.preventDefault();
     const sendData = async () => {};

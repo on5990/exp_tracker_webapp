@@ -1,4 +1,13 @@
 import Bill from "@/models/Bill";
+
+async function getOne(id: string) {
+  try {
+    const bill = await Bill.findById(id).exec();
+    return bill;
+  } catch (error) {
+    console.log(error);
+  }
+}
 // FIND BILLS
 async function getAll(userId: string) {
   try {
@@ -35,4 +44,4 @@ async function remove(id: string) {
     console.log(error);
   }
 }
-export default { getAll, create, update, remove };
+export default { getAll, getOne, create, update, remove };

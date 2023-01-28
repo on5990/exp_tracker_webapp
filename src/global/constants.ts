@@ -7,6 +7,20 @@ const MONTHLY_UND = "Monthly-Undefined";
 const YEARLY_UND = "Yearly-Undefined";
 const MONTHLY_FIXED = "Monthly-Fixed";
 const YEARLY_FIXED = "Yearly-Fixed";
+const MONTHS = [
+  "Enero",
+  "Febrero",
+  "Marzo",
+  "Abril",
+  "Mayo",
+  "Junio",
+  "Julio",
+  "Agosto",
+  "Septiembre",
+  "Octubre",
+  "Noviembre",
+  "Diciembre",
+];
 export {
   SPECIFIC,
   CATEGORY,
@@ -17,4 +31,5 @@ export {
   YEARLY_FIXED,
   YEARLY_UND,
   MONTHLY_UND,
+  MONTHS,
 };

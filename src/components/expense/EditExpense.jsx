@@ -4,24 +4,24 @@ import Datetime from "react-datetime";
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
 
 const categories = [
-  { id: 1, label: "A", value: "A" },
-  { id: 2, label: "B", value: "B" },
-  { id: 3, label: "C", value: "C" },
-  { id: 4, label: "D", value: "D" },
+  { id: "1", label: "A", value: "A" },
+  { id: "2", label: "B", value: "B" },
+  { id: "3", label: "C", value: "C" },
+  { id: "4", label: "D", value: "D" },
 ];
 
 function EditExpense() {
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState({
     description: "",
-    amount: "",
-    date: new Date(),
-    category: "",
+    sum: "",
+    spentAt: new Date(),
+    _categoryId: "",
   });
   const [errors, setErrors] = useState({
     description: "",
-    amount: "",
-    category: "",
+    sum: "",
+    _categoryId: "",
   });
   function openModal() {
     setIsOpen(true);
@@ -33,8 +33,8 @@ function EditExpense() {
       return {
         ...prev,
         description: "",
-        amount: "",
-        category: "",
+        sum: "",
+        _categoryId: "",
       };
     });
   }
@@ -47,21 +47,21 @@ function EditExpense() {
         return { ...prev, description: "Este campo es requerido" };
       });
     }
-    if (data.amount === "") {
+    if (data.sum === "") {
       pass = false;
       setErrors((prev) => {
-        return { ...prev, amount: "Este campo es requerido" };
+        return { ...prev, sum: "Este campo es requerido" };
       });
-    } else if (!formatHelpers.validAmount(data.amount)) {
+    } else if (!formatHelpers.validAmount(data.sum)) {
       pass = false;
       setErrors((prev) => {
-        return { ...prev, amount: "Debe ingresar un número positivo" };
+        return { ...prev, sum: "Debe ingresar un número positivo" };
       });
     }
-    if (data.category === "") {
+    if (data._categoryId === "") {
       pass = false;
       setErrors((prev) => {
-        return { ...prev, category: "Este campo es requerido" };
+        return { ...prev, _categoryId: "Este campo es requerido" };
       });
     }
     return pass;
@@ -80,7 +80,7 @@ function EditExpense() {
     e.preventDefault();
     const pass = checkErrors();
     const submitData = async () => {
-      console.log("PASS");
+      console.log("PASS", data);
     };
     if (pass) {
       submitData();
@@ -113,51 +113,53 @@ function EditExpense() {
           </div>
           <div className="modalFlexDiv">
             <div className="modalHalfDiv">
-              <label htmlFor="amount">Cantidad de pagada</label>
+              <label htmlFor="sum">Cantidad de pagada</label>
               <input
                 type="text"
-                name="amount"
+                name="sum"
                 maxLength={20}
                 onChange={handleInputChange}
-                value={data.amount}
+                value={data.sum}
               />
               <br />
               <div className="paragraphDiv">
-                {errors.amount && <p className="error">{errors.amount}</p>}
-                <p className="charCounter">{`${data.amount.length}/${20}`}</p>
+                {errors.sum && <p className="error">{errors.sum}</p>}
+                <p className="charCounter">{`${data.sum.length}/${20}`}</p>
               </div>
             </div>
             <div className="modalHalfDiv lastHalf">
-              <label htmlFor="category">Categoría</label>
+              <label htmlFor="_categoryId">Categoría</label>
               <select
-                name="category"
-                value={data.category}
+                name="_categoryId"
+                value={data._categoryId}
                 onChange={handleInputChange}
               >
                 <option value="">{""}</option>
                 {categories.map((cat) => {
                   return (
-                    <option key={cat.id} value={cat.value}>
+                    <option key={cat.id} value={cat.id}>
                       {cat.label}
                     </option>
                   );
                 })}
               </select>
               <br />
-              {errors.category && <p className="error">{errors.category}</p>}
+              {errors._categoryId && (
+                <p className="error">{errors._categoryId}</p>
+              )}
             </div>
           </div>
-          <label htmlFor="date">Fecha</label>
+          <label htmlFor="spentAt">Fecha</label>
           <div className="datePickerDiv">
             <Datetime
-              name="date"
+              name="spentAt"
               onChange={(date) =>
                 setData({
                   ...data,
-                  date: new Date(date._d),
+                  spentAt: new Date(date._d),
                 })
               }
-              value={data.date}
+              value={data.spentAt}
             />
           </div>
           <div className="outerBtnBox">
