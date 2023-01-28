@@ -4,6 +4,7 @@ import Datetime from "react-datetime";
 import moment from "moment/moment";
 import "moment/locale/es";
 import { types } from "./const/const";
+import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
 
 function AddBill() {
   const [isOpen, setIsOpen] = useState(false);
@@ -28,20 +29,79 @@ function AddBill() {
   function closeModal(e) {
     e.preventDefault();
     setIsOpen(false);
+    setData((prev) => {
+      return {
+        ...prev,
+        description: "",
+        sum: "",
+        type: "",
+        firstPayment: null,
+        amount: "",
+        payments: "",
+      };
+    });
+    setErrors((prev) => {
+      return {
+        ...prev,
+        description: "",
+        sum: "",
+        type: "",
+        amount: "",
+        payments: "",
+      };
+    });
   }
   function handleInputChange(e) {
     setData((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
+    if (e.target.value !== "") {
+      setErrors((prev) => {
+        return { ...prev, [e.target.name]: "" };
+      });
+    }
   }
   function checkErrors() {
-    const pass = true;
-    // if
+    let pass = true;
+    if (data.description === "") {
+      pass = false;
+      setErrors((prev) => {
+        return { ...prev, description: "Este campo es requerido" };
+      });
+    }
+    if (data.sum !== "" && !formatHelpers.validAmount(data.sum)) {
+      pass = false;
+      setErrors((prev) => {
+        return { ...prev, sum: "Debe ingresar un número positivo" };
+      });
+    }
+    if (data.type === "") {
+      pass = false;
+      setErrors((prev) => {
+        return { ...prev, type: "Este campo es requerido" };
+      });
+    }
+    if (data.amount !== "" && !formatHelpers.isPositiveInteger(data.amount)) {
+      pass = false;
+      setErrors((prev) => {
+        return { ...prev, amount: "Debe ingresar un número entero positivo" };
+      });
+    }
+    if (
+      data.payments !== "" &&
+      !formatHelpers.isPositiveInteger(data.payments)
+    ) {
+      pass = false;
+      setErrors((prev) => {
+        return { ...prev, payments: "Debe ingresar un número entero positivo" };
+      });
+    }
+    return pass;
   }
   function handleSubmit(e) {
     e.preventDefault();
     const sendData = async () => {};
-    let pass = true;
+    let pass = checkErrors();
     if (pass) {
       sendData();
       closeModal(e);

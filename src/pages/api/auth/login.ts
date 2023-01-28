@@ -5,7 +5,7 @@ import { decryptData } from "@/lib/backendHelpers/decryptData";
 import userService from "@/services/user.service";
 import { setCookie } from "cookies-next";
 import JWT from "@/lib/backendHelpers/JWT";
-import authValidation from "@/lib/validations/auth.validation";
+import authValidation from "@/lib/backendHelpers/validations/auth.validation";
 
 const cookieAge = 2592000;
 

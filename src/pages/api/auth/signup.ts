@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import dbConnect from "@/lib/backendHelpers/dbConnect";
 import { decryptData } from "@/lib/backendHelpers/decryptData";
 import userService from "@/services/user.service";
-import authValidation from "@/lib/validations/auth.validation";
+import authValidation from "@/lib/backendHelpers/validations/auth.validation";
 
 async function signup(req: NextApiRequest, res: NextApiResponse) {
   try {

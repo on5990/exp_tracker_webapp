@@ -1,4 +1,4 @@
-import categoryValidation from "@/lib/validations/category.validation";
+import categoryValidation from "@/lib/backendHelpers/validations/category.validation";
 import categoryService from "@/services/category.service";
 import { NextApiRequest, NextApiResponse } from "next";
 async function index(req: NextApiRequest, res: NextApiResponse) {

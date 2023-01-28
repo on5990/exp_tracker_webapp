@@ -28,6 +28,10 @@ function validAmount(amount: number | any): Boolean {
     return false;
   }
 }
+function isPositiveInteger(input: number | any): Boolean {
+  let re = /^\d*[1-9]\d*$/;
+  return re.test(input);
+}
 function formatTime(date: Date | any): string {
   try {
     let d = new Date(date);
@@ -47,4 +51,5 @@ export default {
   isSafe,
   formatTime,
   validAmount,
+  isPositiveInteger,
 };

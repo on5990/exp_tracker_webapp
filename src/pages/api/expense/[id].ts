@@ -1,4 +1,4 @@
-import expenseValidation from "@/lib/validations/expense.validation";
+import expenseValidation from "@/lib/backendHelpers/validations/expense.validation";
 import categoryService from "@/services/category.service";
 import expenseService from "@/services/expense.service";
 import mongoose from "mongoose";

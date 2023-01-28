@@ -1,4 +1,4 @@
-import budgetValidation from "@/lib/validations/budget.validation";
+import budgetValidation from "@/lib/backendHelpers/validations/budget.validation";
 import budgetService from "@/services/budget.service";
 import { NextApiRequest, NextApiResponse } from "next";
 async function index(req: NextApiRequest, res: NextApiResponse) {

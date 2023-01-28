@@ -1,4 +1,4 @@
-import billValidation from "@/lib/validations/bill.validation";
+import billValidation from "@/lib/backendHelpers/validations/bill.validation";
 import billService from "@/services/bill.service";
 import mongoose from "mongoose";
 import { NextApiRequest, NextApiResponse } from "next";

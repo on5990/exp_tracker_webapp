@@ -31,8 +31,10 @@ function AddCategory() {
     setCategory("");
   }
   function handleSubmit() {
+    const sendData = async () => {};
     if (category !== "") {
       console.log("PASS", { name: category });
+      sendData();
       setShowForm(false);
       setCategory("");
     }
