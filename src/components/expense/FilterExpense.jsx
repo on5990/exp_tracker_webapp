@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { filterTypes, MONTH, YEAR } from "./const/const";
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
-// const months
 
 const currentYear = new Date().getFullYear().toString();
 const currentMonth = new Date().getMonth();

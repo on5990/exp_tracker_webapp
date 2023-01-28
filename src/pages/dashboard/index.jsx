@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import AddCategory from "../../components/expense/AddCategory";
 import AddExpense from "../../components/expense/AddExpense";
 import ExpenseTable from "../../components/expense/ExpenseTable";
 import FilterExpense from "../../components/expense/FilterExpense";
 import SwitchBtn from "../../components/expense/SwitchBtn";
 import MainLayout from "../../components/layout/MainLayout";
+import { CATEGORY } from "../../global/constants";
+import getHelpers from "../../lib/frontendHelpers/getHelpers";
 
 const categories = [
   { _id: "1", isDefault: true, name: "Abarrotes" },
@@ -17,6 +19,13 @@ const categories = [
 ];
 
 function Dashboard() {
+  const [data, setData] = useState({
+    expenses: [],
+    categories: [],
+    weeklyAvg: null,
+    monthlyAvg: null,
+    yearlyAvg: null,
+  });
   const [parameters, setParameters] = useState({
     category: { _id: "", isDefault: true, name: "" },
     // Search by month or year
@@ -26,14 +35,48 @@ function Dashboard() {
     // List of expenses or list of totals by category
     showType: "",
   });
+  const useEffectCalled = useRef(false);
+  useEffect(() => {
+    if (!useEffectCalled.current) {
+      console.log("CALLING USE EFFECT");
+      const getData = async () => {
+        let response = await fetch(`/api/expense`, {
+          method: "GET",
+        });
+        let info = await response.json();
+        info = info.data;
+        setData((prev) => {
+          return {
+            ...prev,
+            expenses: info.expenses,
+            categories: info.categories,
+            weeklyAvg: info.weeklyAvg,
+            monthlyAvg: info.monthlyAvg,
+            yearlyAvg: info.yearlyAvg,
+          };
+        });
+      };
+      getData();
+      useEffectCalled.current = true;
+    }
+  }, []);
+  useEffect(() => {
+    if (parameters.showType === CATEGORY) {
+      setParameters((prev) => {
+        return {
+          ...prev,
+          timeType: "",
+          category: { _id: "", isDefault: true, name: "" },
+        };
+      });
+    }
+  }, [parameters.showType]);
   function handleCatClick(e) {
     const jsonData = JSON.parse(e.currentTarget.value);
     setParameters((prev) => {
       return { ...prev, category: jsonData };
     });
-    setTimeout(1000);
   }
-  console.log(parameters);
   return (
     <>
       <MainLayout>
@@ -83,5 +126,13 @@ function Dashboard() {
     </>
   );
 }
-
 export default Dashboard;
+// export async function getServerSideProps() {
+//   let data = await fetch(`localhost:3010/api/expense`, {
+//     method: "GET",
+//   });
+//   console.log(data);
+//   return {
+//     props: { data: data },
+//   };
+// }

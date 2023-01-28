@@ -31,7 +31,16 @@ function AddCategory() {
     setCategory("");
   }
   function handleSubmit() {
-    const sendData = async () => {};
+    const sendData = async () => {
+      const response = await fetch("/api/category", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name: category }),
+      });
+      console.log(response);
+    };
     if (category !== "") {
       console.log("PASS", { name: category });
       sendData();
@@ -53,6 +62,7 @@ function AddCategory() {
             type="text"
             value={category}
             name="category"
+            maxLength={20}
             onChange={(e) => {
               setCategory(e.target.value);
             }}
@@ -65,5 +75,4 @@ function AddCategory() {
     </>
   );
 }
-
 export default AddCategory;
