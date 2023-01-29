@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useEffect } from "react";
 import { useRef } from "react";
 import { useState } from "react";
+import { ExpenseContext } from "../../pages/dashboard";
 
-function AddCategory({ setData }) {
+function AddCategory() {
+  const { setData } = useContext(ExpenseContext);
   const [showForm, setShowForm] = useState(false);
   const [category, setCategory] = useState("");
   const ref = useRef(null);

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { filterTypes, MONTH, YEAR } from "./const/const";
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
-import { CATEGORY } from "../../global/constants";
+import { CATEGORY, SPECIFIC } from "../../global/constants";
 
 const currentYear = new Date().getFullYear().toString();
 const currentMonth = new Date().getMonth();
@@ -11,19 +11,25 @@ const monthsArray = formatHelpers.generateMonthArray();
 
 function FilterExpense({ parameters, setParameters }) {
   const [array, setArray] = useState([]);
+  const [disable, setDisable] = useState(false);
+  // useEffect(() => {
+  //   if (parameters.showType === CATEGORY) {
+  //     setParameters((prev) => {
+  //       return { ...prev, time: "", timeType: "" };
+  //     });
+  //   }
+  // }, [parameters.time]);
   useEffect(() => {
     if (parameters.showType === CATEGORY) {
-      setParameters((prev) => {
-        return { ...prev, time: "", timeType: "" };
-      });
+      setDisable(true);
     }
-  }, [parameters.time]);
+    if (parameters.showType === SPECIFIC) {
+      setDisable(false);
+    }
+  }, [parameters.showType]);
+
   useEffect(() => {
-    if (parameters.showType === CATEGORY) {
-      setParameters((prev) => {
-        return { ...prev, time: "", timeType: "" };
-      });
-    } else if (parameters.timeType === YEAR) {
+    if (parameters.timeType === YEAR) {
       setArray(yearsArray);
       setParameters((prev) => {
         return { ...prev, time: currentYear };
@@ -47,7 +53,12 @@ function FilterExpense({ parameters, setParameters }) {
       <div className="searchDiv">
         <div className="filterItem">
           <p>Filtrar</p>
-          <select name="time" value={parameters.time} onChange={handleChange}>
+          <select
+            disabled={disable && "true"}
+            name="time"
+            value={parameters.time}
+            onChange={handleChange}
+          >
             <option value={""}>{""}</option>
             {array.map((item) => {
               return (
@@ -69,6 +80,7 @@ function FilterExpense({ parameters, setParameters }) {
         <div className="filterItem">
           <p>Tipo</p>
           <select
+            disabled={disable && "true"}
             name="timeType"
             value={parameters.timeType}
             onChange={handleChange}

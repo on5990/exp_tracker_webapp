@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import AddCategory from "../../components/expense/AddCategory";
 import AddExpense from "../../components/expense/AddExpense";
+import DeleteCategory from "../../components/expense/DeleteCategory";
 import ExpenseTable from "../../components/expense/ExpenseTable";
 import FilterExpense from "../../components/expense/FilterExpense";
 import SwitchBtn from "../../components/expense/SwitchBtn";
@@ -127,6 +128,7 @@ function Dashboard() {
                   onClick={handleCatClick}
                 >
                   <p>{item.name}</p>
+                  {item.isDefault && <DeleteCategory />}
                 </button>
               );
             })}

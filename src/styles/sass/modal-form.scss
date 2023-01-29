@@ -107,8 +107,11 @@
     width: 30%;
     margin-bottom: 2vh;
     .modalButton {
-      background-color: $blue-1;
       font-family: $font-1;
+      background-color: $blue-1;
+      border: none;
+      color: $light-1;
+      border-radius: 5px;
       height: 30px;
       width: auto;
       font-size: 1rem;
@@ -126,4 +129,5 @@
 }
 .modalP {
   font-size: 1.2rem;
+  // color: blue;
 }

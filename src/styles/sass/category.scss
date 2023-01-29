@@ -8,6 +8,9 @@
   margin-top: 1vh;
   color: $light-1;
   border: none;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   p {
     margin: 0;
     font-family: $font-1;
@@ -19,6 +22,21 @@
     background-color: $dark-4;
     box-shadow: 0 0 4px $green-1;
     // color: $dark-2;
+  }
+  .catInnerBtn {
+    font-family: $font-1;
+    background-color: $dark-2;
+    color: $light-1;
+    font-weight: bold;
+    border-radius: 8px;
+    border: none;
+    &:hover {
+      transition: background-color 1s;
+      transition: color 0.5s;
+      background-color: $light-green-1;
+      color: $dark-2;
+      // color: $dark-2;
+    }
   }
 }
 .activeCategory {
