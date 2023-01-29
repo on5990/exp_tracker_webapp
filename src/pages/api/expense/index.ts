@@ -1,9 +1,6 @@
 import expenseValidation from "@/lib/backendHelpers/validations/expense.validation";
-import budgetService from "@/services/budget.service";
 import categoryService from "@/services/category.service";
 import expenseService from "@/services/expense.service";
-import mathService from "@/services/math.service";
-import userService from "@/services/user.service";
 import { NextApiRequest, NextApiResponse } from "next";
 
 interface Data {
@@ -21,32 +18,13 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
     const userId = payload.id;
     switch (method) {
       case "GET":
-        // GET INFO OF THE USER
-        const user = await userService.getById(userId);
         // GET EXPENSES BY USER_ID
         const expenses = await expenseService.getAll(userId);
         // GET CATEGORIES BY USER_ID
         const categories = await categoryService.getAll(userId);
-        // CALC MONTHLY, WEEKLY, YEARLY TOTALS
-        const weeklyTotal = mathService.calcWeeklyTotal(expenses || []);
-        const monthlyTotal = mathService.calcMonthlyTotal(expenses || []);
-        const yearlyTotal = mathService.calcYearlyTotal(expenses || []);
-        // MAKE ARRAY WITH EXPENSES AND TOTAL BY CATEGORY
-        const totalsByCategory = mathService.calcTotalByCat(expenses || []);
-        console.log("TOTALS BY CATEGORY", totalsByCategory);
-        // CALC TOTAL EXCESS BY GETTING THE BUDGET INFO
-        const budgets = await budgetService.getAll(userId);
-        const excess = mathService.calcTotalExcess(budgets || []);
-        // PREPARE OUTPUT
         const output = {
-          expenses,
+          ...expenses,
           categories,
-          monthlyAvg: user.monthlyAvg,
-          yearlyAvg: user.yearlyAvg,
-          weeklyTotal,
-          monthlyTotal,
-          yearlyTotal,
-          totalsByCategory,
         };
         // SUCCESSFUL REQUEST
         res.status(200);
@@ -68,13 +46,14 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
         } else {
           data = { ...data, _categoryId };
         }
-        const expense = await expenseService.create(data);
+        await expenseService.create(data);
         // 2)  UPDATE BUDGET
         // 3)  UPDATE AVERAGES LOCATED IN USER COLLECTION
         // 4) GET UPDATED INFO ABOUT EXPENSES
+        const _expenses = await expenseService.getAll(userId);
         // SUCCESSFUL REQUEST
         res.status(200);
-        return res.json({ success: true, data: { expense } });
+        return res.json({ success: true, data: { ..._expenses } });
       default:
         res.status(404);
         return res.json({ success: false, error: "Route not found" });

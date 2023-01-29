@@ -14,7 +14,6 @@ const categories = [
 
 function EditExpense({ _id }) {
   const { setData, data } = useContext(ExpenseContext);
-  // console.log("EDIT EXPENSE", data);
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState({
     description: "",
@@ -103,10 +102,22 @@ function EditExpense({ _id }) {
         },
         body: JSON.stringify(input),
       });
-      console.log(await response.json());
+      const content = await response.json();
       if (response.ok) {
+        setData((prev) => {
+          return {
+            ...prev,
+            expenses: content.data.expenses,
+            monthlyAvg: content.data.monthlyAvg,
+            yearlyAvg: content.data.yearlyAvg,
+            weeklyTotal: content.data.weeklyTotal,
+            monthlyTotal: content.data.monthlyTotal,
+            yearlyTotal: content.data.yearlyTotal,
+            totalsByCategory: content.data.totalsByCategory,
+          };
+        });
       } else {
-        throw new Error(`Error: ${response.status}`);
+        console.log(content);
       }
     };
     if (pass) {

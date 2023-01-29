@@ -1,4 +1,7 @@
+import budgetRepository from "@/repositories/budget.repository";
 import expenseRepository from "@/repositories/expense.repository";
+import userRepository from "@/repositories/user.repository";
+import mathService from "./math.service";
 
 async function getOne(id: string) {
   const expense = await expenseRepository.getOne(id);
@@ -7,8 +10,30 @@ async function getOne(id: string) {
 
 // PENDIENTE
 async function getAll(userId: string) {
+  // GET INFO OF THE USER
+  const user = await userRepository.getById(userId);
+  // GET EXPENSES BY USER_ID
   const expenses = await expenseRepository.getAll(userId);
-  return expenses;
+  // CALC MONTHLY, WEEKLY, YEARLY TOTALS
+  const weeklyTotal = mathService.calcWeeklyTotal(expenses || []);
+  const monthlyTotal = mathService.calcMonthlyTotal(expenses || []);
+  const yearlyTotal = mathService.calcYearlyTotal(expenses || []);
+  // MAKE ARRAY WITH EXPENSES AND TOTAL BY CATEGORY
+  const totalsByCategory = mathService.calcTotalByCat(expenses || []);
+  // CALC TOTAL EXCESS BY GETTING THE BUDGET INFO
+  const budgets = await budgetRepository.getAll(userId);
+  const excess = mathService.calcTotalExcess(budgets || []);
+  // PREPARE OUTPUT
+  const output = {
+    expenses,
+    monthlyAvg: user.monthlyAvg,
+    yearlyAvg: user.yearlyAvg,
+    weeklyTotal,
+    monthlyTotal,
+    yearlyTotal,
+    totalsByCategory,
+  };
+  return output;
 }
 // PENDIENTE
 async function create(data: any) {

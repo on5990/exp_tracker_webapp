@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { ExpenseContext } from "../../pages/dashboard";
 import Modal from "../modal/Modal";
 
 function DeleteExpense({ _id }) {
+  const { setData } = useContext(ExpenseContext);
   const [isOpen, setIsOpen] = useState(false);
   function openModal() {
     setIsOpen(true);
@@ -18,6 +20,18 @@ function DeleteExpense({ _id }) {
       });
       const content = await response.json();
       if (response.ok) {
+        setData((prev) => {
+          return {
+            ...prev,
+            expenses: content.data.expenses,
+            monthlyAvg: content.data.monthlyAvg,
+            yearlyAvg: content.data.yearlyAvg,
+            weeklyTotal: content.data.weeklyTotal,
+            monthlyTotal: content.data.monthlyTotal,
+            yearlyTotal: content.data.yearlyTotal,
+            totalsByCategory: content.data.totalsByCategory,
+          };
+        });
       } else {
         console.log(content);
       }

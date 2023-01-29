@@ -14,8 +14,12 @@ function Dashboard() {
   const [data, setData] = useState({
     expenses: [],
     categories: [],
-    monthlyAvg: null,
-    yearlyAvg: null,
+    monthlyAvg: "",
+    yearlyAvg: "",
+    weeklyTotal: "",
+    monthlyTotal: "",
+    yearlyTotal: "",
+    totalsByCategory: [],
   });
   const [parameters, setParameters] = useState({
     category: { _id: "", isDefault: true, name: "" },

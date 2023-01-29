@@ -92,10 +92,22 @@ function AddExpense() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(input),
       });
-      console.log(await response.json());
+      const content = await response.json();
       if (response.ok) {
+        setData((prev) => {
+          return {
+            ...prev,
+            expenses: content.data.expenses,
+            monthlyAvg: content.data.monthlyAvg,
+            yearlyAvg: content.data.yearlyAvg,
+            weeklyTotal: content.data.weeklyTotal,
+            monthlyTotal: content.data.monthlyTotal,
+            yearlyTotal: content.data.yearlyTotal,
+            totalsByCategory: content.data.totalsByCategory,
+          };
+        });
       } else {
-        throw new Error(`Error: ${response.status}`);
+        console.log(content);
       }
     };
     if (pass) {

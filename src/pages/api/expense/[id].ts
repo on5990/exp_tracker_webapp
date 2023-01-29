@@ -54,11 +54,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         // UPDATE USER AVERAGES
         // UPDATE BUDGETS
         // FIND ALL INFO OF EXPENSES
+        const expenses = await expenseService.getAll(userId);
         // SUCCESSFUL REQUEST
         res.status(200);
         return res.json({
           success: true,
-          data: { msg: `${dbUpdate._id} was updated`, expense: dbUpdate },
+          msg: `${dbUpdate._id} was updated`,
+          data: { ...expenses },
         });
       case "DELETE":
         // DELETE
@@ -66,11 +68,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         // UPDATE USER AVERAGES
         // UPDATE BUDGETS
         // FIND ALL INFO OF EXPENSES
+        const _expenses = await expenseService.getAll(userId);
         // SUCCESSFUL REQUEST
         res.status(200);
         return res.json({
           success: true,
-          data: { msg: `${dbDelete._id} was deleted`, expense: dbDelete },
+          msg: `${dbDelete._id} was deleted`,
+          data: { ..._expenses },
         });
       default:
         res.status(404);
