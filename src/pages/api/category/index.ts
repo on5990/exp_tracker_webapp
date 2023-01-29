@@ -8,9 +8,10 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
     const userId = payload.id;
     switch (method) {
       case "POST":
+        // VALIDATE DATA FROM FRONTEND
         await categoryValidation.addSchema.validateAsync(body);
+        // GET CATEGORY
         const category = await categoryService.createCustom(body.name, userId);
-        // const category = await categoryService.createDefault(body.name);
         // SUCCESSFUL REQUEST
         res.status(200);
         return res.json({ success: true, data: { category } });

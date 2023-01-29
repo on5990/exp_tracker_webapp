@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useRef } from "react";
 import { useState } from "react";
 
-function AddCategory() {
+function AddCategory({ setData }) {
   const [showForm, setShowForm] = useState(false);
   const [category, setCategory] = useState("");
   const ref = useRef(null);
@@ -39,7 +39,15 @@ function AddCategory() {
         },
         body: JSON.stringify({ name: category }),
       });
-      console.log(response);
+      if (response.ok) {
+        let info = await response.json();
+        info = info.data.category;
+        setData((prev) => {
+          return { ...prev, categories: [...prev.categories, info] };
+        });
+      } else {
+        throw new Error(`Error: ${response.status}`);
+      }
     };
     if (category !== "") {
       console.log("PASS", { name: category });

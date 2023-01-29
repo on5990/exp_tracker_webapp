@@ -43,18 +43,22 @@ function Dashboard() {
         let response = await fetch(`/api/expense`, {
           method: "GET",
         });
-        let info = await response.json();
-        info = info.data;
-        setData((prev) => {
-          return {
-            ...prev,
-            expenses: info.expenses,
-            categories: info.categories,
-            weeklyAvg: info.weeklyAvg,
-            monthlyAvg: info.monthlyAvg,
-            yearlyAvg: info.yearlyAvg,
-          };
-        });
+        if (response.ok) {
+          let info = await response.json();
+          info = info.data;
+          setData((prev) => {
+            return {
+              ...prev,
+              expenses: info.expenses,
+              categories: info.categories,
+              weeklyAvg: info.weeklyAvg,
+              monthlyAvg: info.monthlyAvg,
+              yearlyAvg: info.yearlyAvg,
+            };
+          });
+        } else {
+          throw new Error(`Error: ${response.status}`);
+        }
       };
       getData();
       useEffectCalled.current = true;
@@ -77,6 +81,7 @@ function Dashboard() {
       return { ...prev, category: jsonData };
     });
   }
+  // console.log(data);
   return (
     <>
       <MainLayout>
@@ -95,7 +100,7 @@ function Dashboard() {
         <div className="greybox">
           <div className="infoList">
             <p>Categorías:</p>
-            {categories.map((item) => {
+            {data.categories.map((item) => {
               return (
                 <button
                   type="button"
@@ -110,7 +115,7 @@ function Dashboard() {
                 </button>
               );
             })}
-            <AddCategory />
+            <AddCategory setData={setData} />
           </div>
         </div>
         <div className="optionDiv">
