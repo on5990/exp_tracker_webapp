@@ -12,7 +12,7 @@ const categories = [
 
 function EditExpense() {
   const [isOpen, setIsOpen] = useState(false);
-  const [data, setData] = useState({
+  const [input, setInput] = useState({
     description: "",
     sum: "",
     spentAt: new Date(),
@@ -41,24 +41,24 @@ function EditExpense() {
 
   function checkErrors() {
     let pass = true;
-    if (data.description === "") {
+    if (input.description === "") {
       pass = false;
       setErrors((prev) => {
         return { ...prev, description: "Este campo es requerido" };
       });
     }
-    if (data.sum === "") {
+    if (input.sum === "") {
       pass = false;
       setErrors((prev) => {
         return { ...prev, sum: "Este campo es requerido" };
       });
-    } else if (!formatHelpers.validAmount(data.sum)) {
+    } else if (!formatHelpers.validAmount(input.sum)) {
       pass = false;
       setErrors((prev) => {
         return { ...prev, sum: "Debe ingresar un número positivo" };
       });
     }
-    if (data._categoryId === "") {
+    if (input._categoryId === "") {
       pass = false;
       setErrors((prev) => {
         return { ...prev, _categoryId: "Este campo es requerido" };
@@ -67,7 +67,7 @@ function EditExpense() {
     return pass;
   }
   function handleInputChange(e) {
-    setData((prev) => {
+    setInput((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
     if (errors[e.target.name] !== "") {
@@ -79,11 +79,11 @@ function EditExpense() {
   function handleSubmit(e) {
     e.preventDefault();
     const pass = checkErrors();
-    const submitData = async () => {
-      console.log("PASS", data);
+    const submitInput = async () => {
+      console.log("PASS", input);
     };
     if (pass) {
-      submitData();
+      submitInput();
       closeModal(e);
     }
   }
@@ -103,13 +103,15 @@ function EditExpense() {
             name="description"
             maxLength={200}
             onChange={handleInputChange}
-            value={data.description}
+            value={input.description}
           />
           <div className="paragraphDiv">
             {errors.description && (
               <p className="error">{errors.description}</p>
             )}
-            <p className="charCounter">{`${data.description.length}/${200}`}</p>
+            <p className="charCounter">{`${
+              input.description.length
+            }/${200}`}</p>
           </div>
           <div className="modalFlexDiv">
             <div className="modalHalfDiv">
@@ -119,19 +121,19 @@ function EditExpense() {
                 name="sum"
                 maxLength={20}
                 onChange={handleInputChange}
-                value={data.sum}
+                value={input.sum}
               />
               <br />
               <div className="paragraphDiv">
                 {errors.sum && <p className="error">{errors.sum}</p>}
-                <p className="charCounter">{`${data.sum.length}/${20}`}</p>
+                <p className="charCounter">{`${input.sum.length}/${20}`}</p>
               </div>
             </div>
             <div className="modalHalfDiv lastHalf">
               <label htmlFor="_categoryId">Categoría</label>
               <select
                 name="_categoryId"
-                value={data._categoryId}
+                value={input._categoryId}
                 onChange={handleInputChange}
               >
                 <option value="">{""}</option>
@@ -154,12 +156,12 @@ function EditExpense() {
             <Datetime
               name="spentAt"
               onChange={(date) =>
-                setData({
-                  ...data,
+                setInput({
+                  ...input,
                   spentAt: new Date(date._d),
                 })
               }
-              value={data.spentAt}
+              value={input.spentAt}
             />
           </div>
           <div className="outerBtnBox">

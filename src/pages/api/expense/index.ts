@@ -33,6 +33,7 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
         const yearlyTotal = mathService.calcYearlyTotal(expenses || []);
         // CALC TOTAL BY CATEGORY
         const totalsByCategory = mathService.calcTotalByCat(expenses || []);
+        console.log("TOTALS BY CATEGORY", totalsByCategory);
         // CALC TOTAL EXCESS BY GETTING THE BUDGET INFO
         const budgets = await budgetService.getAll(userId);
         const excess = mathService.calcTotalExcess(budgets || []);
@@ -42,6 +43,10 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
           categories,
           monthlyAvg: user.monthlyAvg,
           yearlyAvg: user.yearlyAvg,
+          weeklyTotal,
+          monthlyTotal,
+          yearlyTotal,
+          totalsByCategory,
         };
         // SUCCESSFUL REQUEST
         res.status(200);

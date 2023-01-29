@@ -42,6 +42,9 @@ function Dashboard() {
               categories: info.categories,
               monthlyAvg: info.monthlyAvg,
               yearlyAvg: info.yearlyAvg,
+              weeklyTotal: info.weeklyTotal,
+              monthlyTotal: info.monthlyTotal,
+              yearlyTotal: info.yearlyTotal,
             };
           });
         } else {
@@ -86,9 +89,9 @@ function Dashboard() {
         <hr />
         <div className="greybox">
           <ul className="infoList">
-            <li>Semana actual:</li>
-            <li>Mes actual:</li>
-            <li>Año actual:</li>
+            <li>Semana actual: ${data.weeklyTotal}</li>
+            <li>Mes actual: ${data.monthlyTotal}</li>
+            <li>Año actual: ${data.yearlyTotal}</li>
             <li>Exceso:</li>
             <li>Gasto mensual promedio: ${data.monthlyAvg}</li>
             <li>Gasto anual promedio: ${data.yearlyAvg}</li>

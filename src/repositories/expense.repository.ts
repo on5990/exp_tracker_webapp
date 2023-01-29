@@ -10,7 +10,9 @@ async function getOne(id: string) {
 // FIND EXPENSES
 async function getAll(userId: string) {
   try {
-    const expenses = await Expense.find({ _userId: userId }).exec();
+    const expenses = await Expense.find({ _userId: userId })
+      .sort({ spentAt: -1 })
+      .exec();
     return expenses;
   } catch (error) {
     console.log(error);
