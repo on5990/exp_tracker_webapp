@@ -157,7 +157,7 @@ function AddExpense() {
                 <option value="">{""}</option>
                 {data.categories?.map((cat) => {
                   return (
-                    <option key={cat.id} value={cat._id}>
+                    <option key={cat._id} value={cat._id}>
                       {cat.name}
                     </option>
                   );

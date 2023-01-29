@@ -29,8 +29,6 @@ function EditExpense({ _id }) {
   });
   useEffect(() => {
     const exp = getHelpers.getById(_id, data.expenses);
-
-    console.log("EDITTT", exp);
     setInput((prev) => {
       return {
         ...prev,
@@ -98,7 +96,6 @@ function EditExpense({ _id }) {
     e.preventDefault();
     const pass = checkErrors();
     const submitInput = async () => {
-      console.log("PASS", input);
       const response = await fetch(`/api/expense/${_id}`, {
         method: "PUT",
         headers: {

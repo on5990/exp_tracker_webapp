@@ -61,8 +61,26 @@ function calcYearlyTotal(expenses: Array<any>) {
 
 // PENDIENTE
 function calcTotalByCat(expenses: Array<any>) {
-  // classify expenses by category
-  // calculate total for each group
+  try {
+    let classifiedExpenses = expenses.reduce((acc, current) => {
+      if (!acc[current._categoryId]) {
+        acc[current._categoryId] = {
+          _categoryId: current._categoryId,
+          expenses: [],
+          total: 0,
+        };
+      }
+      acc[current._categoryId].expenses.push(current);
+      acc[current._categoryId] = {
+        ...acc[current._categoryId],
+        total: acc[current._categoryId].total + current.sum,
+      };
+      return acc;
+    }, {});
+    return Object.values(classifiedExpenses);
+  } catch (error) {
+    console.log(error);
+  }
 }
 // PENDIENTE
 function calcTotalExcess(budgets: Array<any>) {

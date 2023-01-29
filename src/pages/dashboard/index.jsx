@@ -4,8 +4,9 @@ import AddExpense from "../../components/expense/AddExpense";
 import ExpenseTable from "../../components/expense/ExpenseTable";
 import FilterExpense from "../../components/expense/FilterExpense";
 import SwitchBtn from "../../components/expense/SwitchBtn";
+import TotalTable from "../../components/expense/TotalTable";
 import MainLayout from "../../components/layout/MainLayout";
-import { CATEGORY } from "../../global/constants";
+import { CATEGORY, SPECIFIC } from "../../global/constants";
 import getHelpers from "../../lib/frontendHelpers/getHelpers";
 
 export const ExpenseContext = React.createContext();
@@ -23,7 +24,7 @@ function Dashboard() {
     // Selected time expression
     time: "",
     // List of expenses or list of totals by category
-    showType: "",
+    showType: SPECIFIC,
   });
   const getRequestSent = useRef(false);
   // const sortByParams = useRef(false);
@@ -46,6 +47,7 @@ function Dashboard() {
               weeklyTotal: info.weeklyTotal,
               monthlyTotal: info.monthlyTotal,
               yearlyTotal: info.yearlyTotal,
+              totalsByCategory: info.totalsByCategory,
             };
           });
         } else {
@@ -127,7 +129,8 @@ function Dashboard() {
             setParameters={setParameters}
           />
         </div>
-        <ExpenseTable data={data} />
+        {parameters.showType === SPECIFIC && <ExpenseTable data={data} />}
+        {parameters.showType === CATEGORY && <TotalTable data={data} />}
       </MainLayout>
     </ExpenseContext.Provider>
   );
