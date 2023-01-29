@@ -40,7 +40,6 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
         const output = {
           expenses,
           categories,
-          weeklyAvg: user.weeklyAvg,
           monthlyAvg: user.monthlyAvg,
           yearlyAvg: user.yearlyAvg,
         };

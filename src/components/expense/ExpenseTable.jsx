@@ -1,6 +1,7 @@
 import React from "react";
 import DeleteExpense from "./DeleteExpense";
 import EditExpense from "./EditExpense";
+import formatHelpers from "../../lib/frontendHelpers/formatHelpers";
 
 const head = [
   { id: 1, name: "Descripción" },
@@ -9,38 +10,8 @@ const head = [
   { id: 4, name: "Categoría" },
   { id: 5, name: "" },
 ];
-const content = [
-  {
-    id: 1,
-    description: "Descripción...",
-    amount: "$100",
-    date: "05-01-2023",
-    category: "Abarrotes",
-  },
-  {
-    id: 2,
-    description: "Descripción...",
-    amount: "$100",
-    date: "05-01-2023",
-    category: "Abarrotes",
-  },
-  {
-    id: 3,
-    description: "Descripción...",
-    amount: "$100",
-    date: "05-01-2023",
-    category: "Abarrotes",
-  },
-  {
-    id: 4,
-    description: "Descripción...",
-    amount: "$100",
-    date: "05-01-2023",
-    category: "Abarrotes",
-  },
-];
 
-function ExpenseTable() {
+function ExpenseTable({ data }) {
   return (
     <>
       <div className="tableContainer">
@@ -57,12 +28,14 @@ function ExpenseTable() {
             </tr>
           </thead>
           <tbody>
-            {content.map((item) => {
+            {data.expenses?.map((item) => {
               return (
-                <tr className="tableTr" key={item.id}>
+                <tr className="tableTr" key={item._id}>
                   <td className="tableTd">{item.description}</td>
-                  <td className="tableTd">{item.amount}</td>
-                  <td className="tableTd">{item.date}</td>
+                  <td className="tableTd">{item.sum}</td>
+                  <td className="tableTd">
+                    {formatHelpers.formatTime(item.spentAt)}
+                  </td>
                   <td className="tableTd">{item.category}</td>
                   <td className="tableTd">
                     <div className="cellBtnDiv">

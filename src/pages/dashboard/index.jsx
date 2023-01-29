@@ -22,7 +22,6 @@ function Dashboard() {
   const [data, setData] = useState({
     expenses: [],
     categories: [],
-    weeklyAvg: null,
     monthlyAvg: null,
     yearlyAvg: null,
   });
@@ -51,7 +50,6 @@ function Dashboard() {
               ...prev,
               expenses: info.expenses,
               categories: info.categories,
-              weeklyAvg: info.weeklyAvg,
               monthlyAvg: info.monthlyAvg,
               yearlyAvg: info.yearlyAvg,
             };
@@ -93,8 +91,8 @@ function Dashboard() {
             <li>Mes actual:</li>
             <li>Año actual:</li>
             <li>Exceso:</li>
-            <li>Gasto mensual promedio:</li>
-            <li>Gasto anual promedio:</li>
+            <li>Gasto mensual promedio: ${data.monthlyAvg}</li>
+            <li>Gasto anual promedio: ${data.yearlyAvg}</li>
           </ul>
         </div>
         <div className="greybox">
@@ -126,7 +124,7 @@ function Dashboard() {
             setParameters={setParameters}
           />
         </div>
-        <ExpenseTable />
+        <ExpenseTable data={data} />
       </MainLayout>
     </>
   );
