@@ -33,7 +33,7 @@ function ExpenseTable({ data }) {
               return (
                 <tr className="tableTr" key={item._id}>
                   <td className="tableTd">{item.description}</td>
-                  <td className="tableTd">{item.sum}</td>
+                  <td className="tableTd">${item.sum}</td>
                   <td className="tableTd">
                     {formatHelpers.formatTime(item.spentAt)}
                   </td>

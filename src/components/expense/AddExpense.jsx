@@ -6,34 +6,34 @@ import moment from "moment/moment";
 import "moment/locale/es";
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
 
-const categories = [
-  { id: "1", label: "A", value: "A" },
-  { id: "2", label: "B", value: "B" },
-  { id: "3", label: "C", value: "C" },
-  { id: "4", label: "D", value: "D" },
-  { id: "5", label: "D", value: "D" },
-  { id: "6", label: "D", value: "D" },
-  { id: "7", label: "D", value: "D" },
-  { id: "8", label: "D", value: "D" },
-  { id: "9", label: "D", value: "D" },
-  { id: "10", label: "D", value: "D" },
-  { id: "11", label: "D", value: "D" },
-  { id: "12", label: "D", value: "D" },
-  { id: "13", label: "D", value: "D" },
-  { id: "14", label: "D", value: "D" },
-  { id: "15", label: "D", value: "D" },
-  { id: "16", label: "D", value: "D" },
-  { id: "17", label: "D", value: "D" },
-  { id: "18", label: "D", value: "D" },
-  { id: "19", label: "D", value: "D" },
-  { id: "20", label: "D", value: "D" },
-  { id: "21", label: "D", value: "D" },
-  { id: "22", label: "D", value: "D" },
-];
+// const categories = [
+//   { id: "1", label: "A", value: "A" },
+//   { id: "2", label: "B", value: "B" },
+//   { id: "3", label: "C", value: "C" },
+//   { id: "4", label: "D", value: "D" },
+//   { id: "5", label: "D", value: "D" },
+//   { id: "6", label: "D", value: "D" },
+//   { id: "7", label: "D", value: "D" },
+//   { id: "8", label: "D", value: "D" },
+//   { id: "9", label: "D", value: "D" },
+//   { id: "10", label: "D", value: "D" },
+//   { id: "11", label: "D", value: "D" },
+//   { id: "12", label: "D", value: "D" },
+//   { id: "13", label: "D", value: "D" },
+//   { id: "14", label: "D", value: "D" },
+//   { id: "15", label: "D", value: "D" },
+//   { id: "16", label: "D", value: "D" },
+//   { id: "17", label: "D", value: "D" },
+//   { id: "18", label: "D", value: "D" },
+//   { id: "19", label: "D", value: "D" },
+//   { id: "20", label: "D", value: "D" },
+//   { id: "21", label: "D", value: "D" },
+//   { id: "22", label: "D", value: "D" },
+// ];
 
-function AddExpense() {
+function AddExpense({ setData, data }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [data, setData] = useState({
+  const [input, setInput] = useState({
     description: "",
     sum: "",
     spentAt: new Date(),
@@ -50,7 +50,7 @@ function AddExpense() {
   function closeModal(e) {
     e.preventDefault();
     setIsOpen(false);
-    setData((prev) => {
+    setInput((prev) => {
       return {
         ...prev,
         description: "",
@@ -70,24 +70,24 @@ function AddExpense() {
   }
   function checkErrors() {
     let pass = true;
-    if (data.description === "") {
+    if (input.description === "") {
       pass = false;
       setErrors((prev) => {
         return { ...prev, description: "Este campo es requerido" };
       });
     }
-    if (data.sum === "") {
+    if (input.sum === "") {
       pass = false;
       setErrors((prev) => {
         return { ...prev, sum: "Este campo es requerido" };
       });
-    } else if (!formatHelpers.validAmount(data.sum)) {
+    } else if (!formatHelpers.validAmount(input.sum)) {
       pass = false;
       setErrors((prev) => {
         return { ...prev, sum: "Debe ingresar un número positivo" };
       });
     }
-    if (data._categoryId === "") {
+    if (input._categoryId === "") {
       pass = false;
       setErrors((prev) => {
         return { ...prev, _categoryId: "Este campo es requerido" };
@@ -96,7 +96,7 @@ function AddExpense() {
     return pass;
   }
   function handleInputChange(e) {
-    setData((prev) => {
+    setInput((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
     if (errors[e.target.name] !== "") {
@@ -108,11 +108,21 @@ function AddExpense() {
   function handleSubmit(e) {
     e.preventDefault();
     const pass = checkErrors();
-    const submitData = async () => {
-      console.log("PASS", data);
+    const submitInput = async () => {
+      // console.log("PASS", input);
+      const response = await fetch("/api/expense", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(input),
+      });
+      console.log(await response.json());
+      if (response.ok) {
+      } else {
+        throw new Error(`Error: ${response.status}`);
+      }
     };
     if (pass) {
-      submitData();
+      submitInput();
       closeModal(e);
     }
   }
@@ -134,13 +144,15 @@ function AddExpense() {
             name="description"
             maxLength={200}
             onChange={handleInputChange}
-            value={data.description}
+            value={input.description}
           />
           <div className="paragraphDiv">
             {errors.description && (
               <p className="error">{errors.description}</p>
             )}
-            <p className="charCounter">{`${data.description.length}/${200}`}</p>
+            <p className="charCounter">{`${
+              input.description.length
+            }/${200}`}</p>
           </div>
           <div className="modalFlexDiv">
             <div className="modalHalfDiv">
@@ -150,26 +162,26 @@ function AddExpense() {
                 name="sum"
                 maxLength={20}
                 onChange={handleInputChange}
-                value={data.sum}
+                value={input.sum}
               />
               <br />
               <div className="paragraphDiv">
                 {errors.sum && <p className="error">{errors.sum}</p>}
-                <p className="charCounter">{`${data.sum.length}/${20}`}</p>
+                <p className="charCounter">{`${input.sum.length}/${20}`}</p>
               </div>
             </div>
             <div className="modalHalfDiv lastHalf">
               <label htmlFor="_categoryId">Categoría</label>
               <select
                 name="_categoryId"
-                value={data._categoryId}
+                value={input._categoryId}
                 onChange={handleInputChange}
               >
                 <option value="">{""}</option>
-                {categories.map((cat) => {
+                {data.categories?.map((cat) => {
                   return (
-                    <option key={cat.id} value={cat.id}>
-                      {cat.label}
+                    <option key={cat.id} value={cat._id}>
+                      {cat.name}
                     </option>
                   );
                 })}
@@ -185,12 +197,12 @@ function AddExpense() {
             <Datetime
               name="spentAt"
               onChange={(date) =>
-                setData({
-                  ...data,
+                setInput({
+                  ...input,
                   spentAt: new Date(date._d),
                 })
               }
-              value={data.spentAt}
+              value={input.spentAt}
             />
           </div>
           <div className="outerBtnBox">

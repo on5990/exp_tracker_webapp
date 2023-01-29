@@ -8,16 +8,6 @@ import MainLayout from "../../components/layout/MainLayout";
 import { CATEGORY } from "../../global/constants";
 import getHelpers from "../../lib/frontendHelpers/getHelpers";
 
-const categories = [
-  { _id: "1", isDefault: true, name: "Abarrotes" },
-  { _id: "2", isDefault: true, name: "Verduras" },
-  { _id: "3", isDefault: true, name: "Cuentas" },
-  { _id: "4", isDefault: true, name: "Transporte" },
-  { _id: "5", isDefault: true, name: "Viajes" },
-  { _id: "6", isDefault: true, name: "Médico" },
-  { _id: "7", isDefault: true, name: "Otros" },
-];
-
 function Dashboard() {
   const [data, setData] = useState({
     expenses: [],
@@ -34,10 +24,10 @@ function Dashboard() {
     // List of expenses or list of totals by category
     showType: "",
   });
-  const useEffectCalled = useRef(false);
+  const getRequestSent = useRef(false);
+  // const sortByParams = useRef(false);
   useEffect(() => {
-    if (!useEffectCalled.current) {
-      console.log("CALLING USE EFFECT");
+    if (!getRequestSent.current) {
       const getData = async () => {
         let response = await fetch(`/api/expense`, {
           method: "GET",
@@ -59,9 +49,18 @@ function Dashboard() {
         }
       };
       getData();
-      useEffectCalled.current = true;
+      getRequestSent.current = true;
     }
   }, []);
+  useEffect(() => {
+    // if (!sortByParams.current) {
+    //   console.log("SORTING EXPENSE");
+    //   sortByParams.current = true;
+    // } else {
+    //   console.log("SORTING CANCELLED");
+    //   sortByParams.current = false;
+    // }
+  }, [parameters]);
   useEffect(() => {
     if (parameters.showType === CATEGORY) {
       setParameters((prev) => {
@@ -117,7 +116,7 @@ function Dashboard() {
           </div>
         </div>
         <div className="optionDiv">
-          <AddExpense />
+          <AddExpense data={data} setData={setData} />
           <SwitchBtn setParameters={setParameters} />
           <FilterExpense
             parameters={parameters}
