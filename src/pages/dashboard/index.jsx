@@ -128,7 +128,7 @@ function Dashboard() {
                   onClick={handleCatClick}
                 >
                   <p>{item.name}</p>
-                  {item.isDefault && <DeleteCategory />}
+                  {!item.isDefault && <DeleteCategory _id={item._id} />}
                 </button>
               );
             })}

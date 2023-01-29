@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { ExpenseContext } from "../../pages/dashboard";
 import Modal from "../modal/Modal";
 
-function DeleteCategory() {
+function DeleteCategory({ _id }) {
+  const { setData } = useContext(ExpenseContext);
   const [isOpen, setIsOpen] = useState(false);
   function openModal() {
     setIsOpen(true);
@@ -13,10 +15,21 @@ function DeleteCategory() {
   function handleSubmit(e) {
     e.preventDefault();
     const sendRequest = async () => {
-      console.log("DELETE CATEGORY");
-      closeModal(e);
+      console.log("DELETE CATEGORY", _id);
+      const response = await fetch(`/api/category/${_id}`, {
+        method: "DELETE",
+      });
+      const content = await response.json();
+      if (response.ok) {
+        setData((prev) => {
+          return { ...prev, categories: content.data.categories };
+        });
+      } else {
+        console.log(content);
+      }
     };
     sendRequest();
+    closeModal(e);
   }
   return (
     <>
