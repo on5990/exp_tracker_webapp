@@ -263,7 +263,7 @@
   background-color: #303333;
   width: auto;
   height: 30px;
-  border-radius: 5px;
+  border-radius: 8px;
   margin-right: 0.5vw;
   margin-top: 1vh;
   color: #eeeeee;
@@ -285,6 +285,11 @@
 }
 .category .catInnerBtn {
   font-family: "Lusitana";
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: #303333;
   color: #eeeeee;
   font-weight: bold;

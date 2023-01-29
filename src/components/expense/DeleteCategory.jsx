@@ -33,9 +33,9 @@ function DeleteCategory({ _id }) {
   }
   return (
     <>
-      <button className="catInnerBtn" onClick={openModal}>
+      <div className="catInnerBtn" onClick={openModal}>
         X
-      </button>
+      </div>
       <Modal
         title={"Eliminar categoría"}
         isOpen={isOpen}

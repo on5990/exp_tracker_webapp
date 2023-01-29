@@ -3,7 +3,7 @@
   background-color: $dark-2;
   width: auto;
   height: 30px;
-  border-radius: 5px;
+  border-radius: 8px;
   margin-right: 0.5vw;
   margin-top: 1vh;
   color: $light-1;
@@ -25,6 +25,11 @@
   }
   .catInnerBtn {
     font-family: $font-1;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: $dark-2;
     color: $light-1;
     font-weight: bold;

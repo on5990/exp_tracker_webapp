@@ -92,7 +92,8 @@ function Dashboard() {
     }
   }, [parameters.showType]);
   function handleCatClick(e) {
-    const jsonData = JSON.parse(e.currentTarget.value);
+    const strData = e.currentTarget.getAttribute("data-value");
+    const jsonData = JSON.parse(strData);
     setParameters((prev) => {
       return { ...prev, category: jsonData };
     });
@@ -118,10 +119,10 @@ function Dashboard() {
             <p>Categorías:</p>
             {data.categories.map((item) => {
               return (
-                <button
-                  type="button"
+                <div
+                  // type="button"
                   key={item._id}
-                  value={JSON.stringify(item)}
+                  data-value={JSON.stringify(item)}
                   className={`category ${
                     parameters.category._id === item._id ? "activeCategory" : ""
                   }`}
@@ -129,7 +130,7 @@ function Dashboard() {
                 >
                   <p>{item.name}</p>
                   {!item.isDefault && <DeleteCategory _id={item._id} />}
-                </button>
+                </div>
               );
             })}
             <AddCategory setData={setData} />
