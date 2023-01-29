@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import DeleteExpense from "./DeleteExpense";
 import EditExpense from "./EditExpense";
 import formatHelpers from "../../lib/frontendHelpers/formatHelpers";
 import getHelpers from "../../lib/frontendHelpers/getHelpers";
+import { ExpenseContext } from "../../pages/dashboard";
+import { CATEGORY } from "../../global/constants";
 
 const head = [
   { id: 1, name: "Descripción" },
@@ -12,7 +14,22 @@ const head = [
   { id: 5, name: "" },
 ];
 
-function ExpenseTable({ data }) {
+function ExpenseTable() {
+  const { data, parameters } = useContext(ExpenseContext);
+  const { dataToShow, setDataToShow } = useState([]);
+  useEffect(() => {
+    // NOTHING IS SELECTED OR SHOWTYPE === CATEGORY
+    if (
+      parameters.showType === CATEGORY ||
+      (parameters.category?._id === "" && parameters.timeType === "")
+    ) {
+      console.log("NO PARAMETERS");
+    }
+    // IF ONLY CATEGORY IS SELECTED
+    // IF ONLY TIME IS SELECTED
+    // IF BOTH CATEGORY AND TIME ARE SELECTED
+    console.log("PARAMS CHANGED");
+  }, [parameters]);
   return (
     <>
       <div className="tableContainer">

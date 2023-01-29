@@ -29,6 +29,18 @@ function Dashboard() {
   const getRequestSent = useRef(false);
   // const sortByParams = useRef(false);
   useEffect(() => {
+    if (parameters.showType === CATEGORY) {
+      setParameters((prev) => {
+        return {
+          ...prev,
+          category: { _id: "", isDefault: true, name: "" },
+          timeType: "",
+          time: "",
+        };
+      });
+    }
+  }, [parameters]);
+  useEffect(() => {
     if (!getRequestSent.current) {
       const getData = async () => {
         let response = await fetch(`/api/expense`, {
@@ -51,7 +63,7 @@ function Dashboard() {
             };
           });
         } else {
-          throw new Error(`Error: ${response.status}`);
+          console.log(response);
         }
       };
       getData();
@@ -86,7 +98,7 @@ function Dashboard() {
   }
   // console.log(data);
   return (
-    <ExpenseContext.Provider value={{ setData, data }}>
+    <ExpenseContext.Provider value={{ setData, data, parameters }}>
       <MainLayout>
         <h1 className="mainTitle">Gastos</h1>
         <hr />

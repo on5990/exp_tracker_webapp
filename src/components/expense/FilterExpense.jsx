@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { filterTypes, MONTH, YEAR } from "./const/const";
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
+import { CATEGORY } from "../../global/constants";
 
 const currentYear = new Date().getFullYear().toString();
 const currentMonth = new Date().getMonth();
@@ -11,7 +12,18 @@ const monthsArray = formatHelpers.generateMonthArray();
 function FilterExpense({ parameters, setParameters }) {
   const [array, setArray] = useState([]);
   useEffect(() => {
-    if (parameters.timeType === YEAR) {
+    if (parameters.showType === CATEGORY) {
+      setParameters((prev) => {
+        return { ...prev, time: "", timeType: "" };
+      });
+    }
+  }, [parameters.time]);
+  useEffect(() => {
+    if (parameters.showType === CATEGORY) {
+      setParameters((prev) => {
+        return { ...prev, time: "", timeType: "" };
+      });
+    } else if (parameters.timeType === YEAR) {
       setArray(yearsArray);
       setParameters((prev) => {
         return { ...prev, time: currentYear };
