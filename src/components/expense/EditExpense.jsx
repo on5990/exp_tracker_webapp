@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Modal from "../modal/Modal";
 import Datetime from "react-datetime";
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
+import { ExpenseContext } from "../../pages/dashboard";
+import getHelpers from "../../lib/frontendHelpers/getHelpers";
 
 const categories = [
   { id: "1", label: "A", value: "A" },
@@ -10,7 +12,9 @@ const categories = [
   { id: "4", label: "D", value: "D" },
 ];
 
-function EditExpense() {
+function EditExpense({ _id }) {
+  const { setData, data } = useContext(ExpenseContext);
+  // console.log("EDIT EXPENSE", data);
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState({
     description: "",
@@ -23,6 +27,20 @@ function EditExpense() {
     sum: "",
     _categoryId: "",
   });
+  useEffect(() => {
+    const exp = getHelpers.getById(_id, data.expenses);
+
+    console.log("EDITTT", exp);
+    setInput((prev) => {
+      return {
+        ...prev,
+        description: exp.description,
+        sum: exp.sum,
+        spentAt: new Date(exp.spentAt),
+        _categoryId: exp._categoryId,
+      };
+    });
+  }, []);
   function openModal() {
     setIsOpen(true);
   }
@@ -81,6 +99,18 @@ function EditExpense() {
     const pass = checkErrors();
     const submitInput = async () => {
       console.log("PASS", input);
+      const response = await fetch(`/api/expense/${_id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(input),
+      });
+      console.log(await response.json());
+      if (response.ok) {
+      } else {
+        throw new Error(`Error: ${response.status}`);
+      }
     };
     if (pass) {
       submitInput();
@@ -137,10 +167,10 @@ function EditExpense() {
                 onChange={handleInputChange}
               >
                 <option value="">{""}</option>
-                {categories.map((cat) => {
+                {data.categories.map((cat) => {
                   return (
-                    <option key={cat.id} value={cat.id}>
-                      {cat.label}
+                    <option key={cat._id} value={cat._id}>
+                      {cat.name}
                     </option>
                   );
                 })}

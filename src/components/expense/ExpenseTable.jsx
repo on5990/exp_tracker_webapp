@@ -47,8 +47,8 @@ function ExpenseTable({ data }) {
                     <div className="cellBtnDiv">
                       <button>Subir</button>
                       <button>Descargar</button>
-                      <EditExpense />
-                      <DeleteExpense />
+                      <EditExpense _id={item._id} />
+                      <DeleteExpense _id={item._id} />
                     </div>
                   </td>
                 </tr>

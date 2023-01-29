@@ -8,6 +8,7 @@ import MainLayout from "../../components/layout/MainLayout";
 import { CATEGORY } from "../../global/constants";
 import getHelpers from "../../lib/frontendHelpers/getHelpers";
 
+export const ExpenseContext = React.createContext();
 function Dashboard() {
   const [data, setData] = useState({
     expenses: [],
@@ -83,7 +84,7 @@ function Dashboard() {
   }
   // console.log(data);
   return (
-    <>
+    <ExpenseContext.Provider value={{ setData, data }}>
       <MainLayout>
         <h1 className="mainTitle">Gastos</h1>
         <hr />
@@ -128,7 +129,7 @@ function Dashboard() {
         </div>
         <ExpenseTable data={data} />
       </MainLayout>
-    </>
+    </ExpenseContext.Provider>
   );
 }
 export default Dashboard;

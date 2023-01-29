@@ -1,37 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
 import Modal from "../modal/Modal";
 import Datetime from "react-datetime";
 import moment from "moment/moment";
 import "moment/locale/es";
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
+import { ExpenseContext } from "../../pages/dashboard";
 
-// const categories = [
-//   { id: "1", label: "A", value: "A" },
-//   { id: "2", label: "B", value: "B" },
-//   { id: "3", label: "C", value: "C" },
-//   { id: "4", label: "D", value: "D" },
-//   { id: "5", label: "D", value: "D" },
-//   { id: "6", label: "D", value: "D" },
-//   { id: "7", label: "D", value: "D" },
-//   { id: "8", label: "D", value: "D" },
-//   { id: "9", label: "D", value: "D" },
-//   { id: "10", label: "D", value: "D" },
-//   { id: "11", label: "D", value: "D" },
-//   { id: "12", label: "D", value: "D" },
-//   { id: "13", label: "D", value: "D" },
-//   { id: "14", label: "D", value: "D" },
-//   { id: "15", label: "D", value: "D" },
-//   { id: "16", label: "D", value: "D" },
-//   { id: "17", label: "D", value: "D" },
-//   { id: "18", label: "D", value: "D" },
-//   { id: "19", label: "D", value: "D" },
-//   { id: "20", label: "D", value: "D" },
-//   { id: "21", label: "D", value: "D" },
-//   { id: "22", label: "D", value: "D" },
-// ];
-
-function AddExpense({ setData, data }) {
+function AddExpense() {
+  const { setData, data } = useContext(ExpenseContext);
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState({
     description: "",
