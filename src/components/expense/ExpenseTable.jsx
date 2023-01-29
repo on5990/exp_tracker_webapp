@@ -4,7 +4,8 @@ import EditExpense from "./EditExpense";
 import formatHelpers from "../../lib/frontendHelpers/formatHelpers";
 import getHelpers from "../../lib/frontendHelpers/getHelpers";
 import { ExpenseContext } from "../../pages/dashboard";
-import { CATEGORY } from "../../global/constants";
+import expenseClassification from "../../lib/frontendHelpers/expenseClassification";
+import { TYPE_CATEGORY } from "../../global/constants";
 
 const head = [
   { id: 1, name: "Descripción" },
@@ -16,20 +17,54 @@ const head = [
 
 function ExpenseTable() {
   const { data, parameters } = useContext(ExpenseContext);
-  const { dataToShow, setDataToShow } = useState([]);
+  const [dataToShow, setDataToShow] = useState([]);
   useEffect(() => {
     // NOTHING IS SELECTED OR SHOWTYPE === CATEGORY
     if (
-      parameters.showType === CATEGORY ||
+      parameters.showType === TYPE_CATEGORY ||
       (parameters.category?._id === "" && parameters.timeType === "")
     ) {
-      console.log("NO PARAMETERS");
+      setDataToShow(data.expenses);
+    }
+    // IF BOTH CATEGORY AND TIME ARE SELECTED
+    if (
+      parameters.timeType !== "" &&
+      parameters.time !== "" &&
+      parameters.category?._id !== ""
+    ) {
+      let exp = getHelpers.getPropCustomId(
+        parameters.category?._id,
+        "_categoryId",
+        data.totalsByCategory || [],
+        "expenses"
+      );
+      exp = expenseClassification.classifyByTime(
+        parameters.time,
+        exp,
+        parameters.timeType
+      );
+      setDataToShow(exp);
     }
     // IF ONLY CATEGORY IS SELECTED
+    else if (parameters.category?._id !== "") {
+      const exp = getHelpers.getPropCustomId(
+        parameters.category?._id,
+        "_categoryId",
+        data.totalsByCategory || [],
+        "expenses"
+      );
+      setDataToShow(exp);
+    }
     // IF ONLY TIME IS SELECTED
-    // IF BOTH CATEGORY AND TIME ARE SELECTED
-    console.log("PARAMS CHANGED");
-  }, [parameters]);
+    else if (parameters.timeType !== "" && parameters.time !== "") {
+      const exp = expenseClassification.classifyByTime(
+        parameters.time,
+        data.expenses,
+        parameters.timeType
+      );
+      setDataToShow(exp);
+    }
+  }, [data.expenses, parameters]);
   return (
     <>
       <div className="tableContainer">
@@ -46,31 +81,32 @@ function ExpenseTable() {
             </tr>
           </thead>
           <tbody>
-            {data.expenses?.map((item) => {
-              return (
-                <tr className="tableTr" key={item._id}>
-                  <td className="tableTd">{item.description}</td>
-                  <td className="tableTd">${item.sum}</td>
-                  <td className="tableTd">
-                    {formatHelpers.formatTime(item.spentAt)}
-                  </td>
-                  <td className="tableTd">
-                    {
-                      getHelpers.getById(item._categoryId, data.categories)
-                        ?.name
-                    }
-                  </td>
-                  <td className="tableTd">
-                    <div className="cellBtnDiv">
-                      <button>Subir</button>
-                      <button>Descargar</button>
-                      <EditExpense _id={item._id} />
-                      <DeleteExpense _id={item._id} />
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
+            {dataToShow &&
+              dataToShow.map((item) => {
+                return (
+                  <tr className="tableTr" key={item._id}>
+                    <td className="tableTd">{item.description}</td>
+                    <td className="tableTd">${item.sum}</td>
+                    <td className="tableTd">
+                      {formatHelpers.formatTime(item.spentAt)}
+                    </td>
+                    <td className="tableTd">
+                      {
+                        getHelpers.getById(item._categoryId, data.categories)
+                          ?.name
+                      }
+                    </td>
+                    <td className="tableTd">
+                      <div className="cellBtnDiv">
+                        <button>Subir</button>
+                        <button>Descargar</button>
+                        <EditExpense _id={item._id} />
+                        <DeleteExpense _id={item._id} />
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
       </div>

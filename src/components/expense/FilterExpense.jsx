@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { filterTypes, MONTH, YEAR } from "./const/const";
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
-import { CATEGORY, SPECIFIC } from "../../global/constants";
+import {
+  TYPE_CATEGORY,
+  filterTypes,
+  SPECIFIC,
+  YEAR,
+  MONTH,
+} from "../../global/constants";
 
 const currentYear = new Date().getFullYear().toString();
 const currentMonth = new Date().getMonth();
@@ -12,15 +17,8 @@ const monthsArray = formatHelpers.generateMonthArray();
 function FilterExpense({ parameters, setParameters }) {
   const [array, setArray] = useState([]);
   const [disable, setDisable] = useState(false);
-  // useEffect(() => {
-  //   if (parameters.showType === CATEGORY) {
-  //     setParameters((prev) => {
-  //       return { ...prev, time: "", timeType: "" };
-  //     });
-  //   }
-  // }, [parameters.time]);
   useEffect(() => {
-    if (parameters.showType === CATEGORY) {
+    if (parameters.showType === TYPE_CATEGORY) {
       setDisable(true);
     }
     if (parameters.showType === SPECIFIC) {
@@ -54,7 +52,7 @@ function FilterExpense({ parameters, setParameters }) {
         <div className="filterItem">
           <p>Filtrar</p>
           <select
-            disabled={disable && "true"}
+            disabled={disable}
             name="time"
             value={parameters.time}
             onChange={handleChange}
@@ -67,20 +65,12 @@ function FilterExpense({ parameters, setParameters }) {
                 </option>
               );
             })}
-            {/* {parameters.timeType === YEAR &&
-              yearsArray.map((item) => {
-                return (
-                  <option key={item.id} value={item.value}>
-                    {item.label}
-                  </option>
-                );
-              })} */}
           </select>
         </div>
         <div className="filterItem">
           <p>Tipo</p>
           <select
-            disabled={disable && "true"}
+            disabled={disable}
             name="timeType"
             value={parameters.timeType}
             onChange={handleChange}

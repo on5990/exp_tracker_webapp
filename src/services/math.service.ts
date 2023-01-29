@@ -1,5 +1,3 @@
-import expenseClassification from "@/lib/backendHelpers/expenseClassification";
-// PENDIENTE
 function calcWeeklyTotal(expenses: Array<any>) {
   // this week interval
   const now = new Date();
@@ -59,7 +57,6 @@ function calcYearlyTotal(expenses: Array<any>) {
   return total;
 }
 
-// PENDIENTE
 function calcTotalByCat(expenses: Array<any>) {
   try {
     let classifiedExpenses = expenses.reduce((acc, current) => {

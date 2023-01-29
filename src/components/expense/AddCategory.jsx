@@ -52,7 +52,6 @@ function AddCategory() {
       }
     };
     if (category !== "") {
-      console.log("PASS", { name: category });
       sendData();
       setShowForm(false);
       setCategory("");

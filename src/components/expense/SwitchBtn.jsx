@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { CATEGORY, SPECIFIC } from "../../global/constants";
+import { TYPE_CATEGORY, SPECIFIC } from "../../global/constants";
 
 function SwitchBtn({ setParameters }) {
   const [activeBtn, setActiveBtn] = useState(SPECIFIC);
@@ -11,9 +11,9 @@ function SwitchBtn({ setParameters }) {
     });
   }
   function setCategory() {
-    setActiveBtn(CATEGORY);
+    setActiveBtn(TYPE_CATEGORY);
     setParameters((prev) => {
-      return { ...prev, showType: CATEGORY };
+      return { ...prev, showType: TYPE_CATEGORY };
     });
   }
   return (
@@ -26,7 +26,9 @@ function SwitchBtn({ setParameters }) {
           Específico
         </button>
         <button
-          className={activeBtn === CATEGORY ? "buttonStatic" : "buttonIgnored"}
+          className={
+            activeBtn === TYPE_CATEGORY ? "buttonStatic" : "buttonIgnored"
+          }
           onClick={setCategory}
         >
           Total por categoría

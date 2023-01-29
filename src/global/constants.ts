@@ -1,8 +1,9 @@
 const SPECIFIC = "Específico";
 const CATEGORY = "Total por categoría";
-const ST_MONTH = "Mes";
-const ST_YEAR = "Año";
-const ST_WEEK = "Semana";
+const MONTH = "Mes";
+const YEAR = "Año";
+const WEEK = "Semana";
+const TYPE_CATEGORY = "Categoría";
 const MONTHLY_UND = "Monthly-Undefined";
 const YEARLY_UND = "Yearly-Undefined";
 const MONTHLY_FIXED = "Monthly-Fixed";
@@ -21,15 +22,22 @@ const MONTHS = [
   "Noviembre",
   "Diciembre",
 ];
+
+const filterTypes = [
+  { id: 1, label: "Filtrar por mes", value: MONTH },
+  { id: 2, label: "Filtrar por año", value: YEAR },
+];
 export {
   SPECIFIC,
   CATEGORY,
-  ST_MONTH,
-  ST_YEAR,
-  ST_WEEK,
+  MONTH,
+  YEAR,
+  WEEK,
+  TYPE_CATEGORY,
   MONTHLY_FIXED,
   YEARLY_FIXED,
   YEARLY_UND,
   MONTHLY_UND,
   MONTHS,
+  filterTypes,
 };

@@ -7,8 +7,7 @@ import FilterExpense from "../../components/expense/FilterExpense";
 import SwitchBtn from "../../components/expense/SwitchBtn";
 import TotalTable from "../../components/expense/TotalTable";
 import MainLayout from "../../components/layout/MainLayout";
-import { CATEGORY, SPECIFIC } from "../../global/constants";
-import getHelpers from "../../lib/frontendHelpers/getHelpers";
+import { SPECIFIC, TYPE_CATEGORY } from "../../global/constants";
 
 export const ExpenseContext = React.createContext();
 function Dashboard() {
@@ -30,7 +29,7 @@ function Dashboard() {
   const getRequestSent = useRef(false);
   // const sortByParams = useRef(false);
   useEffect(() => {
-    if (parameters.showType === CATEGORY) {
+    if (parameters.showType === TYPE_CATEGORY) {
       setParameters((prev) => {
         return {
           ...prev,
@@ -40,7 +39,7 @@ function Dashboard() {
         };
       });
     }
-  }, [parameters]);
+  }, [parameters.showType]);
   useEffect(() => {
     if (!getRequestSent.current) {
       const getData = async () => {
@@ -71,26 +70,6 @@ function Dashboard() {
       getRequestSent.current = true;
     }
   }, []);
-  useEffect(() => {
-    // if (!sortByParams.current) {
-    //   console.log("SORTING EXPENSE");
-    //   sortByParams.current = true;
-    // } else {
-    //   console.log("SORTING CANCELLED");
-    //   sortByParams.current = false;
-    // }
-  }, [parameters]);
-  useEffect(() => {
-    if (parameters.showType === CATEGORY) {
-      setParameters((prev) => {
-        return {
-          ...prev,
-          timeType: "",
-          category: { _id: "", isDefault: true, name: "" },
-        };
-      });
-    }
-  }, [parameters.showType]);
   function handleCatClick(e) {
     const strData = e.currentTarget.getAttribute("data-value");
     const jsonData = JSON.parse(strData);
@@ -117,16 +96,32 @@ function Dashboard() {
         <div className="greybox">
           <div className="infoList">
             <p>Categorías:</p>
+            <div
+              data-value={JSON.stringify({
+                _id: "",
+                isDefault: true,
+                name: "",
+              })}
+              className={`category ${
+                parameters.category._id === "" ? "activeCategory" : ""
+              }`}
+              onClick={handleCatClick}
+            >
+              <p>Todas</p>
+            </div>
             {data.categories.map((item) => {
               return (
                 <div
-                  // type="button"
+                  disabled={parameters.showType === TYPE_CATEGORY && true}
                   key={item._id}
                   data-value={JSON.stringify(item)}
                   className={`category ${
                     parameters.category._id === item._id ? "activeCategory" : ""
                   }`}
-                  onClick={handleCatClick}
+                  // onClick={handleCatClick}
+                  onClick={
+                    parameters.showType === SPECIFIC ? handleCatClick : () => {}
+                  }
                 >
                   <p>{item.name}</p>
                   {!item.isDefault && <DeleteCategory _id={item._id} />}
@@ -145,18 +140,9 @@ function Dashboard() {
           />
         </div>
         {parameters.showType === SPECIFIC && <ExpenseTable data={data} />}
-        {parameters.showType === CATEGORY && <TotalTable data={data} />}
+        {parameters.showType === TYPE_CATEGORY && <TotalTable data={data} />}
       </MainLayout>
     </ExpenseContext.Provider>
   );
 }
 export default Dashboard;
-// export async function getServerSideProps() {
-//   let data = await fetch(`localhost:3010/api/expense`, {
-//     method: "GET",
-//   });
-//   console.log(data);
-//   return {
-//     props: { data: data },
-//   };
-// }

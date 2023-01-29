@@ -31,7 +31,7 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
         const weeklyTotal = mathService.calcWeeklyTotal(expenses || []);
         const monthlyTotal = mathService.calcMonthlyTotal(expenses || []);
         const yearlyTotal = mathService.calcYearlyTotal(expenses || []);
-        // CALC TOTAL BY CATEGORY
+        // MAKE ARRAY WITH EXPENSES AND TOTAL BY CATEGORY
         const totalsByCategory = mathService.calcTotalByCat(expenses || []);
         console.log("TOTALS BY CATEGORY", totalsByCategory);
         // CALC TOTAL EXCESS BY GETTING THE BUDGET INFO
