@@ -2,6 +2,7 @@ import React from "react";
 import DeleteExpense from "./DeleteExpense";
 import EditExpense from "./EditExpense";
 import formatHelpers from "../../lib/frontendHelpers/formatHelpers";
+import getHelpers from "../../lib/frontendHelpers/getHelpers";
 
 const head = [
   { id: 1, name: "Descripción" },
@@ -36,7 +37,12 @@ function ExpenseTable({ data }) {
                   <td className="tableTd">
                     {formatHelpers.formatTime(item.spentAt)}
                   </td>
-                  <td className="tableTd">{item.category}</td>
+                  <td className="tableTd">
+                    {
+                      getHelpers.getById(item._categoryId, data.categories)
+                        ?.name
+                    }
+                  </td>
                   <td className="tableTd">
                     <div className="cellBtnDiv">
                       <button>Subir</button>
