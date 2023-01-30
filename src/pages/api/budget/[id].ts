@@ -1,3 +1,4 @@
+import { BUDGET_EXCEEDED, BUDGET_OK } from "@/global/constants";
 import budgetValidation from "@/lib/backendHelpers/validations/budget.validation";
 import budgetService from "@/services/budget.service";
 import mongoose from "mongoose";
@@ -27,17 +28,27 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       case "PUT":
         // VALIDATE INPUT FROM FRONTEND
         await budgetValidation.updateSchema.validateAsync(body);
+        // PREPARE DATA
+        const { sum } = body;
+        const state = budget.usedAmount > sum ? BUDGET_EXCEEDED : BUDGET_OK;
+        // UPDATE BUDGET
+        await budgetService.update(id, { sum, state });
+        // GET ALL BUDGETS
+        const budgets = await budgetService.getAll(userId);
         // SUCCESSFUL REQUEST
         res.status(200);
-        return res.json({ success: true, data: "PUT BUDGET" });
+        return res.json({ success: true, data: budgets });
       case "DELETE":
         // DELETE BUDGET
         const dbDelete = await budgetService.remove(id);
+        // GET ALL BUDGETS
+        const _budgets = await budgetService.getAll(userId);
         // SUCCESSFUL REQUEST
         res.status(200);
         return res.json({
           success: true,
-          data: { msg: `${dbDelete._id} was deleted`, budget: dbDelete },
+          msg: `${dbDelete._id} was deleted`,
+          data: _budgets,
         });
       default:
         res.status(404);

@@ -22,7 +22,8 @@ const MONTHS = [
   "Noviembre",
   "Diciembre",
 ];
-
+const BUDGET_OK = "Ok";
+const BUDGET_EXCEEDED = "Excedido";
 const filterTypes = [
   { id: 1, label: "Filtrar por mes", value: MONTH },
   { id: 2, label: "Filtrar por año", value: YEAR },
@@ -40,4 +41,6 @@ export {
   MONTHLY_UND,
   MONTHS,
   filterTypes,
+  BUDGET_OK,
+  BUDGET_EXCEEDED,
 };

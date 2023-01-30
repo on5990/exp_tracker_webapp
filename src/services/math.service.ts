@@ -1,3 +1,5 @@
+import { BUDGET_EXCEEDED, BUDGET_OK } from "@/global/constants";
+
 function calcWeeklyTotal(expenses: Array<any>) {
   // this week interval
   const now = new Date();
@@ -57,7 +59,7 @@ function calcYearlyTotal(expenses: Array<any>) {
   return total;
 }
 
-function calcTotalByCat(expenses: Array<any>) {
+function classifyByCat(expenses: Array<any>) {
   try {
     let classifiedExpenses = expenses.reduce((acc, current) => {
       if (!acc[current._categoryId]) {
@@ -79,8 +81,30 @@ function calcTotalByCat(expenses: Array<any>) {
     console.log(error);
   }
 }
+// CALCULATE AMOUNT USED, AMOUNT AVAILABLE, EXCESS, LAST UPDATE, STATE
+function calcBudgetInfo(expenses: Array<any>, sum: number) {
+  if (expenses.length === 0) {
+    return {
+      usedAmount: 0,
+      lastExpense: null,
+      state: BUDGET_OK,
+    };
+  }
+  const usedAmount = expenses.reduce((acc, current) => {
+    return acc + current.sum;
+  }, 0);
+  // const amountAvailable = usedAmount > sum ? 0 : sum - usedAmount;
+  const excess = usedAmount > sum ? usedAmount - sum : 0;
+  const lastExpense = expenses[0].spentAt;
+  const state = excess === 0 ? BUDGET_OK : BUDGET_EXCEEDED;
+  return {
+    usedAmount,
+    state,
+    lastExpense,
+  };
+}
 // PENDIENTE
-function calcTotalExcess(budgets: Array<any>) {
+function calcTotalExcess(budgets: Array<any>, expenses: Array<any>) {
   // calculate total usedAmount
 }
 // PENDIENTE
@@ -99,8 +123,9 @@ export default {
   calcWeeklyTotal,
   calcMonthlyTotal,
   calcYearlyTotal,
-  calcTotalByCat,
+  classifyByCat,
   calcMonthlyAvg,
   calcYearlyAvg,
   calcTotalExcess,
+  calcBudgetInfo,
 };

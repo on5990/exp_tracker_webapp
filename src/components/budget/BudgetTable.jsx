@@ -1,6 +1,9 @@
-import React from "react";
+import { nanoid } from "nanoid";
+import React, { useContext } from "react";
+import { BudgetContext } from "../../pages/dashboard/budgets";
 import DeleteBudget from "./DeleteBudget";
 import EditBudget from "./EditBudget";
+import formatHelpers from "../../lib/frontendHelpers/formatHelpers";
 
 const head = [
   { id: 1, name: "Categoría" },
@@ -45,6 +48,7 @@ const content = [
   },
 ];
 function BudgetTable() {
+  const { data } = useContext(BudgetContext);
   return (
     <>
       <div className="tableContainer">
@@ -53,7 +57,7 @@ function BudgetTable() {
             <tr className="tableTr">
               {head.map((item) => {
                 return (
-                  <th className="tableTh" key={item.id}>
+                  <th className="tableTh" key={nanoid()}>
                     {item.name}
                   </th>
                 );
@@ -61,20 +65,22 @@ function BudgetTable() {
             </tr>
           </thead>
           <tbody>
-            {content.map((item) => {
+            {data.budgets?.map((item) => {
               return (
-                <tr className="tableTr" key={item.id}>
-                  <td className="tableTd">{item.category}</td>
-                  <td className="tableTd">{item.amount}</td>
-                  <td className="tableTd">{item.spent}</td>
-                  <td className="tableTd">{item.available}</td>
-                  <td className="tableTd">{item.overExpense}</td>
-                  <td className="tableTd">{item.lastUpdate}</td>
+                <tr className="tableTr" key={item._id}>
+                  <td className="tableTd">{item.categoryName}</td>
+                  <td className="tableTd">{item.sum}</td>
+                  <td className="tableTd">{item.usedAmount}</td>
+                  <td className="tableTd">{item.availableAmount}</td>
+                  <td className="tableTd">{item.excessAmount}</td>
+                  <td className="tableTd">
+                    {formatHelpers.formatTime(item.lastExpense)}
+                  </td>
                   <td className="tableTd">{item.state}</td>
                   <td className="tableTd">
                     <div className="cellBtnDiv">
-                      <EditBudget />
-                      <DeleteBudget />
+                      <EditBudget _id={item._id} />
+                      <DeleteBudget _id={item._id} />
                     </div>
                   </td>
                 </tr>

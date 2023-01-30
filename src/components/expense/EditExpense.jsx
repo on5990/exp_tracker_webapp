@@ -5,13 +5,6 @@ import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
 import { ExpenseContext } from "../../pages/dashboard";
 import getHelpers from "../../lib/frontendHelpers/getHelpers";
 
-const categories = [
-  { id: "1", label: "A", value: "A" },
-  { id: "2", label: "B", value: "B" },
-  { id: "3", label: "C", value: "C" },
-  { id: "4", label: "D", value: "D" },
-];
-
 function EditExpense({ _id }) {
   const { setData, data } = useContext(ExpenseContext);
   const [isOpen, setIsOpen] = useState(false);
@@ -27,17 +20,19 @@ function EditExpense({ _id }) {
     _categoryId: "",
   });
   useEffect(() => {
-    const exp = getHelpers.getById(_id, data.expenses);
-    setInput((prev) => {
-      return {
-        ...prev,
-        description: exp.description,
-        sum: exp.sum,
-        spentAt: new Date(exp.spentAt),
-        _categoryId: exp._categoryId,
-      };
-    });
-  }, []);
+    if (isOpen) {
+      const exp = getHelpers.getById(_id, data.expenses);
+      setInput((prev) => {
+        return {
+          ...prev,
+          description: exp.description,
+          sum: exp.sum,
+          spentAt: new Date(exp.spentAt),
+          _categoryId: exp._categoryId,
+        };
+      });
+    }
+  }, [, isOpen]);
   function openModal() {
     setIsOpen(true);
   }

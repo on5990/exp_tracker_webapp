@@ -7,6 +7,12 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
     const payload = headers.payload && JSON.parse(headers.payload as string);
     const userId = payload.id;
     switch (method) {
+      case "GET":
+        // GET CATEGORIES
+        const categories = await categoryService.getAll(userId);
+        // SUCCESSFUL REQUEST
+        res.status(200);
+        return res.json({ success: true, data: { categories } });
       case "POST":
         // VALIDATE DATA FROM FRONTEND
         await categoryValidation.addSchema.validateAsync(body);

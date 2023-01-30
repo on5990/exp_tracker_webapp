@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { BudgetContext } from "../../pages/dashboard/budgets";
 import Modal from "../modal/Modal";
 
-function DeleteBudget() {
+function DeleteBudget({ _id }) {
+  const { data, setData } = useContext(BudgetContext);
   const [isOpen, setIsOpen] = useState(false);
   function openModal() {
     setIsOpen(true);
@@ -12,7 +14,15 @@ function DeleteBudget() {
   }
   function handleSubmit(e) {
     e.preventDefault();
-    const sendRequest = async () => {};
+    const sendRequest = async () => {
+      const response = await fetch(`/api/budget/${_id}`, { method: "DELETE" });
+      const content = await response.json();
+      if (response.ok) {
+        setData(content.data);
+      } else {
+        console.log(content);
+      }
+    };
     sendRequest();
     closeModal(e);
   }

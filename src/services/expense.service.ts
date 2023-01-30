@@ -19,10 +19,10 @@ async function getAll(userId: string) {
   const monthlyTotal = mathService.calcMonthlyTotal(expenses || []);
   const yearlyTotal = mathService.calcYearlyTotal(expenses || []);
   // MAKE ARRAY WITH EXPENSES AND TOTAL BY CATEGORY
-  const totalsByCategory = mathService.calcTotalByCat(expenses || []);
+  const totalsByCategory = mathService.classifyByCat(expenses || []);
   // CALC TOTAL EXCESS BY GETTING THE BUDGET INFO
   const budgets = await budgetRepository.getAll(userId);
-  const excess = mathService.calcTotalExcess(budgets || []);
+  const excess = mathService.calcTotalExcess(budgets || [], expenses || []);
   // PREPARE OUTPUT
   const output = {
     expenses,

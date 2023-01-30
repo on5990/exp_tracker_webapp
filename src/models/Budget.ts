@@ -5,6 +5,7 @@ const budgetSchema = new Schema(
     sum: { type: Number, required: [true, "sum is required"] },
     usedAmount: { type: Number, required: [true, "usedAmount is required"] },
     state: { type: String, required: [true, "state is required"] },
+    lastExpense: { type: Date, required: [true, "lastExpense is required"] },
     _categoryId: {
       type: Schema.Types.ObjectId,
       required: [true, "categoryId is required"],

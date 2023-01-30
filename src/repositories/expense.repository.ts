@@ -18,6 +18,17 @@ async function getAll(userId: string) {
     console.log(error);
   }
 }
+// FIND EXPENSES ASSOCIATED TO A CATEGORY
+async function getByCategory(_userId: string, _categoryId: string) {
+  try {
+    const expenses = await Expense.find({ _userId, _categoryId })
+      .sort({ spentAt: -1 })
+      .exec();
+    return expenses;
+  } catch (error) {
+    console.log(error);
+  }
+}
 // CREATE EXPENSE
 async function create(data: any) {
   try {
@@ -45,4 +56,4 @@ async function remove(id: string) {
     console.log(error);
   }
 }
-export default { getAll, getOne, create, update, remove };
+export default { getAll, getOne, getByCategory, create, update, remove };

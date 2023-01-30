@@ -1,11 +1,22 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Modal from "../modal/Modal";
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
+import { BudgetContext } from "../../pages/dashboard/budgets";
+import getHelpers from "../../lib/frontendHelpers/getHelpers";
 
-function EditBudget() {
+function EditBudget({ _id }) {
+  const { data, setData } = useContext(BudgetContext);
   const [isOpen, setIsOpen] = useState(false);
-  const [data, setData] = useState({ sum: "" });
+  const [input, setInput] = useState({ sum: "" });
   const [errors, setErrors] = useState({ sum: "" });
+  useEffect(() => {
+    if (isOpen) {
+      const budget = getHelpers.getById(_id, data.budgets);
+      setInput((prev) => {
+        return { ...prev, sum: budget.sum };
+      });
+    }
+  }, [, isOpen]);
   function openModal() {
     setIsOpen(true);
   }
@@ -14,16 +25,16 @@ function EditBudget() {
     setErrors((prev) => {
       return { ...prev, sum: "" };
     });
-    setData((prev) => {
+    setInput((prev) => {
       return { ...prev, sum: "" };
     });
     setIsOpen(false);
   }
   function handleInputChange(e) {
-    setData((prev) => {
+    setInput((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
-    if (data[e.target.name] !== "") {
+    if (input[e.target.name] !== "") {
       setErrors((prev) => {
         return { ...prev, [e.target.name]: "" };
       });
@@ -31,12 +42,12 @@ function EditBudget() {
   }
   function checkErrors() {
     let pass = true;
-    if (data.sum === "") {
+    if (input.sum === "") {
       pass = false;
       setErrors((prev) => {
         return { ...prev, sum: "Este campo es requerido" };
       });
-    } else if (!formatHelpers.validAmount(data.sum)) {
+    } else if (!formatHelpers.validAmount(input.sum)) {
       pass = false;
       setErrors((prev) => {
         return { ...prev, sum: "Debe ingresar un número positivo" };
@@ -48,7 +59,19 @@ function EditBudget() {
     e.preventDefault();
     const pass = checkErrors();
     const sendData = async () => {
-      console.log("PASS", data);
+      const response = await fetch(`/api/budget/${_id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(input),
+      });
+      const content = await response.json();
+      if (response.ok) {
+        setData(content.data);
+      } else {
+        console.log(content);
+      }
     };
     if (pass) {
       sendData();
@@ -71,11 +94,13 @@ function EditBudget() {
             name="sum"
             maxLength={20}
             onChange={handleInputChange}
-            value={data.sum}
+            value={input.sum}
           />
           <div className="paragraphDiv">
             {errors.sum && <p className="error">{errors.sum}</p>}
-            <p className="charCounter">{`${data.sum.length}/${20}`}</p>
+            <p className="charCounter">{`${
+              input.sum.toString().length
+            }/${20}`}</p>
           </div>
           <div className="outerBtnBox">
             <div className="innerBtnBox">
