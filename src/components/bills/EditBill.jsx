@@ -1,7 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Modal from "../modal/Modal";
 import Datetime from "react-datetime";
-import { types } from "./const/const";
+import { MONTHLY_UND, types, YEARLY_UND } from "./const/const";
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
 import { BillContext } from "../../pages/dashboard/bills";
 
@@ -23,12 +23,42 @@ function EditBill({ _id }) {
     amount: "",
     payments: "",
   });
+  const [disable, setDisable] = useState({
+    amount: false,
+    payments: false,
+  });
+  useEffect(() => {
+    if (input.type == MONTHLY_UND || input.type === YEARLY_UND) {
+      setDisable((prev) => {
+        return { ...prev, amount: true };
+      });
+      setErrors((prev) => {
+        return { ...prev, amount: "" };
+      });
+    }
+    if (input.firstPayment == null) {
+      setDisable((prev) => {
+        return { ...prev, payments: true };
+      });
+    }
+  }, [, input]);
   function openModal() {
     setIsOpen(true);
   }
   function closeModal(e) {
     e.preventDefault();
     setIsOpen(false);
+    setInput((prev) => {
+      return {
+        ...prev,
+        description: "",
+        sum: "",
+        type: "",
+        firstPayment: null,
+        amount: "",
+        payments: "",
+      };
+    });
     setErrors((prev) => {
       return {
         ...prev,
@@ -38,6 +68,9 @@ function EditBill({ _id }) {
         amount: "",
         payments: "",
       };
+    });
+    setDisable((prev) => {
+      return { ...prev, amount: false, payments: false };
     });
   }
   function handleInputChange(e) {
@@ -76,7 +109,12 @@ function EditBill({ _id }) {
         return { ...prev, amount: "Debe ingresar un número entero positivo" };
       });
     }
-    if (
+    if (input.payments == "" && input.firstPayment != null) {
+      pass = false;
+      setErrors((prev) => {
+        return { ...prev, payments: "Este campo es requerido" };
+      });
+    } else if (
       input.payments !== "" &&
       !formatHelpers.isPositiveInteger(input.payments)
     ) {
@@ -163,22 +201,28 @@ function EditBill({ _id }) {
           </div>
           <label htmlFor="date">{`Fecha del primer pago (Opcional)`}</label>
           <div className="datePickerDiv">
-            <Datetime
-              name="date"
-              onChange={(date) =>
-                setInput({
-                  ...input,
-                  firstPayment: new Date(date._d),
-                })
-              }
-              value={input.firstPayment}
-            />
+            {isOpen && (
+              <Datetime
+                name="date"
+                onChange={(date) =>
+                  setInput({
+                    ...input,
+                    firstPayment: new Date(date._d),
+                  })
+                }
+                value={input.firstPayment}
+              />
+            )}
           </div>
           <div className="modalFlexDiv">
             <div className="modalHalfDiv">
               <label htmlFor="amount">Cantidad de cuotas</label>
               <input
                 type="text"
+                disabled={
+                  (input.type == MONTHLY_UND || input.type === YEARLY_UND) &&
+                  true
+                }
                 placeholder="Opcional"
                 name="amount"
                 maxLength={10}
@@ -195,7 +239,7 @@ function EditBill({ _id }) {
               <label htmlFor="payments">Cantidad de cuotas pagadas</label>
               <input
                 type="text"
-                placeholder="Opcional"
+                disabled={input.firstPayment == null && true}
                 name="payments"
                 maxLength={10}
                 onChange={handleInputChange}
