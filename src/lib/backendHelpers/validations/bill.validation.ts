@@ -12,7 +12,7 @@ const addSchema = Joi.object({
   type: Joi.string()
     .valid(MONTHLY_UND, MONTHLY_FIXED, YEARLY_FIXED, YEARLY_UND)
     .required(),
-  firstPayment: Joi.date(),
+  firstPayment: Joi.any(),
   amount: Joi.number().greater(0),
   payments: Joi.number().min(0),
 });

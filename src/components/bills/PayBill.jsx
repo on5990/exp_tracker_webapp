@@ -1,11 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Modal from "../modal/Modal";
 import Datetime from "react-datetime";
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
+import { BillContext } from "../../pages/dashboard/bills";
 
-function PayBill() {
+function PayBill({ _id }) {
+  const { data, setData } = useContext(BillContext);
   const [isOpen, setIsOpen] = useState(false);
-  const [data, setData] = useState({ sum: "", date: new Date(), periods: "" });
+  const [input, setInput] = useState({
+    sum: "",
+    date: new Date(),
+    periods: "",
+  });
   const [errors, setErrors] = useState({ sum: "", periods: "" });
   function openModal() {
     setIsOpen(true);
@@ -13,7 +19,7 @@ function PayBill() {
   function closeModal(e) {
     e.preventDefault();
     setIsOpen(false);
-    setData((prev) => {
+    setInput((prev) => {
       return { ...prev, sum: "", date: new Date(), periods: "" };
     });
     setErrors((prev) => {
@@ -21,7 +27,7 @@ function PayBill() {
     });
   }
   function handleInputChange(e) {
-    setData((prev) => {
+    setInput((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
     if (e.target.value !== "") {
@@ -32,23 +38,23 @@ function PayBill() {
   }
   function checkErrors() {
     let pass = true;
-    if (data.sum === "") {
+    if (input.sum === "") {
       pass = false;
       setErrors((prev) => {
         return { ...prev, sum: "Este campo es requerido" };
       });
-    } else if (!formatHelpers.validAmount(data.sum)) {
+    } else if (!formatHelpers.validAmount(input.sum)) {
       pass = false;
       setErrors((prev) => {
         return { ...prev, sum: "Debe ingresar un número positivo" };
       });
     }
-    if (data.periods === "") {
+    if (input.periods === "") {
       pass = false;
       setErrors((prev) => {
         return { ...prev, periods: "Este campo es requerido" };
       });
-    } else if (!formatHelpers.isPositiveInteger(data.periods)) {
+    } else if (!formatHelpers.isPositiveInteger(input.periods)) {
       pass = false;
       setErrors((prev) => {
         return { ...prev, periods: "Debe ingresar un número entero positivo" };
@@ -60,7 +66,7 @@ function PayBill() {
     e.preventDefault();
     const pass = checkErrors();
     const sendData = async () => {
-      console.log("PASS", data);
+      console.log("PASS", input);
     };
     if (pass) {
       sendData();
@@ -85,12 +91,12 @@ function PayBill() {
                 name="sum"
                 maxLength={20}
                 onChange={handleInputChange}
-                value={data.sum}
+                value={input.sum}
               />
               <br />
               <div className="paragraphDiv">
                 {errors.sum && <p className="error">{errors.sum}</p>}
-                <p className="charCounter">{`${data.sum.length}/${20}`}</p>
+                <p className="charCounter">{`${input.sum.length}/${20}`}</p>
               </div>
             </div>
             <div className="modalHalfDiv lastHalf">
@@ -100,12 +106,12 @@ function PayBill() {
                 name="periods"
                 maxLength={20}
                 onChange={handleInputChange}
-                value={data.periods}
+                value={input.periods}
               />
               <br />
               <div className="paragraphDiv">
                 {errors.periods && <p className="error">{errors.periods}</p>}
-                <p className="charCounter">{`${data.periods.length}/${20}`}</p>
+                <p className="charCounter">{`${input.periods.length}/${20}`}</p>
               </div>
             </div>
           </div>
@@ -114,12 +120,12 @@ function PayBill() {
             <Datetime
               name="date"
               onChange={(date) =>
-                setData({
-                  ...data,
+                setInput({
+                  ...input,
                   date: new Date(date._d),
                 })
               }
-              value={data.date}
+              value={input.date}
             />
           </div>
         </form>

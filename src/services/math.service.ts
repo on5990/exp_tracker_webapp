@@ -1,4 +1,12 @@
-import { BUDGET_EXCEEDED, BUDGET_OK } from "@/global/constants";
+import {
+  ACT_CREATE,
+  BUDGET_EXCEEDED,
+  BUDGET_OK,
+  MONTH,
+  MONTHLY_FIXED,
+  MONTHLY_UND,
+  YEAR,
+} from "@/global/constants";
 
 function calcWeeklyTotal(expenses: Array<any>) {
   // this week interval
@@ -103,6 +111,47 @@ function calcBudgetInfo(expenses: Array<any>, sum: number) {
     lastExpense,
   };
 }
+
+// GET THE LAST PAYMENT
+function calcLastPayment(
+  prevPayment: any,
+  payments: number,
+  type: string,
+  action: string
+) {
+  if (!prevPayment || !payments || !type) {
+    return false;
+  }
+  let add = payments;
+  if (action == ACT_CREATE) {
+    add = add - 1;
+  }
+  const timeType = type == MONTHLY_FIXED || type == MONTHLY_UND ? MONTH : YEAR;
+  // let year, month;
+  if (timeType === MONTH) {
+    let month: number = new Date(prevPayment).getMonth();
+    // console.log("111111111111", month);
+    month = month + add;
+    // console.log(action, "MONTH", month);
+    let year: number = new Date(prevPayment).getFullYear();
+    // console.log(action, "YEAR", year);
+    if (month > 11) {
+      year = year + Math.floor(month / 12);
+      // console.log(action, "MONTH > 11", month);
+      month = month % 12;
+      // console.log(action, "YEAR (MONTH > 11)", year);
+    }
+    // console.log(action, "MONTH RETURN", month);
+    // console.log(action, "YEAR RETURN", year);
+    const result = new Date(year, month + 1, 0);
+    console.log(action, "RESULT", result);
+    return result;
+  } else {
+    let year = new Date(prevPayment).getFullYear() + add;
+    console.log(action, "YEAR", year);
+    return new Date(year, 11, 31);
+  }
+}
 // PENDIENTE
 function calcTotalExcess(budgets: Array<any>, expenses: Array<any>) {
   // calculate total usedAmount
@@ -128,4 +177,5 @@ export default {
   calcYearlyAvg,
   calcTotalExcess,
   calcBudgetInfo,
+  calcLastPayment,
 };

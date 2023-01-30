@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { BillContext } from "../../pages/dashboard/bills";
 import BillHistory from "./BillHistory";
 import DeleteBill from "./DeleteBill";
 import EditBill from "./EditBill";
@@ -16,7 +17,7 @@ const head = [
 ];
 const content = [
   {
-    id: 1,
+    _id: 1,
     description: "Descripción...",
     type: "Mensual",
     amount: "$100",
@@ -27,7 +28,7 @@ const content = [
     state: "Atrasado",
   },
   {
-    id: 2,
+    _id: 2,
     description: "Descripción...",
     type: "Mensual",
     amount: "$100",
@@ -38,7 +39,7 @@ const content = [
     state: "Atrasado",
   },
   {
-    id: 2,
+    _id: 2,
     description: "Descripción...",
     type: "Mensual",
     amount: "$100",
@@ -50,6 +51,7 @@ const content = [
   },
 ];
 function BillsTable() {
+  const { data } = useContext(BillContext);
   return (
     <>
       <div className="tableContainer">
@@ -68,7 +70,7 @@ function BillsTable() {
           <tbody>
             {content.map((item) => {
               return (
-                <tr className="tableTr" key={item.id}>
+                <tr className="tableTr" key={item._id}>
                   <td className="tableTd">{item.description}</td>
                   <td className="tableTd">{item.type}</td>
                   <td className="tableTd">{item.amount}</td>
@@ -79,10 +81,10 @@ function BillsTable() {
                   <td className="tableTd">{item.state}</td>
                   <td className="tableTd">
                     <div className="cellBtnDiv">
-                      <PayBill />
-                      <BillHistory />
-                      <EditBill />
-                      <DeleteBill />
+                      <PayBill _id={item._id} />
+                      <BillHistory _id={item._id} />
+                      <EditBill _id={item._id} />
+                      <DeleteBill _id={item._id} />
                     </div>
                   </td>
                 </tr>

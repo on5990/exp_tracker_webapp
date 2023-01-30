@@ -1,4 +1,3 @@
-import { string } from "joi";
 import { Schema, model, models } from "mongoose";
 const billSchema = new Schema(
   {

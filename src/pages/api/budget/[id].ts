@@ -4,8 +4,6 @@ import budgetService from "@/services/budget.service";
 import mongoose from "mongoose";
 import { NextApiRequest, NextApiResponse } from "next";
 
-interface Data {}
-
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const { method, body, query, headers } = req;

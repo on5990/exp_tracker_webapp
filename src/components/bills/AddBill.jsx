@@ -1,14 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Modal from "../modal/Modal";
 import Datetime from "react-datetime";
 import moment from "moment/moment";
 import "moment/locale/es";
 import { types } from "./const/const";
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
+import { BillContext } from "../../pages/dashboard/bills";
 
 function AddBill() {
+  const { data, setData } = useContext(BillContext);
   const [isOpen, setIsOpen] = useState(false);
-  const [data, setData] = useState({
+  const [input, setInput] = useState({
     description: "",
     sum: "",
     type: "",
@@ -29,7 +31,7 @@ function AddBill() {
   function closeModal(e) {
     e.preventDefault();
     setIsOpen(false);
-    setData((prev) => {
+    setInput((prev) => {
       return {
         ...prev,
         description: "",
@@ -52,7 +54,7 @@ function AddBill() {
     });
   }
   function handleInputChange(e) {
-    setData((prev) => {
+    setInput((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
     if (e.target.value !== "") {
@@ -63,33 +65,33 @@ function AddBill() {
   }
   function checkErrors() {
     let pass = true;
-    if (data.description === "") {
+    if (input.description === "") {
       pass = false;
       setErrors((prev) => {
         return { ...prev, description: "Este campo es requerido" };
       });
     }
-    if (data.sum !== "" && !formatHelpers.validAmount(data.sum)) {
+    if (input.sum !== "" && !formatHelpers.validAmount(input.sum)) {
       pass = false;
       setErrors((prev) => {
         return { ...prev, sum: "Debe ingresar un número positivo" };
       });
     }
-    if (data.type === "") {
+    if (input.type === "") {
       pass = false;
       setErrors((prev) => {
         return { ...prev, type: "Este campo es requerido" };
       });
     }
-    if (data.amount !== "" && !formatHelpers.isPositiveInteger(data.amount)) {
+    if (input.amount !== "" && !formatHelpers.isPositiveInteger(input.amount)) {
       pass = false;
       setErrors((prev) => {
         return { ...prev, amount: "Debe ingresar un número entero positivo" };
       });
     }
     if (
-      data.payments !== "" &&
-      !formatHelpers.isPositiveInteger(data.payments)
+      input.payments !== "" &&
+      !formatHelpers.isPositiveInteger(input.payments)
     ) {
       pass = false;
       setErrors((prev) => {
@@ -101,7 +103,19 @@ function AddBill() {
   function handleSubmit(e) {
     e.preventDefault();
     const sendData = async () => {
-      console.log("PASS", data);
+      console.log("PASS", input);
+      const response = await fetch("/api/bill", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(input),
+      });
+      const content = await response.json();
+      if (response.ok) {
+      } else {
+        console.log(content);
+      }
     };
     let pass = checkErrors();
     if (pass) {
@@ -127,13 +141,15 @@ function AddBill() {
             name="description"
             maxLength={200}
             onChange={handleInputChange}
-            value={data.description}
+            value={input.description}
           />
           <div className="paragraphDiv">
             {errors.description && (
               <p className="error">{errors.description}</p>
             )}
-            <p className="charCounter">{`${data.description.length}/${200}`}</p>
+            <p className="charCounter">{`${
+              input.description.length
+            }/${200}`}</p>
           </div>
           <div className="modalFlexDiv">
             <div className="modalHalfDiv">
@@ -144,19 +160,19 @@ function AddBill() {
                 name="sum"
                 maxLength={20}
                 onChange={handleInputChange}
-                value={data.sum}
+                value={input.sum}
               />
               <br />
               <div className="paragraphDiv">
                 {errors.sum && <p className="error">{errors.sum}</p>}
-                <p className="charCounter">{`${data.sum.length}/${20}`}</p>
+                <p className="charCounter">{`${input.sum.length}/${20}`}</p>
               </div>
             </div>
             <div className="modalHalfDiv lastHalf">
               <label htmlFor="type">Tipo de cuota</label>
               <select
                 name="type"
-                value={data.type}
+                value={input.type}
                 onChange={handleInputChange}
               >
                 <option value="">{""}</option>
@@ -174,16 +190,18 @@ function AddBill() {
           </div>
           <label htmlFor="date">{`Fecha del primer pago (Opcional)`}</label>
           <div className="datePickerDiv">
-            <Datetime
-              name="date"
-              onChange={(date) =>
-                setData({
-                  ...data,
-                  firstPayment: new Date(date._d),
-                })
-              }
-              value={data.firstPayment}
-            />
+            {isOpen && (
+              <Datetime
+                name="date"
+                onChange={(date) =>
+                  setInput({
+                    ...input,
+                    firstPayment: new Date(date._d),
+                  })
+                }
+                value={input.firstPayment}
+              />
+            )}
           </div>
           <div className="modalFlexDiv">
             <div className="modalHalfDiv">
@@ -194,12 +212,12 @@ function AddBill() {
                 name="amount"
                 maxLength={10}
                 onChange={handleInputChange}
-                value={data.amount}
+                value={input.amount}
               />
               <br />
               <div className="paragraphDiv">
                 {errors.amount && <p className="error">{errors.amount}</p>}
-                <p className="charCounter">{`${data.amount.length}/${10}`}</p>
+                <p className="charCounter">{`${input.amount.length}/${10}`}</p>
               </div>
             </div>
             <div className="modalHalfDiv lastHalf">
@@ -210,12 +228,14 @@ function AddBill() {
                 name="payments"
                 maxLength={10}
                 onChange={handleInputChange}
-                value={data.payments}
+                value={input.payments}
               />
               <br />
               <div className="paragraphDiv">
                 {errors.payments && <p className="error">{errors.payments}</p>}
-                <p className="charCounter">{`${data.payments.length}/${10}`}</p>
+                <p className="charCounter">{`${
+                  input.payments.length
+                }/${10}`}</p>
               </div>
             </div>
           </div>

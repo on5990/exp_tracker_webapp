@@ -8,7 +8,6 @@ function Budgets() {
   const [data, setData] = useState({});
   const [search, setSearch] = useState("");
   const getRequestCalled = useRef(false);
-  console.log("DATA BUDGET", data);
   useEffect(() => {
     if (!getRequestCalled.current) {
       const getData = async () => {

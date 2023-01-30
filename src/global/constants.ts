@@ -28,6 +28,11 @@ const filterTypes = [
   { id: 1, label: "Filtrar por mes", value: MONTH },
   { id: 2, label: "Filtrar por año", value: YEAR },
 ];
+const BILL_ACTIVE = "Activo";
+const BILL_FINISHED = "Finalizado";
+const BILL_OVERDUE = "Atrasado";
+const ACT_CREATE = "Crear";
+const ACT_UPDATE = "Actualizar";
 export {
   SPECIFIC,
   CATEGORY,
@@ -43,4 +48,9 @@ export {
   filterTypes,
   BUDGET_OK,
   BUDGET_EXCEEDED,
+  BILL_ACTIVE,
+  BILL_FINISHED,
+  BILL_OVERDUE,
+  ACT_CREATE,
+  ACT_UPDATE,
 };

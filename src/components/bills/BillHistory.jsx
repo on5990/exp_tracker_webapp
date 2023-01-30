@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from "../modal/Modal";
 
-function BillHistory() {
+function BillHistory({ _id }) {
   const [isOpen, setIsOpen] = useState(false);
   function openModal() {
     setIsOpen(true);

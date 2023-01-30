@@ -1,5 +1,13 @@
+import {
+  ACT_CREATE,
+  ACT_UPDATE,
+  BILL_ACTIVE,
+  BILL_FINISHED,
+  BILL_OVERDUE,
+} from "@/global/constants";
 import billValidation from "@/lib/backendHelpers/validations/bill.validation";
 import billService from "@/services/bill.service";
+import mathService from "@/services/math.service";
 import { NextApiRequest, NextApiResponse } from "next";
 
 interface Data {
@@ -11,6 +19,8 @@ interface Data {
   payments?: number;
   nextPayment?: Date;
   lastPayment?: Date;
+  _userId?: string;
+  state?: string;
 }
 
 async function index(req: NextApiRequest, res: NextApiResponse) {
@@ -29,16 +39,46 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
         // VALIDATE DATA FROM FRONTEND
         await billValidation.addSchema.validateAsync(body);
         // PREPARE DATA
+        console.log("BODY", body);
         const { description, sum, type, firstPayment, amount, payments } = body;
-        let data: Data = { description, type };
+        let data: Data = { description, type, _userId: userId };
         if (sum) data = { ...data, sum };
         if (firstPayment) data = { ...data, firstPayment };
         if (amount) data = { ...data, amount };
         if (payments) data = { ...data, payments };
-        const last = billService.lastPayment(firstPayment, payments, type);
+        let last = null;
+        if (firstPayment && payments == "1") {
+          last = firstPayment;
+        } else {
+          last = mathService.calcLastPayment(
+            firstPayment,
+            payments,
+            type,
+            ACT_CREATE
+          );
+        }
         if (last) data = { ...data, lastPayment: last };
-        const next = billService.lastPayment(last, 1, type);
+        console.log("BBBB", data.lastPayment);
+        const next = mathService.calcLastPayment(
+          data.lastPayment,
+          1,
+          type,
+          ACT_UPDATE
+        );
         if (next) data = { ...data, nextPayment: next };
+        let state = BILL_ACTIVE;
+        if (data.payments == data.amount) {
+          state = BILL_FINISHED;
+          data = { ...data, nextPayment: data.lastPayment };
+        } else if (
+          data.nextPayment &&
+          new Date().getTime() > new Date(data.nextPayment).getTime()
+        ) {
+          state = BILL_OVERDUE;
+        }
+        data = { ...data, state };
+        console.log("REQ DATA", data);
+        // const input =
         // CREATE BILL
         // SUCCESSFUL REQUEST
         res.status(200);

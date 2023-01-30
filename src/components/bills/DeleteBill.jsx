@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { BillContext } from "../../pages/dashboard/bills";
 import Modal from "../modal/Modal";
 
-function DeleteBill() {
+function DeleteBill({ _id }) {
+  const { setData } = useContext(BillContext);
   const [isOpen, setIsOpen] = useState(false);
   function openModal() {
     setIsOpen(true);
