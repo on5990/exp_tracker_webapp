@@ -4,6 +4,8 @@ import {
   BILL_ACTIVE,
   BILL_FINISHED,
   BILL_OVERDUE,
+  MONTHLY_FIXED,
+  YEARLY_FIXED,
 } from "@/global/constants";
 import billValidation from "@/lib/backendHelpers/validations/bill.validation";
 import billService from "@/services/bill.service";
@@ -22,6 +24,7 @@ interface Data {
   lastPayment?: Date;
   _userId?: string;
   state?: string;
+  finalPayment?: Date;
 }
 
 async function index(req: NextApiRequest, res: NextApiResponse) {
@@ -40,7 +43,6 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
         // VALIDATE DATA FROM FRONTEND
         await billValidation.addSchema.validateAsync(body);
         // PREPARE DATA
-        // console.log("BODY", body);
         const { description, sum, type, firstPayment, amount, payments } = body;
         let data: Data = { description, type, _userId: userId };
         // IF SUM EXISTS --> ADD TO DATA
@@ -58,9 +60,9 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
         } else {
           data = { ...data, payments: 0 };
         }
+        // CALCULATE LAST PAYMENT AND NEXT PAYMENT
         let last = null;
         let next = null;
-
         last = mathService.calcLastPayment(
           data.firstPayment,
           data.payments || 0,
@@ -68,18 +70,32 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
           ACT_CREATE
         );
         next = mathService.calcLastPayment(last, 1, data.type, ACT_UPDATE);
+        // IF FIRST PAYMENT > LAST PAYMENT
         if (
           isDate(last) &&
-          new Date(data.firstPayment).getTime() > new Date(last).getTime()
+          new Date(data.firstPayment as Date).getTime() >
+            new Date(last).getTime()
         ) {
           last = false;
-          next = new Date(data.firstPayment);
+          next = new Date(data.firstPayment as Date);
         }
         // IF LAST PAYMENT EXISTS --> ADD TO DATA
         if (last && isDate(last)) data = { ...data, lastPayment: last };
         // IF NEXT PAYMENT EXISTS --> ADD TO DATA
         if (next && isDate(next)) data = { ...data, nextPayment: next };
-        // ******STATE
+
+        // CALCULATE FINAL PAYMENT
+        // IF AMOUNT OF PAYMENTS IS UNDEFINED --> FINAL PAYMENT IS NOT SAVED
+        if (data.type === MONTHLY_FIXED || data.type === YEARLY_FIXED) {
+          const finalPayment = mathService.calcFinalPayment(
+            data.firstPayment as Date,
+            data.amount as number,
+            data.type
+          );
+          data = { ...data, finalPayment };
+        }
+
+        // GET STATE
         let state = BILL_ACTIVE;
         if (data.payments == data.amount) {
           state = BILL_FINISHED;
@@ -92,9 +108,13 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
         }
         data = { ...data, state };
         // CREATE BILL
+        console.log("DATA", data);
+        await billService.create(data);
+        // GET BILLS
+        const _bills = await billService.getAll(userId);
         // SUCCESSFUL REQUEST
         res.status(200);
-        return res.json({ success: true, data: "POST BILL" });
+        return res.json({ success: true, data: { bills: _bills } });
       default:
         res.status(404);
         return res.json({ success: false, error: "Route not found" });

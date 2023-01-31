@@ -47,6 +47,15 @@ function formatTime(date: Date | any): string {
     return "";
   }
 }
+function formatDate(date: Date | any): string {
+  let strDate = new Date(date)
+    .toISOString()
+    .split("T")[0]
+    .split("-")
+    .reverse()
+    .join("/");
+  return strDate;
+}
 function generateYearArray(): Array<any> {
   const startYear = 2022;
   const years = Array.from({ length: 29 }, (_, i) =>
@@ -88,6 +97,7 @@ export default {
   isEmail,
   isSafe,
   formatTime,
+  formatDate,
   validAmount,
   isPositiveInteger,
   generateYearArray,

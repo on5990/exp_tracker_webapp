@@ -10,7 +10,15 @@ function Bills() {
   const getRequestCalled = useRef(false);
   useEffect(() => {
     if (!getRequestCalled.current) {
-      const getData = async () => {};
+      const getData = async () => {
+        const response = await fetch("/api/bill", { method: "GET" });
+        const content = await response.json();
+        if (response.ok) {
+          setData(content.data);
+        } else {
+          console.log(content);
+        }
+      };
       getData();
       getRequestCalled.current = true;
     }

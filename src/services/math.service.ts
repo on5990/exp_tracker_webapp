@@ -126,28 +126,18 @@ function calcLastPayment(
     }
     const timeType =
       type == MONTHLY_FIXED || type == MONTHLY_UND ? MONTH : YEAR;
-    // let year, month;
     if (timeType === MONTH) {
       let month: number = new Date(prevPayment).getMonth();
-      // console.log("111111111111", month);
       month = month + add;
-      // console.log(action, "MONTH", month);
       let year: number = new Date(prevPayment).getFullYear();
-      // console.log(action, "YEAR", year);
       if (month > 11) {
         year = year + Math.floor(month / 12);
-        // console.log(action, "MONTH > 11", month);
         month = month % 12;
-        // console.log(action, "YEAR (MONTH > 11)", year);
       }
-      // console.log(action, "MONTH RETURN", month);
-      // console.log(action, "YEAR RETURN", year);
       const result = new Date(year, month + 1, 0);
-      console.log(action, "RESULT", result);
       return result;
     } else {
       let year = new Date(prevPayment).getFullYear() + add;
-      console.log(action, "YEAR", year);
       return new Date(year, 11, 31);
     }
   } catch (error) {
@@ -170,6 +160,29 @@ function calcYearlyAvg(expenses: Array<any>) {
   // GET EACH TOTAL
   // CALCULATE AVERAGE
 }
+function calcFinalPayment(firstPayment: Date, amount: number, type: string) {
+  try {
+    if (amount == 1) {
+      return new Date(firstPayment);
+    }
+    const timeType =
+      type == MONTHLY_FIXED || type == MONTHLY_UND ? MONTH : YEAR;
+    if (timeType === MONTH) {
+      let year = new Date(firstPayment).getFullYear();
+      let month = new Date(firstPayment).getMonth();
+      month = month + amount - 1;
+      let date = new Date(year, month + 1, 0, 0, 0, 0);
+      return date;
+    } else {
+      let year = new Date(firstPayment).getFullYear();
+      year = +year + +amount - 1;
+      let date = new Date(year, 12, 0, 0, 0, 0);
+      return date;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
 function calcBillMonth(bills: Array<any>, expenses: Array<any>) {}
 function calcBillYear(bills: Array<any>, expenses: Array<any>) {}
 export default {
@@ -184,4 +197,5 @@ export default {
   calcLastPayment,
   calcBillMonth,
   calcBillYear,
+  calcFinalPayment,
 };

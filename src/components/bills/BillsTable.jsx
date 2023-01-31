@@ -1,57 +1,29 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { BillContext } from "../../pages/dashboard/bills";
+import formatHelpers from "../../lib/frontendHelpers/formatHelpers";
 import BillHistory from "./BillHistory";
 import DeleteBill from "./DeleteBill";
 import EditBill from "./EditBill";
 import PayBill from "./PayBill";
 const head = [
   { id: 1, name: "Descripción" },
-  { id: 2, name: "Tipo" },
-  { id: 3, name: "Cantidad" },
-  { id: 4, name: "Primer pago" },
-  { id: 5, name: "Pago final" },
-  { id: 6, name: "Último pago" },
-  { id: 7, name: "Próximo pago" },
-  { id: 8, name: "Estado" },
-  { id: 9, name: "" },
-];
-const content = [
-  {
-    _id: 1,
-    description: "Descripción...",
-    type: "Mensual",
-    amount: "$100",
-    firstPayment: "05-01-2023",
-    finalPayment: "05-01-2023",
-    lastPayment: "05-01-2023",
-    nextPayment: "05-01-2023",
-    state: "Atrasado",
-  },
-  {
-    _id: 2,
-    description: "Descripción...",
-    type: "Mensual",
-    amount: "$100",
-    firstPayment: "05-01-2023",
-    finalPayment: "05-01-2023",
-    lastPayment: "05-01-2023",
-    nextPayment: "05-01-2023",
-    state: "Atrasado",
-  },
-  {
-    _id: 2,
-    description: "Descripción...",
-    type: "Mensual",
-    amount: "$100",
-    firstPayment: "05-01-2023",
-    finalPayment: "05-01-2023",
-    lastPayment: "05-01-2023",
-    nextPayment: "05-01-2023",
-    state: "Atrasado",
-  },
+  { id: 2, name: "Valor cuota" },
+  { id: 3, name: "Tipo" },
+  { id: 4, name: "Cuotas" },
+  { id: 5, name: "Cuotas pagadas" },
+  { id: 6, name: "Primer pago" },
+  { id: 7, name: "Pago final" },
+  { id: 8, name: "Último pago" },
+  { id: 9, name: "Próximo pago" },
+  { id: 10, name: "Estado" },
+  { id: 11, name: "" },
 ];
 function BillsTable() {
   const { data } = useContext(BillContext);
+  const [dataToShow, setDataToShow] = useState([]);
+  useEffect(() => {
+    setDataToShow(data);
+  }, [, data]);
   return (
     <>
       <div className="tableContainer">
@@ -68,16 +40,36 @@ function BillsTable() {
             </tr>
           </thead>
           <tbody>
-            {content.map((item) => {
+            {data.bills?.map((item) => {
               return (
                 <tr className="tableTr" key={item._id}>
                   <td className="tableTd">{item.description}</td>
+                  <td className="tableTd">
+                    {item.sum ? `$${item.sum}` : "< SIN DATOS >"}
+                  </td>
                   <td className="tableTd">{item.type}</td>
-                  <td className="tableTd">{item.amount}</td>
-                  <td className="tableTd">{item.firstPayment}</td>
-                  <td className="tableTd">{item.finalPayment}</td>
-                  <td className="tableTd">{item.lastPayment}</td>
-                  <td className="tableTd">{item.nextPayment}</td>
+                  <td className="tableTd">{item.amount || "< SIN DATOS >"}</td>
+                  <td className="tableTd">{item.payments}</td>
+                  <td className="tableTd">
+                    {item.firstPayment
+                      ? formatHelpers.formatDate(item.firstPayment)
+                      : "< SIN DATOS >"}
+                  </td>
+                  <td className="tableTd">
+                    {item.finalPayment
+                      ? formatHelpers.formatDate(item.finalPayment)
+                      : "< SIN DATOS >"}
+                  </td>
+                  <td className="tableTd">
+                    {item.lastPayment
+                      ? formatHelpers.formatDate(item.lastPayment)
+                      : "< SIN DATOS >"}
+                  </td>
+                  <td className="tableTd">
+                    {item.nextPayment
+                      ? formatHelpers.formatDate(item.nextPayment)
+                      : "< SIN DATOS >"}
+                  </td>
                   <td className="tableTd">{item.state}</td>
                   <td className="tableTd">
                     <div className="cellBtnDiv">

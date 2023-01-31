@@ -149,12 +149,6 @@ function AddBill() {
     e.preventDefault();
     const sendData = async () => {
       console.log("PASS", input);
-      //   description: "",
-      // sum: "",
-      // type: "",
-      // firstPayment: null,
-      // amount: "",
-      // payments: "",
       let bodyInput = {
         description: input.description,
         type: input.type,
@@ -184,6 +178,7 @@ function AddBill() {
       });
       const content = await response.json();
       if (response.ok) {
+        setData(content.data);
       } else {
         console.log(content);
       }
