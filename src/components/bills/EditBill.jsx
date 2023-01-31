@@ -41,7 +41,7 @@ function EditBill({ _id }) {
   });
   useEffect(() => {
     const found = getHelpers.getById(_id, data.bills);
-    console.log("BILL FOUND", found);
+    // console.log("BILL FOUND", found);
     setInput((prev) => {
       return {
         ...prev,
@@ -115,7 +115,6 @@ function EditBill({ _id }) {
         return { ...prev, description: "Este campo es requerido" };
       });
     }
-    // console.log("AAAAAAAAAAAAAaa", input.sum);
     if (
       input.sum !== undefined &&
       input.sum !== "" &&

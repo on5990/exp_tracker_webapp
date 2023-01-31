@@ -8,11 +8,24 @@ function DeleteBill({ _id }) {
   function openModal() {
     setIsOpen(true);
   }
-  function closeModal() {
+  function closeModal(e) {
+    e.preventDefault();
     setIsOpen(false);
   }
   function handleSubmit(e) {
     e.preventDefault();
+    const submitRequest = async () => {
+      const response = await fetch(`/api/bill/${_id}`, {
+        method: "DELETE",
+      });
+      const content = await response.json();
+      if (response.ok) {
+        setData(content.data);
+      } else {
+        console.log(content);
+      }
+    };
+    submitRequest();
     setIsOpen(false);
   }
   return (

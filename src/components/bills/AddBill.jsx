@@ -148,7 +148,7 @@ function AddBill() {
   function handleSubmit(e) {
     e.preventDefault();
     const sendData = async () => {
-      console.log("PASS", input);
+      // console.log("PASS", input);
       let bodyInput = {
         description: input.description,
         type: input.type,

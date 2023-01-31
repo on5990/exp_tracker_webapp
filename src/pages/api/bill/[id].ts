@@ -84,7 +84,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       case "DELETE":
         // DELETE
         const dbDelete = await billService.remove(id);
-        //
+        // GET BILLS
         const _bills = await billService.getAll(userId);
         // SUCCESSFUL REQUEST
         res.status(200);
