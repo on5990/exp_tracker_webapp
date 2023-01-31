@@ -49,12 +49,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       case "POST":
         // VALIDATE DATA FROM FRONTEND
         await billValidation.paySchema.validateAsync(body);
-        // 1) PAY
         // PREPARE DATA
         const { sum, date, periods } = body;
         const billCategory = await categoryRepository.createBillCategory();
         let data: Data = {
-          description: `Pago de cuenta: ${bill.description}\nCuotas pagadas: ${periods}`,
+          description: `Pago de cuenta: ${bill.description}. Cuotas pagadas: ${periods}`,
           sum,
           spentAt: new Date(date),
           _userId: userId,
@@ -62,15 +61,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           _billId: id,
         };
         console.log("#########################################3\n\n");
-        // console.log("EXPENSE DATA", data);
+        console.log("EXPENSE DATA", data);
 
         // CREATE EXPENSE
-        // const expense = await expenseService.create(data);
+        await expenseService.create(data);
         // PREPARE BILL UPDATE
-        // let payments, state, last, next;
         let payments = +bill.payments + +periods;
         let state = BILL_ACTIVE;
-        // let last = new Date(date);
         const argLastPayment =
           bill.lastPayment == undefined
             ? new Date(
@@ -80,9 +77,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
               )
             : bill.lastPayment;
 
-        // console.log("DATE", date);
         console.log("ARG ", argLastPayment);
-        // console.log("TYPE ", bill.type);
         let last = mathService.calcLastPayment(
           bill.lastPayment || argLastPayment,
           periods,
@@ -113,19 +108,19 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         };
         console.log("BILL UPDATE", _data);
         // UPDATE BILL
-        // await billService.update(id, _data);
+        await billService.update(id, _data);
         // UPDATE BUDGET
         const budget = await budgetRepository.getByCategory(billCategory._id);
         if (budget) {
           const lastExpense = new Date(date);
-          const usedAmount = budget.usedAmount + sum;
+          const usedAmount = +budget.usedAmount + +sum;
           const state = budget.sum < usedAmount ? BUDGET_EXCEEDED : BUDGET_OK;
           console.log("BUDGET UPDATE", { lastExpense, usedAmount, state });
-          // await budgetService.update(budget._id, {
-          //   lastExpense: new Date(date),
-          //   usedAmount: budget.usedAmount+sum,
-          //   state: budget.sum < usedAmount? BUDGET_EXCEEDED: BUDGET_OK
-          // })
+          await budgetService.update(budget._id, {
+            lastExpense,
+            usedAmount,
+            state,
+          });
         }
         // GET BILLS
         const bills = await billService.getAll(userId);

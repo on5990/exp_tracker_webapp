@@ -98,7 +98,7 @@ function PayBill({ _id }) {
       });
       const content = await response.json();
       if (response.ok) {
-        console.log(content);
+        setData(content.data);
       } else {
         console.log(content);
       }
