@@ -93,9 +93,6 @@ function EditBill({ _id }) {
         amount: "",
       };
     });
-    setDisable((prev) => {
-      return { ...prev, amount: false };
-    });
   }
   function handleInputChange(e) {
     setInput((prev) => {
