@@ -5,6 +5,7 @@ import BillHistory from "./BillHistory";
 import DeleteBill from "./DeleteBill";
 import EditBill from "./EditBill";
 import PayBill from "./PayBill";
+import { BILL_FINISHED } from "../../global/constants";
 const head = [
   { id: 1, name: "Descripción" },
   { id: 2, name: "Valor cuota" },
@@ -73,7 +74,9 @@ function BillsTable() {
                   <td className="tableTd">{item.state}</td>
                   <td className="tableTd">
                     <div className="cellBtnDiv">
-                      <PayBill _id={item._id} />
+                      {item.state !== BILL_FINISHED && (
+                        <PayBill _id={item._id} />
+                      )}
                       <BillHistory _id={item._id} />
                       <EditBill _id={item._id} />
                       <DeleteBill _id={item._id} />

@@ -124,11 +124,15 @@ function calcLastPayment(
     if (action == ACT_CREATE) {
       add = add - 1;
     }
+    console.log("PREV", prevPayment);
+    console.log("PAYMENTS", add);
+    console.log("type", type);
+
     const timeType =
       type == MONTHLY_FIXED || type == MONTHLY_UND ? MONTH : YEAR;
     if (timeType === MONTH) {
       let month = new Date(prevPayment).getMonth();
-      month = month + add;
+      month = month + +add;
       let year = new Date(prevPayment).getFullYear();
       if (month > 11) {
         year = year + Math.floor(month / 12);
@@ -137,7 +141,7 @@ function calcLastPayment(
       const result = new Date(year, month + 1, 0);
       return result;
     } else {
-      let year = new Date(prevPayment).getFullYear() + add;
+      let year = new Date(prevPayment).getFullYear() + +add;
       return new Date(year, 11, 31);
     }
   } catch (error) {

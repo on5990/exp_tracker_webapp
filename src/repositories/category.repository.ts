@@ -12,7 +12,9 @@ async function getOne(id: string) {
 // FIND CATEGORIES
 async function getAll(userId: string) {
   try {
-    const categories = await Category.find({ _userId: userId }).exec();
+    const categories = await Category.find({
+      $or: [{ _userId: userId }, { isDefault: true }],
+    }).exec();
     return categories;
   } catch (error) {
     console.log(error);
@@ -36,4 +38,11 @@ async function remove(id: string) {
     console.log(error);
   }
 }
-export default { getAll, getOne, create, remove };
+async function createBillCategory() {
+  let category = await Category.findOne({ name: "Cuentas" }).exec();
+  if (!category) {
+    category = await Category.create({ name: "Cuentas", isDefault: true });
+  }
+  return category;
+}
+export default { getAll, getOne, create, createBillCategory, remove };

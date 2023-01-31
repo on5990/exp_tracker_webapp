@@ -1,11 +1,13 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Modal from "../modal/Modal";
 import Datetime from "react-datetime";
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
 import { BillContext } from "../../pages/dashboard/bills";
+import getHelpers from "../../lib/frontendHelpers/getHelpers";
 
 function PayBill({ _id }) {
   const { data, setData } = useContext(BillContext);
+  const [bill, setBill] = useState({ amount: "", payments: "" });
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState({
     sum: "",
@@ -16,6 +18,10 @@ function PayBill({ _id }) {
   function openModal() {
     setIsOpen(true);
   }
+  useEffect(() => {
+    const found = getHelpers.getById(_id, data.bills);
+    setBill(found);
+  }, [, data]);
   function closeModal(e) {
     e.preventDefault();
     setIsOpen(false);
@@ -24,6 +30,9 @@ function PayBill({ _id }) {
     });
     setErrors((prev) => {
       return { ...prev, sum: "", periods: "" };
+    });
+    setInput((prev) => {
+      return { ...prev, sum: "", date: new Date(), periods: "" };
     });
   }
   function handleInputChange(e) {
@@ -38,6 +47,11 @@ function PayBill({ _id }) {
   }
   function checkErrors() {
     let pass = true;
+    let totalPayments = bill.payments + +input.periods;
+
+    console.log("BILL total payments", totalPayments);
+    console.log("BILL amount", bill.amount);
+    console.log("BOOL", bill.amount && bill.amount < totalPayments);
     if (input.sum === "") {
       pass = false;
       setErrors((prev) => {
@@ -59,6 +73,16 @@ function PayBill({ _id }) {
       setErrors((prev) => {
         return { ...prev, periods: "Debe ingresar un número entero positivo" };
       });
+    } else if (bill.amount && bill.amount < totalPayments) {
+      pass = false;
+      setErrors((prev) => {
+        return {
+          ...prev,
+          periods: `No puede pagar más cuotas que la cantidad establecida. Cuotas restantes: ${
+            bill.amount - bill.payments
+          }`,
+        };
+      });
     }
     return pass;
   }
@@ -67,6 +91,17 @@ function PayBill({ _id }) {
     const pass = checkErrors();
     const sendData = async () => {
       console.log("PASS", input);
+      const response = await fetch(`/api/bill/pay/${_id}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(input),
+      });
+      const content = await response.json();
+      if (response.ok) {
+        console.log(content);
+      } else {
+        console.log(content);
+      }
     };
     if (pass) {
       sendData();

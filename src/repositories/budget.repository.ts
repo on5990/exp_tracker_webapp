@@ -8,6 +8,14 @@ async function getOne(id: string) {
     console.log(error);
   }
 }
+async function getByCategory(_categoryId: string) {
+  try {
+    const budget = await Budget.findOne({ _categoryId }).exec();
+    return budget;
+  } catch (error) {
+    console.log(error);
+  }
+}
 // FIND BUDGETS
 async function getAll(userId: string) {
   try {
@@ -44,4 +52,4 @@ async function remove(id: string) {
     console.log(error);
   }
 }
-export default { getAll, getOne, create, update, remove };
+export default { getAll, getOne, getByCategory, create, update, remove };
