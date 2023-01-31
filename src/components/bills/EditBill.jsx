@@ -103,7 +103,18 @@ function EditBill({ _id }) {
         return { ...prev, type: "Este campo es requerido" };
       });
     }
-    if (input.amount !== "" && !formatHelpers.isPositiveInteger(input.amount)) {
+    if (
+      input.amount === "" &&
+      (input.type === MONTHLY_FIXED || input.type === YEARLY_FIXED)
+    ) {
+      pass = false;
+      setErrors((prev) => {
+        return { ...prev, amount: "Este campo es requerido" };
+      });
+    } else if (
+      input.amount !== "" &&
+      !formatHelpers.isPositiveInteger(input.amount)
+    ) {
       pass = false;
       setErrors((prev) => {
         return { ...prev, amount: "Debe ingresar un número entero positivo" };
@@ -116,7 +127,8 @@ function EditBill({ _id }) {
       });
     } else if (
       input.payments !== "" &&
-      !formatHelpers.isPositiveInteger(input.payments)
+      !formatHelpers.isPositiveInteger(input.payments) &&
+      input.payments != 0
     ) {
       pass = false;
       setErrors((prev) => {
@@ -223,7 +235,6 @@ function EditBill({ _id }) {
                   (input.type == MONTHLY_UND || input.type === YEARLY_UND) &&
                   true
                 }
-                placeholder="Opcional"
                 name="amount"
                 maxLength={10}
                 onChange={handleInputChange}

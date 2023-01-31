@@ -3,7 +3,13 @@ import Modal from "../modal/Modal";
 import Datetime from "react-datetime";
 import moment from "moment/moment";
 import "moment/locale/es";
-import { MONTHLY_UND, types, YEARLY_FIXED, YEARLY_UND } from "./const/const";
+import {
+  MONTHLY_FIXED,
+  MONTHLY_UND,
+  types,
+  YEARLY_FIXED,
+  YEARLY_UND,
+} from "./const/const";
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
 import { BillContext } from "../../pages/dashboard/bills";
 
@@ -105,7 +111,18 @@ function AddBill() {
         return { ...prev, type: "Este campo es requerido" };
       });
     }
-    if (input.amount !== "" && !formatHelpers.isPositiveInteger(input.amount)) {
+    if (
+      input.amount === "" &&
+      (input.type === MONTHLY_FIXED || input.type === YEARLY_FIXED)
+    ) {
+      pass = false;
+      setErrors((prev) => {
+        return { ...prev, amount: "Este campo es requerido" };
+      });
+    } else if (
+      input.amount !== "" &&
+      !formatHelpers.isPositiveInteger(input.amount)
+    ) {
       pass = false;
       setErrors((prev) => {
         return { ...prev, amount: "Debe ingresar un número entero positivo" };
@@ -118,7 +135,8 @@ function AddBill() {
       });
     } else if (
       input.payments !== "" &&
-      !formatHelpers.isPositiveInteger(input.payments)
+      !formatHelpers.isPositiveInteger(input.payments) &&
+      input.payments != 0
     ) {
       pass = false;
       setErrors((prev) => {
@@ -131,12 +149,38 @@ function AddBill() {
     e.preventDefault();
     const sendData = async () => {
       console.log("PASS", input);
+      //   description: "",
+      // sum: "",
+      // type: "",
+      // firstPayment: null,
+      // amount: "",
+      // payments: "",
+      let bodyInput = {
+        description: input.description,
+        type: input.type,
+        firstPayment: input.firstPayment,
+      };
+      if (input.payments) {
+        bodyInput = { ...bodyInput, payments: input.payments };
+      } else {
+        bodyInput = { ...bodyInput, payments: 0 };
+      }
+      if (input.sum) {
+        bodyInput = { ...bodyInput, sum: input.sum };
+      } else {
+        bodyInput = { ...bodyInput, sum: 0 };
+      }
+      if (input.amount) {
+        bodyInput = { ...bodyInput, amount: input.amount };
+      } else {
+        bodyInput = { ...bodyInput, amount: 0 };
+      }
       const response = await fetch("/api/bill", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(input),
+        body: JSON.stringify(bodyInput),
       });
       const content = await response.json();
       if (response.ok) {
@@ -239,7 +283,6 @@ function AddBill() {
                   (input.type == MONTHLY_UND || input.type === YEARLY_UND) &&
                   true
                 }
-                placeholder="Opcional"
                 name="amount"
                 maxLength={10}
                 onChange={handleInputChange}

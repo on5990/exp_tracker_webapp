@@ -8,12 +8,12 @@ import Joi from "joi";
 
 const addSchema = Joi.object({
   description: Joi.string().min(1).max(200).required(),
-  sum: Joi.number().greater(0),
+  sum: Joi.number().min(0),
   type: Joi.string()
     .valid(MONTHLY_UND, MONTHLY_FIXED, YEARLY_FIXED, YEARLY_UND)
     .required(),
   firstPayment: Joi.any(),
-  amount: Joi.number().greater(0),
+  amount: Joi.number().min(0),
   payments: Joi.number().min(0),
 });
 const paySchema = Joi.object({

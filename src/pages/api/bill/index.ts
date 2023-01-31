@@ -9,6 +9,7 @@ import billValidation from "@/lib/backendHelpers/validations/bill.validation";
 import billService from "@/services/bill.service";
 import mathService from "@/services/math.service";
 import { NextApiRequest, NextApiResponse } from "next";
+import { isDate } from "util/types";
 
 interface Data {
   description: string;
@@ -39,33 +40,46 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
         // VALIDATE DATA FROM FRONTEND
         await billValidation.addSchema.validateAsync(body);
         // PREPARE DATA
-        console.log("BODY", body);
+        // console.log("BODY", body);
         const { description, sum, type, firstPayment, amount, payments } = body;
         let data: Data = { description, type, _userId: userId };
+        // IF SUM EXISTS --> ADD TO DATA
         if (sum) data = { ...data, sum };
+        // IF FIRST PAYMENT EXISTS --> ADD TO DATA, ELSE FIRST PAYMENT IS NOW
         if (firstPayment) data = { ...data, firstPayment };
-        if (amount) data = { ...data, amount };
-        if (payments) data = { ...data, payments };
-        let last = null;
-        if (firstPayment && payments == "1") {
-          last = firstPayment;
-        } else {
-          last = mathService.calcLastPayment(
-            firstPayment,
-            payments,
-            type,
-            ACT_CREATE
-          );
+        else if (!firstPayment) {
+          data = { ...data, firstPayment: new Date() };
         }
-        if (last) data = { ...data, lastPayment: last };
-        console.log("BBBB", data.lastPayment);
-        const next = mathService.calcLastPayment(
-          data.lastPayment,
-          1,
-          type,
-          ACT_UPDATE
+        // IF AMOUNT EXISTS --> ADD TO DATA
+        if (amount) data = { ...data, amount };
+        // IF PAYMENTS EXISTS --> ADD TO DATA
+        if (payments) {
+          data = { ...data, payments };
+        } else {
+          data = { ...data, payments: 0 };
+        }
+        let last = null;
+        let next = null;
+
+        last = mathService.calcLastPayment(
+          data.firstPayment,
+          data.payments || 0,
+          data.type,
+          ACT_CREATE
         );
-        if (next) data = { ...data, nextPayment: next };
+        next = mathService.calcLastPayment(last, 1, data.type, ACT_UPDATE);
+        if (
+          isDate(last) &&
+          new Date(data.firstPayment).getTime() > new Date(last).getTime()
+        ) {
+          last = false;
+          next = new Date(data.firstPayment);
+        }
+        // IF LAST PAYMENT EXISTS --> ADD TO DATA
+        if (last && isDate(last)) data = { ...data, lastPayment: last };
+        // IF NEXT PAYMENT EXISTS --> ADD TO DATA
+        if (next && isDate(next)) data = { ...data, nextPayment: next };
+        // ******STATE
         let state = BILL_ACTIVE;
         if (data.payments == data.amount) {
           state = BILL_FINISHED;
@@ -77,8 +91,6 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
           state = BILL_OVERDUE;
         }
         data = { ...data, state };
-        console.log("REQ DATA", data);
-        // const input =
         // CREATE BILL
         // SUCCESSFUL REQUEST
         res.status(200);

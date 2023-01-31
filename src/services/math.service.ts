@@ -119,37 +119,39 @@ function calcLastPayment(
   type: string,
   action: string
 ) {
-  if (!prevPayment || !payments || !type) {
-    return false;
-  }
-  let add = payments;
-  if (action == ACT_CREATE) {
-    add = add - 1;
-  }
-  const timeType = type == MONTHLY_FIXED || type == MONTHLY_UND ? MONTH : YEAR;
-  // let year, month;
-  if (timeType === MONTH) {
-    let month: number = new Date(prevPayment).getMonth();
-    // console.log("111111111111", month);
-    month = month + add;
-    // console.log(action, "MONTH", month);
-    let year: number = new Date(prevPayment).getFullYear();
-    // console.log(action, "YEAR", year);
-    if (month > 11) {
-      year = year + Math.floor(month / 12);
-      // console.log(action, "MONTH > 11", month);
-      month = month % 12;
-      // console.log(action, "YEAR (MONTH > 11)", year);
+  try {
+    let add = payments;
+    if (action == ACT_CREATE) {
+      add = add - 1;
     }
-    // console.log(action, "MONTH RETURN", month);
-    // console.log(action, "YEAR RETURN", year);
-    const result = new Date(year, month + 1, 0);
-    console.log(action, "RESULT", result);
-    return result;
-  } else {
-    let year = new Date(prevPayment).getFullYear() + add;
-    console.log(action, "YEAR", year);
-    return new Date(year, 11, 31);
+    const timeType =
+      type == MONTHLY_FIXED || type == MONTHLY_UND ? MONTH : YEAR;
+    // let year, month;
+    if (timeType === MONTH) {
+      let month: number = new Date(prevPayment).getMonth();
+      // console.log("111111111111", month);
+      month = month + add;
+      // console.log(action, "MONTH", month);
+      let year: number = new Date(prevPayment).getFullYear();
+      // console.log(action, "YEAR", year);
+      if (month > 11) {
+        year = year + Math.floor(month / 12);
+        // console.log(action, "MONTH > 11", month);
+        month = month % 12;
+        // console.log(action, "YEAR (MONTH > 11)", year);
+      }
+      // console.log(action, "MONTH RETURN", month);
+      // console.log(action, "YEAR RETURN", year);
+      const result = new Date(year, month + 1, 0);
+      console.log(action, "RESULT", result);
+      return result;
+    } else {
+      let year = new Date(prevPayment).getFullYear() + add;
+      console.log(action, "YEAR", year);
+      return new Date(year, 11, 31);
+    }
+  } catch (error) {
+    return false;
   }
 }
 // PENDIENTE
@@ -168,6 +170,8 @@ function calcYearlyAvg(expenses: Array<any>) {
   // GET EACH TOTAL
   // CALCULATE AVERAGE
 }
+function calcBillMonth(bills: Array<any>, expenses: Array<any>) {}
+function calcBillYear(bills: Array<any>, expenses: Array<any>) {}
 export default {
   calcWeeklyTotal,
   calcMonthlyTotal,
@@ -178,4 +182,6 @@ export default {
   calcTotalExcess,
   calcBudgetInfo,
   calcLastPayment,
+  calcBillMonth,
+  calcBillYear,
 };
