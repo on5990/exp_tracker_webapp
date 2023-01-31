@@ -16,6 +16,11 @@ const addSchema = Joi.object({
   amount: Joi.number().min(0),
   payments: Joi.number().min(0),
 });
+const updateSchema = Joi.object({
+  description: Joi.string().min(1).max(200).required().required(),
+  sum: Joi.number().min(0),
+  amount: Joi.number().min(0),
+});
 const paySchema = Joi.object({
   sum: Joi.number().greater(0).required(),
   periods: Joi.number().greater(0).required(),
@@ -25,4 +30,4 @@ const monthSchema = Joi.object({
   month: Joi.number().integer().min(1).max(12).required(),
   year: Joi.number().integer().min(1900).max(2100).required(),
 });
-export default { addSchema, paySchema, monthSchema };
+export default { addSchema, updateSchema, paySchema, monthSchema };

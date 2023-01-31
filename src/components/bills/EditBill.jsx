@@ -1,47 +1,76 @@
 import React, { useContext, useEffect, useState } from "react";
 import Modal from "../modal/Modal";
-import Datetime from "react-datetime";
-import { MONTHLY_UND, types, YEARLY_UND } from "./const/const";
+import {
+  MONTHLY_FIXED,
+  MONTHLY_UND,
+  YEARLY_FIXED,
+  YEARLY_UND,
+  BILL_FINISHED,
+} from "../../global/constants";
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
+import getHelpers from "../../lib/frontendHelpers/getHelpers";
 import { BillContext } from "../../pages/dashboard/bills";
 
 function EditBill({ _id }) {
   const { data, setData } = useContext(BillContext);
+  const [bill, setBill] = useState({
+    _id: "",
+    description: "",
+    amount: "",
+    type: "",
+    nextPayment: "",
+    firstPayment: "",
+    sum: "",
+    state: "",
+    payments: "",
+  });
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState({
     description: "",
     sum: "",
-    type: "",
-    firstPayment: null,
     amount: "",
-    payments: "",
   });
   const [errors, setErrors] = useState({
     description: "",
     sum: "",
-    type: "",
     amount: "",
-    payments: "",
   });
   const [disable, setDisable] = useState({
     amount: false,
-    payments: false,
+    sum: false,
   });
   useEffect(() => {
-    if (input.type == MONTHLY_UND || input.type === YEARLY_UND) {
+    const found = getHelpers.getById(_id, data.bills);
+    console.log("BILL FOUND", found);
+    setInput((prev) => {
+      return {
+        ...prev,
+        description: found.description,
+        sum: found.sum,
+        amount: found.amount,
+      };
+    });
+
+    setBill(found);
+  }, [, data]);
+
+  useEffect(() => {
+    if (bill.state === BILL_FINISHED) {
+      setDisable((prev) => {
+        return { ...prev, sum: true };
+      });
+    }
+    if (
+      bill.type == MONTHLY_UND ||
+      bill.type === YEARLY_UND ||
+      bill.state === BILL_FINISHED
+    ) {
       setDisable((prev) => {
         return { ...prev, amount: true };
       });
-      setErrors((prev) => {
-        return { ...prev, amount: "" };
-      });
     }
-    if (input.firstPayment == null) {
-      setDisable((prev) => {
-        return { ...prev, payments: true };
-      });
-    }
-  }, [, input]);
+  }, [, bill]);
+
   function openModal() {
     setIsOpen(true);
   }
@@ -51,12 +80,9 @@ function EditBill({ _id }) {
     setInput((prev) => {
       return {
         ...prev,
-        description: "",
-        sum: "",
-        type: "",
-        firstPayment: null,
-        amount: "",
-        payments: "",
+        description: bill.description,
+        sum: bill.sum,
+        amount: bill.amount,
       };
     });
     setErrors((prev) => {
@@ -64,13 +90,11 @@ function EditBill({ _id }) {
         ...prev,
         description: "",
         sum: "",
-        type: "",
         amount: "",
-        payments: "",
       };
     });
     setDisable((prev) => {
-      return { ...prev, amount: false, payments: false };
+      return { ...prev, amount: false };
     });
   }
   function handleInputChange(e) {
@@ -91,27 +115,29 @@ function EditBill({ _id }) {
         return { ...prev, description: "Este campo es requerido" };
       });
     }
-    if (input.sum !== "" && !formatHelpers.validAmount(input.sum)) {
+    // console.log("AAAAAAAAAAAAAaa", input.sum);
+    if (
+      input.sum !== undefined &&
+      input.sum !== "" &&
+      !formatHelpers.validAmount(input.sum)
+    ) {
       pass = false;
       setErrors((prev) => {
         return { ...prev, sum: "Debe ingresar un número positivo" };
       });
     }
-    if (input.type === "") {
-      pass = false;
-      setErrors((prev) => {
-        return { ...prev, type: "Este campo es requerido" };
-      });
-    }
     if (
+      bill.state !== BILL_FINISHED &&
       input.amount === "" &&
-      (input.type === MONTHLY_FIXED || input.type === YEARLY_FIXED)
+      (bill.type === MONTHLY_FIXED || bill.type === YEARLY_FIXED)
     ) {
       pass = false;
       setErrors((prev) => {
         return { ...prev, amount: "Este campo es requerido" };
       });
     } else if (
+      bill.state !== BILL_FINISHED &&
+      (bill.type === MONTHLY_FIXED || bill.type === YEARLY_FIXED) &&
       input.amount !== "" &&
       !formatHelpers.isPositiveInteger(input.amount)
     ) {
@@ -119,20 +145,13 @@ function EditBill({ _id }) {
       setErrors((prev) => {
         return { ...prev, amount: "Debe ingresar un número entero positivo" };
       });
-    }
-    if (input.payments == "" && input.firstPayment != null) {
+    } else if (input.amount < bill.payments) {
       pass = false;
       setErrors((prev) => {
-        return { ...prev, payments: "Este campo es requerido" };
-      });
-    } else if (
-      input.payments !== "" &&
-      !formatHelpers.isPositiveInteger(input.payments) &&
-      input.payments != 0
-    ) {
-      pass = false;
-      setErrors((prev) => {
-        return { ...prev, payments: "Debe ingresar un número entero positivo" };
+        return {
+          ...prev,
+          amount: `La cantidad de cuotas no puede ser inferior a las cuotas pagadas(${bill.payments})`,
+        };
       });
     }
     return pass;
@@ -140,7 +159,21 @@ function EditBill({ _id }) {
   function handleSubmit(e) {
     e.preventDefault();
     const sendData = async () => {
-      console.log("PASS", input);
+      let inputBody = { description: input.description };
+      if (input.sum) inputBody = { ...inputBody, sum: input.sum };
+      if (input.amount) inputBody = { ...inputBody, amount: input.amount };
+      const response = await fetch(`/api/bill/${_id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(inputBody),
+      });
+      const content = await response.json();
+      if (response.ok) {
+        setData(content.data);
+      } else {
+        console.log(content);
+      }
+      console.log("PASS", inputBody);
     };
     let pass = checkErrors();
     if (pass) {
@@ -175,94 +208,40 @@ function EditBill({ _id }) {
             }/${200}`}</p>
           </div>
           <div className="modalFlexDiv">
-            <div className="modalHalfDiv">
-              <label htmlFor="sum">Valor de cuota</label>
-              <input
-                type="text"
-                placeholder="Opcional"
-                name="sum"
-                maxLength={20}
-                onChange={handleInputChange}
-                value={input.sum}
-              />
-              <br />
-              <div className="paragraphDiv">
-                {errors.sum && <p className="error">{errors.sum}</p>}
-                <p className="charCounter">{`${input.sum.length}/${20}`}</p>
-              </div>
+            <label htmlFor="sum">Valor de cuota</label>
+            <input
+              type="text"
+              placeholder="Opcional"
+              disabled={disable.sum}
+              name="sum"
+              maxLength={20}
+              onChange={handleInputChange}
+              value={input.sum}
+            />
+            <br />
+            <div className="paragraphDiv">
+              {errors.sum && <p className="error">{errors.sum}</p>}
+              <p className="charCounter">{`${
+                input.sum ? input.sum.toString().length : 0
+              }/${20}`}</p>
             </div>
-            <div className="modalHalfDiv lastHalf">
-              <label htmlFor="type">Tipo de cuota</label>
-              <select
-                name="type"
-                value={input.type}
-                onChange={handleInputChange}
-              >
-                <option value="">{""}</option>
-                {types.map((item) => {
-                  return (
-                    <option key={item.id} value={item.value}>
-                      {item.label}
-                    </option>
-                  );
-                })}
-              </select>
-              <br />
-              {errors.type && <p className="error">{errors.type}</p>}
-            </div>
-          </div>
-          <label htmlFor="date">{`Fecha del primer pago (Opcional)`}</label>
-          <div className="datePickerDiv">
-            {isOpen && (
-              <Datetime
-                name="date"
-                onChange={(date) =>
-                  setInput({
-                    ...input,
-                    firstPayment: new Date(date._d),
-                  })
-                }
-                value={input.firstPayment}
-              />
-            )}
           </div>
           <div className="modalFlexDiv">
-            <div className="modalHalfDiv">
-              <label htmlFor="amount">Cantidad de cuotas</label>
-              <input
-                type="text"
-                disabled={
-                  (input.type == MONTHLY_UND || input.type === YEARLY_UND) &&
-                  true
-                }
-                name="amount"
-                maxLength={10}
-                onChange={handleInputChange}
-                value={input.amount}
-              />
-              <br />
-              <div className="paragraphDiv">
-                {errors.amount && <p className="error">{errors.amount}</p>}
-                <p className="charCounter">{`${input.amount.length}/${10}`}</p>
-              </div>
-            </div>
-            <div className="modalHalfDiv lastHalf">
-              <label htmlFor="payments">Cantidad de cuotas pagadas</label>
-              <input
-                type="text"
-                disabled={input.firstPayment == null && true}
-                name="payments"
-                maxLength={10}
-                onChange={handleInputChange}
-                value={input.payments}
-              />
-              <br />
-              <div className="paragraphDiv">
-                {errors.payments && <p className="error">{errors.payments}</p>}
-                <p className="charCounter">{`${
-                  input.payments.length
-                }/${10}`}</p>
-              </div>
+            <label htmlFor="amount">Cantidad de cuotas</label>
+            <input
+              type="text"
+              disabled={disable.amount}
+              name="amount"
+              maxLength={10}
+              onChange={handleInputChange}
+              value={input.amount}
+            />
+            <br />
+            <div className="paragraphDiv">
+              {errors.amount && <p className="error">{errors.amount}</p>}
+              <p className="charCounter">{`${
+                input.amount?.toString().length
+              }/${10}`}</p>
             </div>
           </div>
           <div className="outerBtnBox">

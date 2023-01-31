@@ -108,13 +108,17 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
         }
         data = { ...data, state };
         // CREATE BILL
-        console.log("DATA", data);
         await billService.create(data);
         // GET BILLS
         const _bills = await billService.getAll(userId);
         // SUCCESSFUL REQUEST
         res.status(200);
-        return res.json({ success: true, data: { bills: _bills } });
+        return res.json({
+          success: true,
+          data: {
+            bills: _bills,
+          },
+        });
       default:
         res.status(404);
         return res.json({ success: false, error: "Route not found" });

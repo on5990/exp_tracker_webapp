@@ -127,9 +127,9 @@ function calcLastPayment(
     const timeType =
       type == MONTHLY_FIXED || type == MONTHLY_UND ? MONTH : YEAR;
     if (timeType === MONTH) {
-      let month: number = new Date(prevPayment).getMonth();
+      let month = new Date(prevPayment).getMonth();
       month = month + add;
-      let year: number = new Date(prevPayment).getFullYear();
+      let year = new Date(prevPayment).getFullYear();
       if (month > 11) {
         year = year + Math.floor(month / 12);
         month = month % 12;
@@ -170,7 +170,7 @@ function calcFinalPayment(firstPayment: Date, amount: number, type: string) {
     if (timeType === MONTH) {
       let year = new Date(firstPayment).getFullYear();
       let month = new Date(firstPayment).getMonth();
-      month = month + amount - 1;
+      month = +month + +amount - 1;
       let date = new Date(year, month + 1, 0, 0, 0, 0);
       return date;
     } else {
