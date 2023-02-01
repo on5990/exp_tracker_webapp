@@ -17,7 +17,14 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
         // VALIDATE DATA FROM FRONTEND
         await categoryValidation.addSchema.validateAsync(body);
         // CHECK IF CATEGORY EXISTS: SAME USER_ID AND NAME || SAME NAME AND IS_DEFAULT:TRUE
-
+        const exists = await categoryService.exists(userId, body.name);
+        if (exists) {
+          res.status(409);
+          return res.json({
+            success: false,
+            error: "This category already exists",
+          });
+        }
         // GET CATEGORY
         const category = await categoryService.createCustom(body.name, userId);
         // SUCCESSFUL REQUEST

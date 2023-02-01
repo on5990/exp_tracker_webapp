@@ -5,10 +5,18 @@ import { useState } from "react";
 import { ExpenseContext } from "../../pages/dashboard";
 
 function AddCategory() {
-  const { setData } = useContext(ExpenseContext);
+  const { setData, data } = useContext(ExpenseContext);
   const [showForm, setShowForm] = useState(false);
   const [category, setCategory] = useState("");
+  const [error, setError] = useState("");
   const ref = useRef(null);
+  useEffect(() => {
+    if (error) {
+      setTimeout(() => {
+        setError("");
+      }, 3000);
+    }
+  }, [error]);
   function detectClickOutside(ref, func) {
     function handleClick(event) {
       if (!ref.current || ref.current.contains(event.target)) {
@@ -41,17 +49,28 @@ function AddCategory() {
         },
         body: JSON.stringify({ name: category }),
       });
+      let content = await response.json();
       if (response.ok) {
-        let info = await response.json();
-        info = info.data.category;
+        content = content.data.category;
         setData((prev) => {
-          return { ...prev, categories: [...prev.categories, info] };
+          return { ...prev, categories: [...prev.categories, content] };
         });
       } else {
-        throw new Error(`Error: ${response.status}`);
+        console.log(content);
       }
     };
-    if (category !== "") {
+    let pass = true;
+    const same = data.categories?.filter((cat) => cat.name == category);
+    console.log("SAME", same);
+    if (same.length > 0) {
+      pass = false;
+      setCategory("");
+      setError("Esta categoría ya existe");
+    } else if (category == "") {
+      pass = false;
+      setError("Debe ingresar algo");
+    }
+    if (pass) {
       sendData();
       setShowForm(false);
       setCategory("");
@@ -71,6 +90,7 @@ function AddCategory() {
             type="text"
             value={category}
             name="category"
+            placeholder={error}
             maxLength={20}
             onChange={(e) => {
               setCategory(e.target.value);

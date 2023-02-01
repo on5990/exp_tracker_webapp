@@ -44,7 +44,7 @@ function DeleteCategory({ _id }) {
       >
         <p className="modalP">
           Confirme si desea eliminar esta categoría, también se eliminaran los
-          presuestos asociados a la categoría
+          prespuestos asociados a la categoría
         </p>
         <div className="outerBtnBox">
           <div className="innerBtnBox">

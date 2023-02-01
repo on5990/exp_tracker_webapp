@@ -26,4 +26,8 @@ async function remove(id: string) {
   const res = await categoryRepository.remove(id);
   return res;
 }
-export default { getOne, getAll, createDefault, createCustom, remove };
+async function exists(_userId: string, name: string) {
+  const res = await categoryRepository.exists(_userId, name);
+  return res;
+}
+export default { getOne, getAll, createDefault, createCustom, remove, exists };

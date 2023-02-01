@@ -45,4 +45,13 @@ async function createBillCategory() {
   }
   return category;
 }
-export default { getAll, getOne, create, createBillCategory, remove };
+async function exists(_userId: string, name: string) {
+  let found = await Category.find({
+    $or: [
+      { _userId, name },
+      { name, isDefault: true },
+    ],
+  });
+  return found.length > 0 ? true : false;
+}
+export default { getAll, getOne, create, createBillCategory, remove, exists };
