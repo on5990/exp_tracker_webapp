@@ -92,7 +92,6 @@ function Dashboard() {
             <li>Semana actual: ${data.weeklyTotal}</li>
             <li>Mes actual: ${data.monthlyTotal}</li>
             <li>Año actual: ${data.yearlyTotal}</li>
-            <li>Exceso:</li>
             <li>Gasto mensual promedio: ${data.monthlyAvg}</li>
             <li>Gasto anual promedio: ${data.yearlyAvg}</li>
           </ul>

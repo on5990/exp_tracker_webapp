@@ -47,6 +47,7 @@ async function update(id: string, data: any) {
     console.log(error);
   }
 }
+
 // DELETE EXPENSE
 async function remove(id: string) {
   try {
@@ -56,4 +57,22 @@ async function remove(id: string) {
     console.log(error);
   }
 }
-export default { getAll, getOne, getByCategory, create, update, remove };
+async function removeByCategoryId(_categoryId: string) {
+  try {
+    const res = await Expense.updateMany(
+      { _categoryId },
+      { _categoryId: null }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+}
+export default {
+  getAll,
+  getOne,
+  getByCategory,
+  create,
+  update,
+  remove,
+  removeByCategoryId,
+};

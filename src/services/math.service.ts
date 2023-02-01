@@ -94,7 +94,6 @@ function calcBudgetInfo(expenses: Array<any>, sum: number) {
   if (expenses.length === 0) {
     return {
       usedAmount: 0,
-      lastExpense: null,
       state: BUDGET_OK,
     };
   }
@@ -153,10 +152,29 @@ function calcTotalExcess(budgets: Array<any>, expenses: Array<any>) {
   // calculate total usedAmount
 }
 // PENDIENTE
-function calcMonthlyAvg(expenses: Array<any>) {
-  // CLASSIFY EXPENSES PER MONTH
-  // GET EACH TOTAL
-  // CALCULATE AVERAGE
+function calcExpenseAvg(expenses: Array<any>) {
+  const result = expenses.reduce(
+    (acc, current) => {
+      acc = { ...acc, total: acc.total + current.sum };
+      const spentAt = new Date(current.spentAt);
+      const year = spentAt.getFullYear().toString();
+      let month = spentAt.getMonth().toString();
+      month = `${month}/${year}`;
+      if (!acc.monthList.includes(month)) {
+        acc.monthList.push(month);
+        acc.monthAmount = acc.monthAmount + 1;
+      }
+      if (!acc.yearList.includes(year)) {
+        acc.yearList.push(year);
+        acc.yearAmount = acc.yearAmount + 1;
+      }
+      return acc;
+    },
+    { total: 0, monthAmount: 0, yearAmount: 0, monthList: [], yearList: [] }
+  );
+  const monthAvg = (+result.total / +result.monthAmount).toFixed(2);
+  const yearAvg = (+result.total / +result.yearAmount).toFixed(2);
+  return { monthAvg, yearAvg };
 }
 // PENDIENTE
 function calcYearlyAvg(expenses: Array<any>) {
@@ -194,7 +212,7 @@ export default {
   calcMonthlyTotal,
   calcYearlyTotal,
   classifyByCat,
-  calcMonthlyAvg,
+  calcExpenseAvg,
   calcYearlyAvg,
   calcTotalExcess,
   calcBudgetInfo,

@@ -74,7 +74,9 @@ function BudgetTable() {
                   <td className="tableTd">{item.availableAmount}</td>
                   <td className="tableTd">{item.excessAmount}</td>
                   <td className="tableTd">
-                    {formatHelpers.formatTime(item.lastExpense)}
+                    {item.lastExpense
+                      ? formatHelpers.formatTime(item.lastExpense)
+                      : "-"}
                   </td>
                   <td className="tableTd">{item.state}</td>
                   <td className="tableTd">

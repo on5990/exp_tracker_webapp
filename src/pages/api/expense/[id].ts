@@ -1,6 +1,10 @@
+import { BUDGET_EXCEEDED, BUDGET_OK } from "@/global/constants";
 import expenseValidation from "@/lib/backendHelpers/validations/expense.validation";
+import budgetRepository from "@/repositories/budget.repository";
+import budgetService from "@/services/budget.service";
 import categoryService from "@/services/category.service";
 import expenseService from "@/services/expense.service";
+import userService from "@/services/user.service";
 import mongoose from "mongoose";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -51,30 +55,41 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         }
         // UPDATE EXPENSE
         const dbUpdate = await expenseService.update(id, data);
-        // UPDATE USER AVERAGES
         // UPDATE BUDGETS
+        await budgetService.afterEditUpdate(expense, sum, _categoryId);
         // FIND ALL INFO OF EXPENSES
         const expenses = await expenseService.getAll(userId);
+        // UPDATE USER AVERAGES
+        const avg = await userService.updateAvg(userId, expenses);
         // SUCCESSFUL REQUEST
         res.status(200);
         return res.json({
           success: true,
           msg: `${dbUpdate._id} was updated`,
-          data: { ...expenses },
+          data: {
+            ...expenses,
+            monthlyAvg: avg.monthAvg,
+            yearlyAvg: avg.yearAvg,
+          },
         });
       case "DELETE":
         // DELETE
         const dbDelete = await expenseService.remove(id);
-        // UPDATE USER AVERAGES
         // UPDATE BUDGETS
+        await budgetService.afterDeleteUpdate(expense.sum, expense._categoryId);
         // FIND ALL INFO OF EXPENSES
         const _expenses = await expenseService.getAll(userId);
+        // UPDATE USER AVERAGES
+        const { monthAvg, yearAvg } = await userService.updateAvg(
+          userId,
+          _expenses
+        );
         // SUCCESSFUL REQUEST
         res.status(200);
         return res.json({
           success: true,
           msg: `${dbDelete._id} was deleted`,
-          data: { ..._expenses },
+          data: { ..._expenses, monthlyAvg: monthAvg, yearlyAvg: yearAvg },
         });
       default:
         res.status(404);

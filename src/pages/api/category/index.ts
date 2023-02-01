@@ -16,6 +16,8 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
       case "POST":
         // VALIDATE DATA FROM FRONTEND
         await categoryValidation.addSchema.validateAsync(body);
+        // CHECK IF CATEGORY EXISTS: SAME USER_ID AND NAME || SAME NAME AND IS_DEFAULT:TRUE
+
         // GET CATEGORY
         const category = await categoryService.createCustom(body.name, userId);
         // SUCCESSFUL REQUEST

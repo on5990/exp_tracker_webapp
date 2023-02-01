@@ -1,3 +1,5 @@
+import budgetRepository from "@/repositories/budget.repository";
+import expenseRepository from "@/repositories/expense.repository";
 import categoryService from "@/services/category.service";
 import mongoose from "mongoose";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -24,7 +26,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         // DELETE
         const dbRes = await categoryService.remove(id);
         // DELETE BUDGETS ASSOCIATED TO THIS CATEGORY
+        await budgetRepository.removeByCategory(category._id);
         // UPDATE _categoryId TO NULL FOR EXPENSES ASSOCIATED TO THIS CATEGORY
+        await expenseRepository.removeByCategoryId(category._id);
         // GET CATEGORIES
         const categories = await categoryService.getAll(userId);
         // SUCCESSFUL REQUEST

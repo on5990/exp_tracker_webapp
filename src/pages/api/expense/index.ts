@@ -4,6 +4,8 @@ import budgetRepository from "@/repositories/budget.repository";
 import budgetService from "@/services/budget.service";
 import categoryService from "@/services/category.service";
 import expenseService from "@/services/expense.service";
+import mathService from "@/services/math.service";
+import userService from "@/services/user.service";
 import { NextApiRequest, NextApiResponse } from "next";
 
 interface Data {
@@ -51,24 +53,20 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
         }
         await expenseService.create(data);
         // UPDATE BUDGET
-        const budget = await budgetRepository.getByCategory(_categoryId);
-        if (budget) {
-          const usedAmount = +budget.usedAmount + +sum;
-          const lastExpense = new Date(spentAt);
-          const state = usedAmount > budget.sum ? BUDGET_EXCEEDED : BUDGET_OK;
-          await budgetRepository.update(budget._id, {
-            usedAmount,
-            lastExpense,
-            state,
-          });
-        }
-        // 3) GET UPDATED INFO ABOUT EXPENSES
-        const _expenses = await expenseService.getAll(userId);
-        // 4)  UPDATE AVERAGES LOCATED IN USER COLLECTION
-
+        await budgetService.afterPayUpdate(sum, spentAt, _categoryId);
+        // GET UPDATED INFO ABOUT EXPENSES
+        let _expenses = await expenseService.getAll(userId);
+        // UPDATE AVERAGES LOCATED IN USER COLLECTION
+        const { monthAvg, yearAvg } = await userService.updateAvg(
+          userId,
+          _expenses
+        );
         // SUCCESSFUL REQUEST
         res.status(200);
-        return res.json({ success: true, data: { ..._expenses } });
+        return res.json({
+          success: true,
+          data: { ..._expenses, monthlyAvg: monthAvg, yearlyAvg: yearAvg },
+        });
       default:
         res.status(404);
         return res.json({ success: false, error: "Route not found" });

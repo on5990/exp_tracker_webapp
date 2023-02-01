@@ -1,7 +1,7 @@
 import { Schema, model, models } from "mongoose";
 const categorySchema = new Schema(
   {
-    name: { type: String, unique: true, required: [true, "name is required"] },
+    name: { type: String, required: [true, "name is required"] },
     // Value false if it is a category created by a user
     isDefault: { type: Boolean, required: [true, "isDefault is required"] },
     // Not required if it is a category defined by the system

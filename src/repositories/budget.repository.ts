@@ -52,4 +52,21 @@ async function remove(id: string) {
     console.log(error);
   }
 }
-export default { getAll, getOne, getByCategory, create, update, remove };
+
+async function removeByCategory(_categoryId: string) {
+  try {
+    const res = await Budget.deleteMany({ _categoryId });
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
+export default {
+  getAll,
+  getOne,
+  getByCategory,
+  create,
+  update,
+  remove,
+  removeByCategory,
+};

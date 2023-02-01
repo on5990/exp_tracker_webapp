@@ -91,10 +91,10 @@ function ExpenseTable() {
                       {formatHelpers.formatTime(item.spentAt)}
                     </td>
                     <td className="tableTd">
-                      {
-                        getHelpers.getById(item._categoryId, data.categories)
-                          ?.name
-                      }
+                      {!item._categoryId
+                        ? "-"
+                        : getHelpers.getById(item._categoryId, data.categories)
+                            ?.name}
                     </td>
                     <td className="tableTd">
                       <div className="cellBtnDiv">
