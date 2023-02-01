@@ -61,6 +61,14 @@ async function removeByCategory(_categoryId: string) {
     console.log(error);
   }
 }
+async function exists(_userId: string, _categoryId: string) {
+  try {
+    const found = await Budget.find({ _userId, _categoryId }).exec();
+    return found.length > 0 ? true : false;
+  } catch (error) {
+    console.log(error);
+  }
+}
 export default {
   getAll,
   getOne,
@@ -69,4 +77,5 @@ export default {
   update,
   remove,
   removeByCategory,
+  exists,
 };

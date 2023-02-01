@@ -246,7 +246,10 @@ async function remove(id: string) {
   const res = await budgetRepository.remove(id);
   return res;
 }
-
+async function exists(_userId: string, _categoryId: string) {
+  const res = await budgetRepository.exists(_userId, _categoryId);
+  return res;
+}
 export default {
   getAll,
   getOne,
@@ -256,4 +259,5 @@ export default {
   afterPayUpdate,
   afterDeleteUpdate,
   afterEditUpdate,
+  exists,
 };

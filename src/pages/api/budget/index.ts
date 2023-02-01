@@ -16,6 +16,15 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
       case "POST":
         // VALIDATE DATA FROM FRONTEND
         await budgetValidation.addSchema.validateAsync(body);
+        // CHECK IF BUDGET EXISTS
+        const exists = await budgetService.exists(userId, body._categoryId);
+        if (exists) {
+          res.status(409);
+          return res.json({
+            success: false,
+            error: "There is already a budget associated to this category",
+          });
+        }
         // CREATE BUDGET
         await budgetService.create({ ...body, _userId: userId });
         // GET BUDGETS

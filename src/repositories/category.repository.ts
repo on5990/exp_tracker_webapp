@@ -51,7 +51,7 @@ async function exists(_userId: string, name: string) {
       { _userId, name },
       { name, isDefault: true },
     ],
-  });
+  }).exec();
   return found.length > 0 ? true : false;
 }
 export default { getAll, getOne, create, createBillCategory, remove, exists };

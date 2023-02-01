@@ -35,6 +35,9 @@ function AddBudget() {
   }
   function checkErrors() {
     let pass = true;
+    const found = data.budgets?.filter(
+      (bg) => bg._categoryId == input._categoryId
+    );
     if (input.sum === "") {
       pass = false;
       setErrors((prev) => {
@@ -50,6 +53,14 @@ function AddBudget() {
       pass = false;
       setErrors((prev) => {
         return { ...prev, _categoryId: "Este campo es requerido" };
+      });
+    } else if (found.length > 0) {
+      pass = false;
+      setErrors((prev) => {
+        return {
+          ...prev,
+          _categoryId: "Esta categoría ya tiene un presupuesto",
+        };
       });
     }
     return pass;
