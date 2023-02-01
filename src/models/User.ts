@@ -11,11 +11,6 @@ const userSchema = new Schema(
       type: String,
       required: [true, "password is required"],
     },
-    weeklyAvg: {
-      type: Number,
-      required: [true, "weeklyAvg is required"],
-      default: 0,
-    },
     monthlyAvg: {
       type: Number,
       required: [true, "monthlyAvg is required"],

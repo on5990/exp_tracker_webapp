@@ -50,7 +50,7 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
           data = { ...data, _categoryId };
         }
         await expenseService.create(data);
-        // 2)  UPDATE BUDGET
+        // UPDATE BUDGET
         const budget = await budgetRepository.getByCategory(_categoryId);
         if (budget) {
           const usedAmount = +budget.usedAmount + +sum;
