@@ -28,6 +28,16 @@ const filterTypes = [
   { id: 1, label: "Filtrar por mes", value: MONTH },
   { id: 2, label: "Filtrar por año", value: YEAR },
 ];
+const types = [
+  {
+    id: 1,
+    label: "Mensual, cantidad indefinida de cuotas",
+    value: MONTHLY_UND,
+  },
+  { id: 2, label: "Mensual, cantidad fija de cuotas", value: MONTHLY_FIXED },
+  { id: 3, label: "Anual, cantidad indefinida de cuotas", value: YEARLY_UND },
+  { id: 4, label: "Anual, cantidad fija de cuotas", value: YEARLY_FIXED },
+];
 const BILL_ACTIVE = "Activo";
 const BILL_FINISHED = "Finalizado";
 const BILL_OVERDUE = "Atrasado";
@@ -53,4 +63,5 @@ export {
   BILL_OVERDUE,
   ACT_CREATE,
   ACT_UPDATE,
+  types,
 };

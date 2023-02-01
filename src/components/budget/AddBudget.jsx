@@ -1,6 +1,6 @@
 import React, { useContext, useRef, useState } from "react";
 import Modal from "../modal/Modal";
-import { types } from "../bills/const/const";
+import { types } from "../../global/constants";
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
 import { BudgetContext } from "../../pages/dashboard/budgets";
 

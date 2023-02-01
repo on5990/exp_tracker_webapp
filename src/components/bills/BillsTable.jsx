@@ -45,31 +45,29 @@ function BillsTable() {
               return (
                 <tr className="tableTr" key={item._id}>
                   <td className="tableTd">{item.description}</td>
-                  <td className="tableTd">
-                    {item.sum ? `$${item.sum}` : "< SIN DATOS >"}
-                  </td>
+                  <td className="tableTd">{item.sum ? `$${item.sum}` : "-"}</td>
                   <td className="tableTd">{item.type}</td>
-                  <td className="tableTd">{item.amount || "< SIN DATOS >"}</td>
+                  <td className="tableTd">{item.amount || "-"}</td>
                   <td className="tableTd">{item.payments}</td>
                   <td className="tableTd">
                     {item.firstPayment
                       ? formatHelpers.formatDate(item.firstPayment)
-                      : "< SIN DATOS >"}
+                      : "-"}
                   </td>
                   <td className="tableTd">
                     {item.finalPayment
                       ? formatHelpers.formatDate(item.finalPayment)
-                      : "< SIN DATOS >"}
+                      : "-"}
                   </td>
                   <td className="tableTd">
                     {item.lastPayment
                       ? formatHelpers.formatDate(item.lastPayment)
-                      : "< SIN DATOS >"}
+                      : "-"}
                   </td>
                   <td className="tableTd">
                     {item.nextPayment
                       ? formatHelpers.formatDate(item.nextPayment)
-                      : "< SIN DATOS >"}
+                      : "-"}
                   </td>
                   <td className="tableTd">{item.state}</td>
                   <td className="tableTd">

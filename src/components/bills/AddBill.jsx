@@ -9,7 +9,7 @@ import {
   types,
   YEARLY_FIXED,
   YEARLY_UND,
-} from "./const/const";
+} from "../../global/constants";
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
 import { BillContext } from "../../pages/dashboard/bills";
 

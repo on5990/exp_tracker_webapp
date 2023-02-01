@@ -1,4 +1,7 @@
+import { BUDGET_EXCEEDED, BUDGET_OK } from "@/global/constants";
 import expenseValidation from "@/lib/backendHelpers/validations/expense.validation";
+import budgetRepository from "@/repositories/budget.repository";
+import budgetService from "@/services/budget.service";
 import categoryService from "@/services/category.service";
 import expenseService from "@/services/expense.service";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -48,9 +51,21 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
         }
         await expenseService.create(data);
         // 2)  UPDATE BUDGET
-        // 3)  UPDATE AVERAGES LOCATED IN USER COLLECTION
-        // 4) GET UPDATED INFO ABOUT EXPENSES
+        const budget = await budgetRepository.getByCategory(_categoryId);
+        if (budget) {
+          const usedAmount = +budget.usedAmount + +sum;
+          const lastExpense = new Date(spentAt);
+          const state = usedAmount > budget.sum ? BUDGET_EXCEEDED : BUDGET_OK;
+          await budgetRepository.update(budget._id, {
+            usedAmount,
+            lastExpense,
+            state,
+          });
+        }
+        // 3) GET UPDATED INFO ABOUT EXPENSES
         const _expenses = await expenseService.getAll(userId);
+        // 4)  UPDATE AVERAGES LOCATED IN USER COLLECTION
+
         // SUCCESSFUL REQUEST
         res.status(200);
         return res.json({ success: true, data: { ..._expenses } });
