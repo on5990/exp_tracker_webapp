@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { REQUEST_BUDGET, REQUEST_TRUE } from "../../global/constants";
 import { ExpenseContext } from "../../pages/dashboard";
 import Modal from "../modal/Modal";
 
@@ -24,6 +25,7 @@ function DeleteCategory({ _id }) {
         setData((prev) => {
           return { ...prev, categories: content.data.categories };
         });
+        localStorage.setItem(REQUEST_BUDGET, JSON.stringify(REQUEST_TRUE));
       } else {
         console.log(content);
       }

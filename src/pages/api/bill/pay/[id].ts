@@ -26,6 +26,7 @@ interface Data {
   _userId: any;
   _categoryId: any;
   _billId: any;
+  payments: number;
 }
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -59,9 +60,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           _userId: userId,
           _categoryId: billCategory._id,
           _billId: id,
+          payments: periods,
         };
-        console.log("#########################################3\n\n");
-        console.log("EXPENSE DATA", data);
+        // console.log("#########################################3\n\n");
+        // console.log("EXPENSE DATA", data);
 
         // CREATE EXPENSE
         await expenseService.create(data);
@@ -77,7 +79,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
               )
             : bill.lastPayment;
 
-        console.log("ARG ", argLastPayment);
+        // console.log("ARG ", argLastPayment);
         let last = mathService.calcLastPayment(
           bill.lastPayment || argLastPayment,
           periods,
@@ -106,7 +108,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           lastPayment: new Date(last as Date),
           nextPayment: new Date(next as Date),
         };
-        console.log("BILL UPDATE", _data);
+        // console.log("BILL UPDATE", _data);
         // UPDATE BILL
         await billService.update(id, _data);
         // UPDATE BUDGET

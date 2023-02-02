@@ -43,6 +43,23 @@ const BILL_FINISHED = "Finalizado";
 const BILL_OVERDUE = "Atrasado";
 const ACT_CREATE = "Crear";
 const ACT_UPDATE = "Actualizar";
+
+const EXPENSE_CACHE = "expense_data";
+const BILL_CACHE = "bill_data";
+const BUDGET_CACHE = "budget_data";
+
+const REQUEST_EXPENSE = "request_expense";
+const REQUEST_BUDGET = "request_budget";
+const REQUEST_BILL = "request_bill";
+const REQUEST_TRUE = { request: true };
+const REQUEST_FALSE = { request: false };
+
+const SECTION_CACHE = "section";
+const EXPENSE_SECTION = { section: "expense_section" };
+const BUDGET_SECTION = { section: "budget_section" };
+const BILL_SECTION = { section: "bill_section" };
+const CHARTS_SECTION = { section: "charts_section" };
+
 export {
   SPECIFIC,
   CATEGORY,
@@ -64,4 +81,17 @@ export {
   ACT_CREATE,
   ACT_UPDATE,
   types,
+  EXPENSE_CACHE,
+  BILL_CACHE,
+  BUDGET_CACHE,
+  REQUEST_BILL,
+  REQUEST_EXPENSE,
+  REQUEST_BUDGET,
+  REQUEST_FALSE,
+  REQUEST_TRUE,
+  SECTION_CACHE,
+  EXPENSE_SECTION,
+  BUDGET_SECTION,
+  BILL_SECTION,
+  CHARTS_SECTION,
 };

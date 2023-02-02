@@ -4,6 +4,7 @@ import Datetime from "react-datetime";
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
 import { ExpenseContext } from "../../pages/dashboard";
 import getHelpers from "../../lib/frontendHelpers/getHelpers";
+import { REQUEST_BUDGET, REQUEST_TRUE } from "../../global/constants";
 
 function EditExpense({ _id }) {
   const { setData, data } = useContext(ExpenseContext);
@@ -111,6 +112,7 @@ function EditExpense({ _id }) {
             totalsByCategory: content.data.totalsByCategory,
           };
         });
+        localStorage.setItem(REQUEST_BUDGET, JSON.stringify(REQUEST_TRUE));
       } else {
         console.log(content);
       }

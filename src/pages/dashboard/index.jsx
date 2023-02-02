@@ -7,7 +7,15 @@ import FilterExpense from "../../components/expense/FilterExpense";
 import SwitchBtn from "../../components/expense/SwitchBtn";
 import TotalTable from "../../components/expense/TotalTable";
 import MainLayout from "../../components/layout/MainLayout";
-import { SPECIFIC, TYPE_CATEGORY } from "../../global/constants";
+import {
+  EXPENSE_CACHE,
+  EXPENSE_SECTION,
+  REQUEST_EXPENSE,
+  REQUEST_FALSE,
+  SECTION_CACHE,
+  SPECIFIC,
+  TYPE_CATEGORY,
+} from "../../global/constants";
 
 export const ExpenseContext = React.createContext();
 function Dashboard() {
@@ -31,7 +39,22 @@ function Dashboard() {
     showType: SPECIFIC,
   });
   const getRequestSent = useRef(false);
-  // const sortByParams = useRef(false);
+  useEffect(() => {
+    const empty = JSON.stringify({
+      expenses: [],
+      categories: [],
+      monthlyAvg: "",
+      yearlyAvg: "",
+      weeklyTotal: "",
+      monthlyTotal: "",
+      yearlyTotal: "",
+      totalsByCategory: [],
+    });
+    const strJson = JSON.stringify(data);
+    if (empty != strJson) {
+      localStorage.setItem(EXPENSE_CACHE, strJson);
+    }
+  }, [data]);
   useEffect(() => {
     if (parameters.showType === TYPE_CATEGORY) {
       setParameters((prev) => {
@@ -45,32 +68,56 @@ function Dashboard() {
     }
   }, [parameters.showType]);
   useEffect(() => {
+    localStorage.setItem(SECTION_CACHE, JSON.stringify(EXPENSE_SECTION));
     if (!getRequestSent.current) {
       const getData = async () => {
+        console.log("REQUESTING EXPENSES");
         let response = await fetch(`/api/expense`, {
           method: "GET",
         });
         if (response.ok) {
-          let info = await response.json();
-          info = info.data;
+          let content = await response.json();
+          content = content.data;
           setData((prev) => {
             return {
               ...prev,
-              expenses: info.expenses,
-              categories: info.categories,
-              monthlyAvg: info.monthlyAvg,
-              yearlyAvg: info.yearlyAvg,
-              weeklyTotal: info.weeklyTotal,
-              monthlyTotal: info.monthlyTotal,
-              yearlyTotal: info.yearlyTotal,
-              totalsByCategory: info.totalsByCategory,
+              expenses: content.expenses,
+              categories: content.categories,
+              monthlyAvg: content.monthlyAvg,
+              yearlyAvg: content.yearlyAvg,
+              weeklyTotal: content.weeklyTotal,
+              monthlyTotal: content.monthlyTotal,
+              yearlyTotal: content.yearlyTotal,
+              totalsByCategory: content.totalsByCategory,
             };
           });
+          localStorage.setItem(EXPENSE_CACHE, JSON.stringify(content));
+          localStorage.setItem(REQUEST_EXPENSE, JSON.stringify(REQUEST_FALSE));
         } else {
           console.log(response);
         }
       };
-      getData();
+      let cache = localStorage.getItem(EXPENSE_CACHE);
+      let shouldRequest = localStorage.getItem(REQUEST_EXPENSE);
+      shouldRequest = shouldRequest ? JSON.parse(shouldRequest) : false;
+      if (cache != null && shouldRequest != null && !shouldRequest.request) {
+        cache = JSON.parse(cache);
+        setData((prev) => {
+          return {
+            ...prev,
+            expenses: cache.expenses,
+            categories: cache.categories,
+            monthlyAvg: cache.monthlyAvg,
+            yearlyAvg: cache.yearlyAvg,
+            weeklyTotal: cache.weeklyTotal,
+            monthlyTotal: cache.monthlyTotal,
+            yearlyTotal: cache.yearlyTotal,
+            totalsByCategory: cache.totalsByCategory,
+          };
+        });
+      } else {
+        getData();
+      }
       getRequestSent.current = true;
     }
   }, []);

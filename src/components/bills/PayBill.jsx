@@ -4,6 +4,7 @@ import Datetime from "react-datetime";
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
 import { BillContext } from "../../pages/dashboard/bills";
 import getHelpers from "../../lib/frontendHelpers/getHelpers";
+import { REQUEST_EXPENSE, REQUEST_TRUE } from "../../global/constants";
 
 function PayBill({ _id }) {
   const { data, setData } = useContext(BillContext);
@@ -99,6 +100,7 @@ function PayBill({ _id }) {
       const content = await response.json();
       if (response.ok) {
         setData(content.data);
+        localStorage.setItem(REQUEST_EXPENSE, JSON.stringify(REQUEST_TRUE));
       } else {
         console.log(content);
       }

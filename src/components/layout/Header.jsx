@@ -1,12 +1,23 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import {
+  BILL_SECTION,
+  BUDGET_SECTION,
+  CHARTS_SECTION,
+  EXPENSE_SECTION,
+  SECTION_CACHE,
+} from "../../global/constants";
 
 const sections = [
-  { id: "1", name: "Gastos", url: "/dashboard" },
-  { id: "2", name: "Cuentas", url: "/dashboard/bills" },
-  { id: "3", name: "Presupuesto", url: "/dashboard/budgets" },
-  { id: "4", name: "Gráficos", url: "/dashboard/charts" },
+  { id: EXPENSE_SECTION.section, name: "Gastos", url: "/dashboard" },
+  { id: BILL_SECTION.section, name: "Cuentas", url: "/dashboard/bills" },
+  {
+    id: BUDGET_SECTION.section,
+    name: "Presupuesto",
+    url: "/dashboard/budgets",
+  },
+  { id: CHARTS_SECTION.section, name: "Gráficos", url: "/dashboard/charts" },
 ];
 
 function Header() {
@@ -18,16 +29,23 @@ function Header() {
         method: "DELETE",
       });
       if (response.ok) {
+        localStorage.clear();
         router.push("/dashboard");
       }
       console.log(await response.json());
     };
     closeSession();
   }
+  useEffect(() => {
+    let cache = localStorage.getItem(SECTION_CACHE);
+    if (cache != null) {
+      cache = JSON.parse(cache);
+      setSection(cache.section);
+    }
+  }, []);
   function handleClick(e) {
     setSection(e.target.value);
   }
-  console.log("SECTION", section);
   return (
     <>
       <header className="navHeader">
@@ -37,8 +55,8 @@ function Header() {
               return (
                 <li key={item.id} value={item.id} onClick={handleClick}>
                   <Link
-                    className={`navLink ${
-                      section === item.id ? "activeLink" : ""
+                    className={`${
+                      section == item.id ? "activeLink" : "navLink"
                     }`}
                     href={item.url}
                   >
@@ -47,26 +65,6 @@ function Header() {
                 </li>
               );
             })}
-            {/* <li>
-              <Link className="navLink"  href="/dashboard">
-                Gastos
-              </Link>
-            </li>
-            <li>
-              <Link className="navLink" href="/dashboard/bills">
-                Cuentas
-              </Link>
-            </li>
-            <li>
-              <Link className="navLink" href="/dashboard/budgets">
-                Presupuesto
-              </Link>
-            </li>
-            <li>
-              <Link className="navLink" href="/dashboard/charts">
-                Gráficos
-              </Link>
-            </li> */}
           </ul>
         </nav>
         <div className="userSection">

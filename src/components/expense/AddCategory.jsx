@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { useEffect } from "react";
 import { useRef } from "react";
 import { useState } from "react";
+import { REQUEST_BUDGET, REQUEST_TRUE } from "../../global/constants";
 import { ExpenseContext } from "../../pages/dashboard";
 
 function AddCategory() {
@@ -55,6 +56,7 @@ function AddCategory() {
         setData((prev) => {
           return { ...prev, categories: [...prev.categories, content] };
         });
+        localStorage.setItem(REQUEST_BUDGET, JSON.stringify(REQUEST_TRUE));
       } else {
         console.log(content);
       }
@@ -63,7 +65,6 @@ function AddCategory() {
     const same = data.categories?.filter(
       (cat) => cat.name.toLowerCase() == category.toLowerCase()
     );
-    console.log("SAME", same);
     if (same.length > 0) {
       pass = false;
       setCategory("");

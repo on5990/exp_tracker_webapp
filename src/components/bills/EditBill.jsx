@@ -11,19 +11,8 @@ import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
 import getHelpers from "../../lib/frontendHelpers/getHelpers";
 import { BillContext } from "../../pages/dashboard/bills";
 
-function EditBill({ _id }) {
+function EditBill({ billData }) {
   const { data, setData } = useContext(BillContext);
-  const [bill, setBill] = useState({
-    _id: "",
-    description: "",
-    amount: "",
-    type: "",
-    nextPayment: "",
-    firstPayment: "",
-    sum: "",
-    state: "",
-    payments: "",
-  });
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState({
     description: "",
@@ -40,36 +29,32 @@ function EditBill({ _id }) {
     sum: false,
   });
   useEffect(() => {
-    const found = getHelpers.getById(_id, data.bills);
-    // console.log("BILL FOUND", found);
     setInput((prev) => {
       return {
         ...prev,
-        description: found.description,
-        sum: found.sum,
-        amount: found.amount,
+        description: billData.description,
+        sum: billData.sum,
+        amount: billData.amount,
       };
     });
-
-    setBill(found);
   }, [, data]);
 
   useEffect(() => {
-    if (bill.state === BILL_FINISHED) {
+    if (billData.state === BILL_FINISHED) {
       setDisable((prev) => {
         return { ...prev, sum: true };
       });
     }
     if (
-      bill.type == MONTHLY_UND ||
-      bill.type === YEARLY_UND ||
-      bill.state === BILL_FINISHED
+      billData.type == MONTHLY_UND ||
+      billData.type === YEARLY_UND ||
+      billData.state === BILL_FINISHED
     ) {
       setDisable((prev) => {
         return { ...prev, amount: true };
       });
     }
-  }, [, bill]);
+  }, [, data]);
 
   function openModal() {
     setIsOpen(true);
@@ -80,9 +65,9 @@ function EditBill({ _id }) {
     setInput((prev) => {
       return {
         ...prev,
-        description: bill.description,
-        sum: bill.sum,
-        amount: bill.amount,
+        description: billData.description,
+        sum: billData.sum,
+        amount: billData.amount,
       };
     });
     setErrors((prev) => {
@@ -123,17 +108,17 @@ function EditBill({ _id }) {
       });
     }
     if (
-      bill.state !== BILL_FINISHED &&
+      billData.state !== BILL_FINISHED &&
       input.amount === "" &&
-      (bill.type === MONTHLY_FIXED || bill.type === YEARLY_FIXED)
+      (billData.type === MONTHLY_FIXED || billData.type === YEARLY_FIXED)
     ) {
       pass = false;
       setErrors((prev) => {
         return { ...prev, amount: "Este campo es requerido" };
       });
     } else if (
-      bill.state !== BILL_FINISHED &&
-      (bill.type === MONTHLY_FIXED || bill.type === YEARLY_FIXED) &&
+      billData.state !== BILL_FINISHED &&
+      (billData.type === MONTHLY_FIXED || billData.type === YEARLY_FIXED) &&
       input.amount !== "" &&
       !formatHelpers.isPositiveInteger(input.amount)
     ) {
@@ -141,12 +126,12 @@ function EditBill({ _id }) {
       setErrors((prev) => {
         return { ...prev, amount: "Debe ingresar un número entero positivo" };
       });
-    } else if (input.amount < bill.payments) {
+    } else if (input.amount < billData.payments) {
       pass = false;
       setErrors((prev) => {
         return {
           ...prev,
-          amount: `La cantidad de cuotas no puede ser inferior a las cuotas pagadas(${bill.payments})`,
+          amount: `La cantidad de cuotas no puede ser inferior a las cuotas pagadas(${billData.payments})`,
         };
       });
     }
@@ -158,7 +143,7 @@ function EditBill({ _id }) {
       let inputBody = { description: input.description };
       if (input.sum) inputBody = { ...inputBody, sum: input.sum };
       if (input.amount) inputBody = { ...inputBody, amount: input.amount };
-      const response = await fetch(`/api/bill/${_id}`, {
+      const response = await fetch(`/api/bill/${billData._id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(inputBody),

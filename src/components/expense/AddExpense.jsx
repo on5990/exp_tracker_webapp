@@ -6,6 +6,7 @@ import moment from "moment/moment";
 import "moment/locale/es";
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
 import { ExpenseContext } from "../../pages/dashboard";
+import { REQUEST_BUDGET, REQUEST_TRUE } from "../../global/constants";
 
 function AddExpense() {
   const { setData, data } = useContext(ExpenseContext);
@@ -106,6 +107,7 @@ function AddExpense() {
             totalsByCategory: content.data.totalsByCategory,
           };
         });
+        localStorage.setItem(REQUEST_BUDGET, JSON.stringify(REQUEST_TRUE));
       } else {
         console.log(content);
       }

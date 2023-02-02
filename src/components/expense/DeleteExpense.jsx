@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { REQUEST_BUDGET, REQUEST_TRUE } from "../../global/constants";
 import { ExpenseContext } from "../../pages/dashboard";
 import Modal from "../modal/Modal";
 
@@ -32,6 +33,7 @@ function DeleteExpense({ _id }) {
             totalsByCategory: content.data.totalsByCategory,
           };
         });
+        localStorage.setItem(REQUEST_BUDGET, JSON.stringify(REQUEST_TRUE));
       } else {
         console.log(content);
       }

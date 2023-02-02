@@ -79,7 +79,7 @@ function BillsTable() {
                         <PayBill _id={item._id} />
                       )}
                       <BillHistory _id={item._id} />
-                      <EditBill _id={item._id} />
+                      <EditBill billData={item} />
                       <DeleteBill _id={item._id} />
                     </div>
                   </td>
