@@ -20,11 +20,14 @@ const head = [
   { id: 11, name: "" },
 ];
 function BillsTable() {
-  const { data } = useContext(BillContext);
+  const { data, search } = useContext(BillContext);
   const [dataToShow, setDataToShow] = useState([]);
   useEffect(() => {
-    setDataToShow(data);
-  }, [, data]);
+    const info = data.bills?.filter((item) =>
+      item.description.toLowerCase().includes(search.toLowerCase())
+    );
+    setDataToShow({ ...data, bills: info });
+  }, [, data, search]);
   return (
     <>
       <div className="tableContainer">
@@ -41,7 +44,7 @@ function BillsTable() {
             </tr>
           </thead>
           <tbody>
-            {data.bills?.map((item) => {
+            {dataToShow.bills?.map((item) => {
               return (
                 <tr className="tableTr" key={item._id}>
                   <td className="tableTd">{item.description}</td>

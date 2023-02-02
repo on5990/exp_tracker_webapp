@@ -387,7 +387,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
   width: 100%;
-  margin-bottom: 2vh;
+  margin-bottom: 1vh;
   height: auto;
   box-sizing: border-box;
 }
@@ -400,12 +400,14 @@
   color: #eeeeee;
   font-family: "Lusitana";
   font-size: 1.1rem;
+  margin-bottom: 5px;
 }
 .optionDiv .dualButton {
   background-color: #535857;
   border-radius: 5px;
   height: 30px;
   width: auto;
+  margin-bottom: 5px;
 }
 .optionDiv .buttonActive {
   background-color: #03919b;
@@ -439,6 +441,7 @@
   justify-content: space-between;
   color: #eeeeee;
   font-size: 1.1rem;
+  margin-bottom: 5px;
 }
 .optionDiv .searchDiv .filterItem {
   display: flex;

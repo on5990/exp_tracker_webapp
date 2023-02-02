@@ -7,6 +7,7 @@ export const BudgetContext = React.createContext();
 function Budgets() {
   const [data, setData] = useState({});
   const [search, setSearch] = useState("");
+  console.log("SEARCH BUDGET", search);
   const getRequestCalled = useRef(false);
   useEffect(() => {
     if (!getRequestCalled.current) {
@@ -26,7 +27,7 @@ function Budgets() {
     }
   }, []);
   return (
-    <BudgetContext.Provider value={{ data, setData, search }}>
+    <BudgetContext.Provider value={{ data, setData, search, setSearch }}>
       <MainLayout>
         <h1 className="mainTitle">Presupuesto</h1>
         <hr />

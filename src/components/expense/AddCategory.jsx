@@ -60,7 +60,9 @@ function AddCategory() {
       }
     };
     let pass = true;
-    const same = data.categories?.filter((cat) => cat.name == category);
+    const same = data.categories?.filter(
+      (cat) => cat.name.toLowerCase() == category.toLowerCase()
+    );
     console.log("SAME", same);
     if (same.length > 0) {
       pass = false;

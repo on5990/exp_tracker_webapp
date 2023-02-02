@@ -1,5 +1,5 @@
 import { nanoid } from "nanoid";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { BudgetContext } from "../../pages/dashboard/budgets";
 import DeleteBudget from "./DeleteBudget";
 import EditBudget from "./EditBudget";
@@ -15,40 +15,15 @@ const head = [
   { id: 1, name: "Estado" },
   { id: 1, name: "" },
 ];
-const content = [
-  {
-    id: 1,
-    category: "Transporte",
-    amount: "$1000",
-    spent: "$600",
-    available: "$400",
-    overExpense: "$0",
-    lastUpdate: "20/01/2023",
-    state: "Ok",
-  },
-  {
-    id: 2,
-    category: "Transporte",
-    amount: "$1000",
-    spent: "$1200",
-    available: "$0",
-    overExpense: "$200",
-    lastUpdate: "20/01/2023",
-    state: "Excedido",
-  },
-  {
-    id: 1,
-    category: "Transporte",
-    amount: "$1000",
-    spent: "$600",
-    available: "$400",
-    overExpense: "$0",
-    lastUpdate: "20/01/2023",
-    state: "Ok",
-  },
-];
 function BudgetTable() {
-  const { data } = useContext(BudgetContext);
+  const { data, search } = useContext(BudgetContext);
+  const [dataToShow, setDataToShow] = useState([]);
+  useEffect(() => {
+    const info = data.budgets?.filter((item) =>
+      item.categoryName.toLowerCase().includes(search.toLowerCase())
+    );
+    setDataToShow({ ...data, budgets: info });
+  }, [, data, search]);
   return (
     <>
       <div className="tableContainer">
@@ -65,7 +40,7 @@ function BudgetTable() {
             </tr>
           </thead>
           <tbody>
-            {data.budgets?.map((item) => {
+            {dataToShow.budgets?.map((item) => {
               return (
                 <tr className="tableTr" key={item._id}>
                   <td className="tableTd">{item.categoryName}</td>

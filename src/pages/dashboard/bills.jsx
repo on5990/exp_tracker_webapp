@@ -7,6 +7,7 @@ export const BillContext = React.createContext();
 function Bills() {
   const [data, setData] = useState({});
   const [search, setSearch] = useState("");
+  console.log("SEARCH BILL", search);
   const getRequestCalled = useRef(false);
   useEffect(() => {
     if (!getRequestCalled.current) {
@@ -24,7 +25,7 @@ function Bills() {
     }
   }, []);
   return (
-    <BillContext.Provider value={{ data, setData, search }}>
+    <BillContext.Provider value={{ data, setData, search, setSearch }}>
       <MainLayout>
         <h1 className="mainTitle">Cuentas</h1>
         <hr />

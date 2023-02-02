@@ -32,6 +32,10 @@ async function getAll(userId: string) {
   };
   return output;
 }
+async function getByBill(_billId: string) {
+  const res = await expenseRepository.getByBill(_billId);
+  return res;
+}
 // PENDIENTE
 async function create(data: any) {
   const expense = await expenseRepository.create(data);
@@ -47,4 +51,4 @@ async function remove(id: string) {
   const res = await expenseRepository.remove(id);
   return res;
 }
-export default { getAll, getOne, create, update, remove };
+export default { getAll, getOne, getByBill, create, update, remove };

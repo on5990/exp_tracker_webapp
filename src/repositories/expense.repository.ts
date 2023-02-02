@@ -29,6 +29,14 @@ async function getByCategory(_userId: string, _categoryId: string) {
     console.log(error);
   }
 }
+async function getByBill(_billId: string) {
+  try {
+    const expenses = await Expense.find({ _billId }).exec();
+    return expenses;
+  } catch (error) {
+    console.log(error);
+  }
+}
 // CREATE EXPENSE
 async function create(data: any) {
   try {
@@ -71,6 +79,7 @@ export default {
   getAll,
   getOne,
   getByCategory,
+  getByBill,
   create,
   update,
   remove,
