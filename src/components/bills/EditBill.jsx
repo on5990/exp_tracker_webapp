@@ -145,6 +145,7 @@ function EditBill({ billData }) {
       if (input.sum) inputBody = { ...inputBody, sum: input.sum };
       if (input.amount) inputBody = { ...inputBody, amount: input.amount };
       const response = await billRequest.update(billData._id, inputBody);
+      console.log("AAAAAAAAAAAAAAAAAAAAAAAAAA", response);
       setData(response);
     };
     let pass = checkErrors();

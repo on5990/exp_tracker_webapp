@@ -1,4 +1,10 @@
-import { BILL_ACTIVE, BILL_FINISHED, BILL_OVERDUE } from "@/global/constants";
+import {
+  BILL_ACTIVE,
+  BILL_FINISHED,
+  BILL_OVERDUE,
+  MONTHLY_UND,
+  YEARLY_UND,
+} from "@/global/constants";
 import billValidation from "@/lib/backendHelpers/validations/bill.validation";
 import billService from "@/services/bill.service";
 import mathService from "@/services/math.service";
@@ -50,14 +56,15 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         if (amount <= bill.payments) {
           data = { ...data, nextPayment: data.lastPayment };
         }
-        // const next = mathService.calcLastPayment()
         // CALC FINAL_PAYMENT
-        const finalPayment = mathService.calcFinalPayment(
-          data.firstPayment as Date,
-          data.amount as number,
-          data.type
-        );
-        data = { ...data, finalPayment: finalPayment };
+        if (data.type != MONTHLY_UND && data.type != YEARLY_UND) {
+          const finalPayment = mathService.calcFinalPayment(
+            data.firstPayment as Date,
+            data.amount as number,
+            data.type
+          );
+          data = { ...data, finalPayment: finalPayment };
+        }
         // DETERMINE STATE
         let state = BILL_ACTIVE;
         if (data.payments == data.amount) {

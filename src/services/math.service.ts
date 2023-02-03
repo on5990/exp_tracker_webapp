@@ -176,12 +176,7 @@ function calcExpenseAvg(expenses: Array<any>) {
   const yearAvg = (+result.total / +result.yearAmount).toFixed(2);
   return { monthAvg, yearAvg };
 }
-// PENDIENTE
-function calcYearlyAvg(expenses: Array<any>) {
-  // CLASSIFY EXPENSES PER YEAR
-  // GET EACH TOTAL
-  // CALCULATE AVERAGE
-}
+
 function calcFinalPayment(firstPayment: Date, amount: number, type: string) {
   try {
     if (amount == 1) {
@@ -205,15 +200,23 @@ function calcFinalPayment(firstPayment: Date, amount: number, type: string) {
     console.log(error);
   }
 }
-function calcBillMonth(bills: Array<any>, expenses: Array<any>) {}
-function calcBillYear(bills: Array<any>, expenses: Array<any>) {}
+function calcBillMonth(bills: Array<any>, expenses: Array<any>) {
+  // BILLS CALCULATED ARE MONTHLY AND HAVE A DEFINED AMOUNT TO PAY
+  // const monthlyExpenses =
+}
+function calcBillYear(bills: Array<any>, expenses: Array<any>) {
+  // BILLS CALCULATED AND HAVE A DEFINED AMOUNT TO PAY
+  // MONTHLY BILLS X TIMES PAID IN THE YEAR
+  // make interval: first payment - final payment
+  // if
+  // YEARLY BILLS
+}
 export default {
   calcWeeklyTotal,
   calcMonthlyTotal,
   calcYearlyTotal,
   classifyByCat,
   calcExpenseAvg,
-  calcYearlyAvg,
   calcTotalExcess,
   calcBudgetInfo,
   calcLastPayment,
