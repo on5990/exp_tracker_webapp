@@ -36,9 +36,14 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
       case "GET":
         // GET BILLS
         const bills = await billService.getAll(userId);
+        const monthTotal = mathService.calcBillMonth(bills || []);
+        const yearTotal = mathService.calcBillYear(bills || []);
         // SUCCESSFUL REQUEST
         res.status(200);
-        return res.json({ success: true, data: { bills } });
+        return res.json({
+          success: true,
+          data: { bills, monthTotal, yearTotal },
+        });
       case "POST":
         // VALIDATE DATA FROM FRONTEND
         await billValidation.addSchema.validateAsync(body);
@@ -111,12 +116,16 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
         await billService.create(data);
         // GET BILLS
         const _bills = await billService.getAll(userId);
+        const _monthTotal = mathService.calcBillMonth(_bills || []);
+        const _yearTotal = mathService.calcBillYear(_bills || []);
         // SUCCESSFUL REQUEST
         res.status(200);
         return res.json({
           success: true,
           data: {
             bills: _bills,
+            monthTotal: _monthTotal,
+            yearTotal: _yearTotal,
           },
         });
       default:

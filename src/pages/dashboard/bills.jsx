@@ -26,6 +26,7 @@ function Bills() {
     if (!getRequestCalled.current) {
       const getData = async () => {
         const response = await billRequest.get();
+        console.log("BILLS RES", response);
         setData(response);
       };
       getData();
@@ -39,8 +40,8 @@ function Bills() {
         <hr />
         <div className="greybox">
           <ul className="infoList">
-            <li>Total mensual: </li>
-            <li>Total anual: </li>
+            <li>Total mensual: ${data.monthTotal}</li>
+            <li>Total anual: ${data.yearTotal}</li>
           </ul>
         </div>
         <div className="optionDiv">

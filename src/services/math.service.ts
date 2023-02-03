@@ -6,6 +6,8 @@ import {
   MONTHLY_FIXED,
   MONTHLY_UND,
   YEAR,
+  YEARLY_FIXED,
+  YEARLY_UND,
 } from "@/global/constants";
 
 function calcWeeklyTotal(expenses: Array<any>) {
@@ -200,11 +202,90 @@ function calcFinalPayment(firstPayment: Date, amount: number, type: string) {
     console.log(error);
   }
 }
-function calcBillMonth(bills: Array<any>, expenses: Array<any>) {
+function calcBillMonth(bills: Array<any>) {
   // BILLS CALCULATED ARE MONTHLY AND HAVE A DEFINED AMOUNT TO PAY
-  // const monthlyExpenses =
+  const now = new Date();
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0);
+  const endOfMonth = new Date(
+    now.getFullYear(),
+    now.getMonth() + 1,
+    0,
+    23,
+    59,
+    59
+  );
+  let estSum = [];
+  estSum = bills.filter(
+    (item) =>
+      item.sum && (item.type == MONTHLY_FIXED || item.type == MONTHLY_UND)
+  );
+  const total = estSum.reduce((acc, curr) => {
+    // CONDITIONS:
+    // 1) FIRST PAYMENT IS BEFORE OR AT THE END OF THE MONTH
+    // 2) FINAL PAYMENT DOES NOT EXISTS OR IS AFTER THE START OF THE MONTH
+    if (
+      new Date(curr.firstPayment).getTime() <= endOfMonth.getTime() &&
+      (!curr.finalPayment ||
+        new Date(curr.finalPayment).getTime() >= startOfMonth.getTime())
+    ) {
+      const thisTotal = acc + +curr.sum;
+      return thisTotal;
+    }
+    return acc;
+  }, 0);
+  return total;
 }
-function calcBillYear(bills: Array<any>, expenses: Array<any>) {
+// NEED: TOTAL SUM OF BILLS TO PAY THIS MONTH/YEAR
+function calcBillYear(bills: Array<any>) {
+  const now = new Date();
+  const thisYear = now.getFullYear();
+  const startOfYear = new Date(thisYear, 0, 1, 0, 0, 0);
+  const endOfYear = new Date(thisYear, 11, 31, 23, 59, 59);
+  // const thisMonth = now.getMonth();
+  let estSum = [];
+  estSum = bills.filter((item) => item.sum);
+  const total = estSum.reduce((acc, curr) => {
+    // CONDITIONS:
+    // 1) BILL IS OF YEARLY TYPE
+    // 2) FIRST PAYMENT IS BEFORE OR AT THE END OF THIS YEAR
+    // 3) FINAL PAYMENT DOES NOT EXIST OR IS AFTER THE START OF THE YEAR
+    if (
+      (curr.type == YEARLY_FIXED || curr.type == YEARLY_UND) &&
+      new Date(acc.firstPayment).getTime() <= endOfYear.getTime() &&
+      (!curr.finalPayment ||
+        new Date(curr.finalPayment).getTime() >= startOfYear.getTime())
+    ) {
+      const thisTotal = +acc + +curr.sum;
+      return thisTotal;
+    }
+    // CONDITIONS:
+    // 1) BILL IS OF MONTHLY TYPE
+    // 2) FIRST PAYMENT IS BEFORE OR AT THE END OF THIS YEAR
+    // 3) FINAL PAYMENT DOES NOT EXIST OR IS AFTER THE START OF THE YEAR
+    else if (
+      (curr.type == MONTHLY_FIXED || curr.type == MONTHLY_UND) &&
+      new Date(curr.firstPayment).getTime() <= endOfYear.getTime() &&
+      (!curr.finalPayment ||
+        new Date(curr.finalPayment).getTime() >= startOfYear.getTime())
+    ) {
+      const first =
+        new Date(curr.firstPayment).getTime() > startOfYear.getTime()
+          ? new Date(curr.firstPayment)
+          : startOfYear;
+      const firstMonth = first.getMonth();
+      const final =
+        curr.finalPayment &&
+        new Date(curr.finalPayment).getTime() < endOfYear.getTime()
+          ? new Date(curr.finalPayment)
+          : endOfYear;
+      const finalMonth = final.getMonth();
+      const payments = +finalMonth - (+firstMonth - 1);
+      const thisTotal = +acc + +payments * +curr.sum;
+      return thisTotal;
+    }
+    return acc;
+  }, 0);
+  return total;
   // BILLS CALCULATED AND HAVE A DEFINED AMOUNT TO PAY
   // MONTHLY BILLS X TIMES PAID IN THE YEAR
   // make interval: first payment - final payment

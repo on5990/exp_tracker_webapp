@@ -29,6 +29,7 @@ function EditBill({ billData }) {
     amount: false,
     sum: false,
   });
+
   useEffect(() => {
     setInput((prev) => {
       return {
@@ -38,9 +39,6 @@ function EditBill({ billData }) {
         amount: billData.amount,
       };
     });
-  }, [, data]);
-
-  useEffect(() => {
     if (billData.state === BILL_FINISHED) {
       setDisable((prev) => {
         return { ...prev, sum: true };

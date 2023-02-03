@@ -126,9 +126,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         }
         // GET BILLS
         const bills = await billService.getAll(userId);
+        const monthTotal = mathService.calcBillMonth(bills || []);
+        const yearTotal = mathService.calcBillYear(bills || []);
         // SUCCESSFUL REQUEST
         res.status(200);
-        return res.json({ success: true, data: { bills } });
+        return res.json({
+          success: true,
+          data: { bills, monthTotal, yearTotal },
+        });
       default:
         res.status(404);
         return res.json({ success: false, error: "Route not found" });

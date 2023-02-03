@@ -76,7 +76,7 @@ function BillsTable() {
                   <td className="tableTd">
                     <div className="cellBtnDiv">
                       {item.state !== BILL_FINISHED && (
-                        <PayBill _id={item._id} />
+                        <PayBill billData={item} />
                       )}
                       <BillHistory _id={item._id} />
                       <EditBill billData={item} />

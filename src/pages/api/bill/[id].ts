@@ -82,22 +82,31 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         await billService.update(id, data);
         // GET ALL THE BILLS
         const bills = await billService.getAll(userId);
+        const monthTotal = mathService.calcBillMonth(bills || []);
+        const yearTotal = mathService.calcBillYear(bills || []);
         // SUCCESSFUL REQUEST
         res.status(200);
         return res.json({
           success: true,
-          data: { bills },
+          data: { bills, monthTotal, yearTotal },
         });
       case "DELETE":
         // DELETE
         const dbDelete = await billService.remove(id);
         // GET BILLS
         const _bills = await billService.getAll(userId);
+        const _monthTotal = mathService.calcBillMonth(_bills || []);
+        const _yearTotal = mathService.calcBillYear(_bills || []);
         // SUCCESSFUL REQUEST
         res.status(200);
         return res.json({
           success: true,
-          data: { msg: `${dbDelete._id} was deleted`, bills: _bills },
+          data: {
+            msg: `${dbDelete._id} was deleted`,
+            bills: _bills,
+            monthTotal: _monthTotal,
+            yearTotal: _yearTotal,
+          },
         });
       default:
         res.status(404);

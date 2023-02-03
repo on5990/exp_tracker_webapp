@@ -15,7 +15,7 @@ import { BillContext } from "../../pages/dashboard/bills";
 import billRequest from "../../lib/frontendHelpers/requests/bill.request";
 
 function AddBill() {
-  const { data, setData } = useContext(BillContext);
+  const { setData } = useContext(BillContext);
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState({
     description: "",

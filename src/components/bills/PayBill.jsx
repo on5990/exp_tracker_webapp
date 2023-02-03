@@ -3,13 +3,10 @@ import Modal from "../modal/Modal";
 import Datetime from "react-datetime";
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
 import { BillContext } from "../../pages/dashboard/bills";
-import getHelpers from "../../lib/frontendHelpers/getHelpers";
-import { REQUEST_EXPENSE, REQUEST_TRUE } from "../../global/constants";
 import billRequest from "../../lib/frontendHelpers/requests/bill.request";
 
-function PayBill({ _id }) {
-  const { data, setData } = useContext(BillContext);
-  const [bill, setBill] = useState({ amount: "", payments: "" });
+function PayBill({ billData }) {
+  const { setData } = useContext(BillContext);
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState({
     sum: "",
@@ -20,10 +17,6 @@ function PayBill({ _id }) {
   function openModal() {
     setIsOpen(true);
   }
-  useEffect(() => {
-    const found = getHelpers.getById(_id, data.bills);
-    setBill(found);
-  }, [, data]);
   function closeModal(e) {
     e.preventDefault();
     setIsOpen(false);
@@ -49,11 +42,7 @@ function PayBill({ _id }) {
   }
   function checkErrors() {
     let pass = true;
-    let totalPayments = bill.payments + +input.periods;
-
-    console.log("BILL total payments", totalPayments);
-    console.log("BILL amount", bill.amount);
-    console.log("BOOL", bill.amount && bill.amount < totalPayments);
+    let totalPayments = billData.payments + +input.periods;
     if (input.sum === "") {
       pass = false;
       setErrors((prev) => {
@@ -75,13 +64,13 @@ function PayBill({ _id }) {
       setErrors((prev) => {
         return { ...prev, periods: "Debe ingresar un número entero positivo" };
       });
-    } else if (bill.amount && bill.amount < totalPayments) {
+    } else if (billData.amount && billData.amount < totalPayments) {
       pass = false;
       setErrors((prev) => {
         return {
           ...prev,
           periods: `No puede pagar más cuotas que la cantidad establecida. Cuotas restantes: ${
-            bill.amount - bill.payments
+            billData.amount - billData.payments
           }`,
         };
       });
@@ -92,7 +81,7 @@ function PayBill({ _id }) {
     e.preventDefault();
     const pass = checkErrors();
     const sendData = async () => {
-      const response = await billRequest.pay(_id, input);
+      const response = await billRequest.pay(billData._id, input);
       setData(response);
     };
     if (pass) {
