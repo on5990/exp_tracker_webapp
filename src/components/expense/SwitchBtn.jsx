@@ -1,8 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import { TYPE_CATEGORY, SPECIFIC } from "../../global/constants";
+import { ExpenseContext } from "../../pages/dashboard";
 
-function SwitchBtn({ setParameters }) {
+function SwitchBtn() {
+  const { setParameters } = useContext(ExpenseContext);
   const [activeBtn, setActiveBtn] = useState(SPECIFIC);
   function setSpecific() {
     setActiveBtn(SPECIFIC);

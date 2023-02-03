@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
 import {
   TYPE_CATEGORY,
@@ -7,6 +7,7 @@ import {
   YEAR,
   MONTH,
 } from "../../global/constants";
+import { ExpenseContext } from "../../pages/dashboard";
 
 const currentYear = new Date().getFullYear().toString();
 const currentMonth = new Date().getMonth();
@@ -14,7 +15,8 @@ const currentMonth = new Date().getMonth();
 const yearsArray = formatHelpers.generateYearArray();
 const monthsArray = formatHelpers.generateMonthArray();
 
-function FilterExpense({ parameters, setParameters }) {
+function FilterExpense() {
+  const { parameters, setParameters } = useContext(ExpenseContext);
   const [array, setArray] = useState([]);
   const [disable, setDisable] = useState(false);
   useEffect(() => {

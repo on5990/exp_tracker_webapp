@@ -5,7 +5,7 @@ import { ExpenseContext } from "../../pages/dashboard";
 import Modal from "../modal/Modal";
 
 function DeleteCategory({ _id }) {
-  const { setData } = useContext(ExpenseContext);
+  const { setData, setParameters } = useContext(ExpenseContext);
   const [isOpen, setIsOpen] = useState(false);
   function openModal() {
     setIsOpen(true);
@@ -20,6 +20,16 @@ function DeleteCategory({ _id }) {
       const content = await categoryRequest.remove(_id);
       setData((prev) => {
         return { ...prev, categories: content };
+      });
+      setParameters((prev) => {
+        return {
+          ...prev,
+          category: {
+            _id: "",
+            isDefault: true,
+            name: "",
+          },
+        };
       });
     };
     sendRequest();

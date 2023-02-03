@@ -40,8 +40,8 @@ function Bills() {
         <hr />
         <div className="greybox">
           <ul className="infoList">
-            <li>Total mensual: ${data.monthTotal}</li>
-            <li>Total anual: ${data.yearTotal}</li>
+            <li>Total de este mes: ${data.monthTotal}</li>
+            <li>Total de este año: ${data.yearTotal}</li>
           </ul>
         </div>
         <div className="optionDiv">

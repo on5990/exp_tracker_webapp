@@ -97,7 +97,9 @@ function Dashboard() {
     });
   }
   return (
-    <ExpenseContext.Provider value={{ setData, data, parameters }}>
+    <ExpenseContext.Provider
+      value={{ setData, data, setParameters, parameters }}
+    >
       <MainLayout>
         <h1 className="mainTitle">Gastos</h1>
         <hr />
@@ -145,19 +147,16 @@ function Dashboard() {
                 </div>
               );
             })}
-            <AddCategory setData={setData} />
+            <AddCategory />
           </div>
         </div>
         <div className="optionDiv">
-          <AddExpense data={data} setData={setData} />
-          <SwitchBtn setParameters={setParameters} />
-          <FilterExpense
-            parameters={parameters}
-            setParameters={setParameters}
-          />
+          <AddExpense />
+          <SwitchBtn />
+          <FilterExpense />
         </div>
-        {parameters.showType === SPECIFIC && <ExpenseTable data={data} />}
-        {parameters.showType === TYPE_CATEGORY && <TotalTable data={data} />}
+        {parameters.showType === SPECIFIC && <ExpenseTable />}
+        {parameters.showType === TYPE_CATEGORY && <TotalTable />}
       </MainLayout>
     </ExpenseContext.Provider>
   );

@@ -235,13 +235,11 @@ function calcBillMonth(bills: Array<any>) {
   }, 0);
   return total;
 }
-// NEED: TOTAL SUM OF BILLS TO PAY THIS MONTH/YEAR
 function calcBillYear(bills: Array<any>) {
   const now = new Date();
   const thisYear = now.getFullYear();
   const startOfYear = new Date(thisYear, 0, 1, 0, 0, 0);
   const endOfYear = new Date(thisYear, 11, 31, 23, 59, 59);
-  // const thisMonth = now.getMonth();
   let estSum = [];
   estSum = bills.filter((item) => item.sum);
   const total = estSum.reduce((acc, curr) => {
