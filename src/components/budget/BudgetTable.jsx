@@ -7,13 +7,13 @@ import formatHelpers from "../../lib/frontendHelpers/formatHelpers";
 
 const head = [
   { id: 1, name: "Categoría" },
-  { id: 1, name: "Presupuesto" },
-  { id: 1, name: "Gastado" },
-  { id: 1, name: "Disponible" },
-  { id: 1, name: "Exceso" },
-  { id: 1, name: "Última actualización" },
-  { id: 1, name: "Estado" },
-  { id: 1, name: "" },
+  { id: 2, name: "Presupuesto" },
+  { id: 3, name: "Gastado" },
+  { id: 4, name: "Disponible" },
+  { id: 5, name: "Exceso" },
+  { id: 6, name: "Última actualización" },
+  { id: 7, name: "Estado" },
+  { id: 8, name: "" },
 ];
 function BudgetTable() {
   const { data, search } = useContext(BudgetContext);

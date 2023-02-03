@@ -3,6 +3,7 @@ import Modal from "../modal/Modal";
 import { types } from "../../global/constants";
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
 import { BudgetContext } from "../../pages/dashboard/budgets";
+import budgetRequest from "../../lib/frontendHelpers/requests/budget.request";
 
 const categories = types;
 function AddBudget() {
@@ -69,20 +70,8 @@ function AddBudget() {
     e.preventDefault();
     const pass = checkErrors();
     const sendData = async () => {
-      console.log("PASS", input);
-      const response = await fetch("/api/budget", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(input),
-      });
-      const content = await response.json();
-      if (response.ok) {
-        setData(content.data);
-      } else {
-        console.log(content);
-      }
+      const response = await budgetRequest.create(input);
+      setData(response);
     };
     if (pass) {
       sendData();

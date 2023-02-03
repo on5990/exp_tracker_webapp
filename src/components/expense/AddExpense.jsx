@@ -7,6 +7,7 @@ import "moment/locale/es";
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
 import { ExpenseContext } from "../../pages/dashboard";
 import { REQUEST_BUDGET, REQUEST_TRUE } from "../../global/constants";
+import expenseRequest from "../../lib/frontendHelpers/requests/expense.request";
 
 function AddExpense() {
   const { setData, data } = useContext(ExpenseContext);
@@ -87,30 +88,19 @@ function AddExpense() {
     e.preventDefault();
     const pass = checkErrors();
     const submitInput = async () => {
-      // console.log("PASS", input);
-      const response = await fetch("/api/expense", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(input),
+      const response = await expenseRequest.create(input);
+      setData((prev) => {
+        return {
+          ...prev,
+          expenses: response.expenses,
+          monthlyAvg: response.monthlyAvg,
+          yearlyAvg: response.yearlyAvg,
+          weeklyTotal: response.weeklyTotal,
+          monthlyTotal: response.monthlyTotal,
+          yearlyTotal: response.yearlyTotal,
+          totalsByCategory: response.totalsByCategory,
+        };
       });
-      const content = await response.json();
-      if (response.ok) {
-        setData((prev) => {
-          return {
-            ...prev,
-            expenses: content.data.expenses,
-            monthlyAvg: content.data.monthlyAvg,
-            yearlyAvg: content.data.yearlyAvg,
-            weeklyTotal: content.data.weeklyTotal,
-            monthlyTotal: content.data.monthlyTotal,
-            yearlyTotal: content.data.yearlyTotal,
-            totalsByCategory: content.data.totalsByCategory,
-          };
-        });
-        localStorage.setItem(REQUEST_BUDGET, JSON.stringify(REQUEST_TRUE));
-      } else {
-        console.log(content);
-      }
     };
     if (pass) {
       submitInput();

@@ -10,6 +10,7 @@ import {
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
 import getHelpers from "../../lib/frontendHelpers/getHelpers";
 import { BillContext } from "../../pages/dashboard/bills";
+import billRequest from "../../lib/frontendHelpers/requests/bill.request";
 
 function EditBill({ billData }) {
   const { data, setData } = useContext(BillContext);
@@ -143,18 +144,8 @@ function EditBill({ billData }) {
       let inputBody = { description: input.description };
       if (input.sum) inputBody = { ...inputBody, sum: input.sum };
       if (input.amount) inputBody = { ...inputBody, amount: input.amount };
-      const response = await fetch(`/api/bill/${billData._id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(inputBody),
-      });
-      const content = await response.json();
-      if (response.ok) {
-        setData(content.data);
-      } else {
-        console.log(content);
-      }
-      console.log("PASS", inputBody);
+      const response = await billRequest.update(billData._id, inputBody);
+      setData(response);
     };
     let pass = checkErrors();
     if (pass) {

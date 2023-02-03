@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { REQUEST_BUDGET, REQUEST_TRUE } from "../../global/constants";
+import categoryRequest from "../../lib/frontendHelpers/requests/category.request";
 import { ExpenseContext } from "../../pages/dashboard";
 import Modal from "../modal/Modal";
 
@@ -16,19 +17,10 @@ function DeleteCategory({ _id }) {
   function handleSubmit(e) {
     e.preventDefault();
     const sendRequest = async () => {
-      console.log("DELETE CATEGORY", _id);
-      const response = await fetch(`/api/category/${_id}`, {
-        method: "DELETE",
+      const content = await categoryRequest.remove(_id);
+      setData((prev) => {
+        return { ...prev, categories: content };
       });
-      const content = await response.json();
-      if (response.ok) {
-        setData((prev) => {
-          return { ...prev, categories: content.data.categories };
-        });
-        localStorage.setItem(REQUEST_BUDGET, JSON.stringify(REQUEST_TRUE));
-      } else {
-        console.log(content);
-      }
     };
     sendRequest();
     closeModal(e);

@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import billRequest from "../../lib/frontendHelpers/requests/bill.request";
 import { BillContext } from "../../pages/dashboard/bills";
 import Modal from "../modal/Modal";
 
@@ -15,15 +16,17 @@ function DeleteBill({ _id }) {
   function handleSubmit(e) {
     e.preventDefault();
     const submitRequest = async () => {
-      const response = await fetch(`/api/bill/${_id}`, {
-        method: "DELETE",
-      });
-      const content = await response.json();
-      if (response.ok) {
-        setData(content.data);
-      } else {
-        console.log(content);
-      }
+      const response = await billRequest.remove(_id);
+      setData(response);
+      // const response = await fetch(`/api/bill/${_id}`, {
+      //   method: "DELETE",
+      // });
+      // const content = await response.json();
+      // if (response.ok) {
+      //   setData(content.data);
+      // } else {
+      //   console.log(content);
+      // }
     };
     submitRequest();
     setIsOpen(false);

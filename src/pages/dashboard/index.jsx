@@ -10,12 +10,11 @@ import MainLayout from "../../components/layout/MainLayout";
 import {
   EXPENSE_CACHE,
   EXPENSE_SECTION,
-  REQUEST_EXPENSE,
-  REQUEST_FALSE,
   SECTION_CACHE,
   SPECIFIC,
   TYPE_CATEGORY,
 } from "../../global/constants";
+import expenseRequest from "../../lib/frontendHelpers/requests/expense.request";
 
 export const ExpenseContext = React.createContext();
 function Dashboard() {
@@ -71,53 +70,22 @@ function Dashboard() {
     localStorage.setItem(SECTION_CACHE, JSON.stringify(EXPENSE_SECTION));
     if (!getRequestSent.current) {
       const getData = async () => {
-        console.log("REQUESTING EXPENSES");
-        let response = await fetch(`/api/expense`, {
-          method: "GET",
-        });
-        if (response.ok) {
-          let content = await response.json();
-          content = content.data;
-          setData((prev) => {
-            return {
-              ...prev,
-              expenses: content.expenses,
-              categories: content.categories,
-              monthlyAvg: content.monthlyAvg,
-              yearlyAvg: content.yearlyAvg,
-              weeklyTotal: content.weeklyTotal,
-              monthlyTotal: content.monthlyTotal,
-              yearlyTotal: content.yearlyTotal,
-              totalsByCategory: content.totalsByCategory,
-            };
-          });
-          localStorage.setItem(EXPENSE_CACHE, JSON.stringify(content));
-          localStorage.setItem(REQUEST_EXPENSE, JSON.stringify(REQUEST_FALSE));
-        } else {
-          console.log(response);
-        }
-      };
-      let cache = localStorage.getItem(EXPENSE_CACHE);
-      let shouldRequest = localStorage.getItem(REQUEST_EXPENSE);
-      shouldRequest = shouldRequest ? JSON.parse(shouldRequest) : false;
-      if (cache != null && shouldRequest != null && !shouldRequest.request) {
-        cache = JSON.parse(cache);
+        const response = await expenseRequest.get();
         setData((prev) => {
           return {
             ...prev,
-            expenses: cache.expenses,
-            categories: cache.categories,
-            monthlyAvg: cache.monthlyAvg,
-            yearlyAvg: cache.yearlyAvg,
-            weeklyTotal: cache.weeklyTotal,
-            monthlyTotal: cache.monthlyTotal,
-            yearlyTotal: cache.yearlyTotal,
-            totalsByCategory: cache.totalsByCategory,
+            expenses: response.expenses,
+            categories: response.categories,
+            monthlyAvg: response.monthlyAvg,
+            yearlyAvg: response.yearlyAvg,
+            weeklyTotal: response.weeklyTotal,
+            monthlyTotal: response.monthlyTotal,
+            yearlyTotal: response.yearlyTotal,
+            totalsByCategory: response.totalsByCategory,
           };
         });
-      } else {
-        getData();
-      }
+      };
+      getData();
       getRequestSent.current = true;
     }
   }, []);
@@ -128,7 +96,6 @@ function Dashboard() {
       return { ...prev, category: jsonData };
     });
   }
-  // console.log(data);
   return (
     <ExpenseContext.Provider value={{ setData, data, parameters }}>
       <MainLayout>

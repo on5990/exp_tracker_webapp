@@ -6,10 +6,9 @@ import MainLayout from "../../components/layout/MainLayout";
 import {
   BILL_CACHE,
   BILL_SECTION,
-  REQUEST_BILL,
-  REQUEST_FALSE,
   SECTION_CACHE,
 } from "../../global/constants";
+import billRequest from "../../lib/frontendHelpers/requests/bill.request";
 export const BillContext = React.createContext();
 function Bills() {
   const [data, setData] = useState({});
@@ -26,26 +25,10 @@ function Bills() {
     localStorage.setItem(SECTION_CACHE, JSON.stringify(BILL_SECTION));
     if (!getRequestCalled.current) {
       const getData = async () => {
-        console.log("REQUESTING BILL");
-        const response = await fetch("/api/bill", { method: "GET" });
-        const content = await response.json();
-        if (response.ok) {
-          setData(content.data);
-          localStorage.setItem(BILL_CACHE, JSON.stringify(content.data));
-          localStorage.setItem(REQUEST_BILL, JSON.stringify(REQUEST_FALSE));
-        } else {
-          console.log(content);
-        }
+        const response = await billRequest.get();
+        setData(response);
       };
-      let cache = localStorage.getItem(BILL_CACHE);
-      let shouldRequest = localStorage.getItem(REQUEST_BILL);
-      shouldRequest = shouldRequest ? JSON.parse(shouldRequest) : false;
-      if (cache != null && shouldRequest != null && !shouldRequest.request) {
-        cache = JSON.parse(cache);
-        setData(cache);
-      } else {
-        getData();
-      }
+      getData();
       getRequestCalled.current = true;
     }
   }, []);

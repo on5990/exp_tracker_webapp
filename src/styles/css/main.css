@@ -539,6 +539,49 @@
   box-shadow: 0 0 6px #2a9f97;
 }
 
+.modalTable {
+  width: 100%;
+  border: none;
+  overflow: hidden;
+  border-collapse: collapse;
+  border-spacing: 0;
+  box-sizing: border-box;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: #2a9f97 2px solid;
+  color: #eeeeee;
+}
+.modalTable .modalTr {
+  width: 100%;
+}
+.modalTable .modalTr:nth-child(even) {
+  background-color: #535857;
+}
+.modalTable .modalTr:nth-child(odd) {
+  background-color: #687271;
+}
+.modalTable .modalTh {
+  background-color: #2a9f97;
+  min-width: 10vw;
+  height: 40px;
+  font-size: 1.1rem;
+  font-weight: normal;
+}
+@media (orientation: portrait) {
+  .modalTable .modalTh {
+    min-width: 25vw;
+  }
+}
+.modalTable .modalTd {
+  padding-left: 0.5vw;
+  padding-right: 1vw;
+  text-align: center;
+  min-width: 5vw;
+  height: 35px;
+  font-size: 0.9rem;
+  min-height: auto;
+}
+
 .modal {
   position: fixed;
   z-index: 999;

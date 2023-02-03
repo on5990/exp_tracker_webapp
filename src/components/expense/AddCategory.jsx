@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useRef } from "react";
 import { useState } from "react";
 import { REQUEST_BUDGET, REQUEST_TRUE } from "../../global/constants";
+import categoryRequest from "../../lib/frontendHelpers/requests/category.request";
 import { ExpenseContext } from "../../pages/dashboard";
 
 function AddCategory() {
@@ -43,23 +44,10 @@ function AddCategory() {
   }
   function handleSubmit() {
     const sendData = async () => {
-      const response = await fetch("/api/category", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name: category }),
+      const content = await categoryRequest.create(category);
+      setData((prev) => {
+        return { ...prev, categories: [...prev.categories, content] };
       });
-      let content = await response.json();
-      if (response.ok) {
-        content = content.data.category;
-        setData((prev) => {
-          return { ...prev, categories: [...prev.categories, content] };
-        });
-        localStorage.setItem(REQUEST_BUDGET, JSON.stringify(REQUEST_TRUE));
-      } else {
-        console.log(content);
-      }
     };
     let pass = true;
     const same = data.categories?.filter(

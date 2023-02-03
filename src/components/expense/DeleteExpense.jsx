@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { REQUEST_BUDGET, REQUEST_TRUE } from "../../global/constants";
+import expenseRequest from "../../lib/frontendHelpers/requests/expense.request";
 import { ExpenseContext } from "../../pages/dashboard";
 import Modal from "../modal/Modal";
 
@@ -16,27 +17,19 @@ function DeleteExpense({ _id }) {
   function handleSubmit(e) {
     e.preventDefault();
     const submitRequest = async () => {
-      const response = await fetch(`/api/expense/${_id}`, {
-        method: "DELETE",
+      const response = await expenseRequest.remove(_id);
+      setData((prev) => {
+        return {
+          ...prev,
+          expenses: response.expenses,
+          monthlyAvg: response.monthlyAvg,
+          yearlyAvg: response.yearlyAvg,
+          weeklyTotal: response.weeklyTotal,
+          monthlyTotal: response.monthlyTotal,
+          yearlyTotal: response.yearlyTotal,
+          totalsByCategory: response.totalsByCategory,
+        };
       });
-      const content = await response.json();
-      if (response.ok) {
-        setData((prev) => {
-          return {
-            ...prev,
-            expenses: content.data.expenses,
-            monthlyAvg: content.data.monthlyAvg,
-            yearlyAvg: content.data.yearlyAvg,
-            weeklyTotal: content.data.weeklyTotal,
-            monthlyTotal: content.data.monthlyTotal,
-            yearlyTotal: content.data.yearlyTotal,
-            totalsByCategory: content.data.totalsByCategory,
-          };
-        });
-        localStorage.setItem(REQUEST_BUDGET, JSON.stringify(REQUEST_TRUE));
-      } else {
-        console.log(content);
-      }
     };
     submitRequest();
     setIsOpen(false);

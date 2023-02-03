@@ -5,6 +5,7 @@ import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
 import { BillContext } from "../../pages/dashboard/bills";
 import getHelpers from "../../lib/frontendHelpers/getHelpers";
 import { REQUEST_EXPENSE, REQUEST_TRUE } from "../../global/constants";
+import billRequest from "../../lib/frontendHelpers/requests/bill.request";
 
 function PayBill({ _id }) {
   const { data, setData } = useContext(BillContext);
@@ -91,19 +92,8 @@ function PayBill({ _id }) {
     e.preventDefault();
     const pass = checkErrors();
     const sendData = async () => {
-      console.log("PASS", input);
-      const response = await fetch(`/api/bill/pay/${_id}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(input),
-      });
-      const content = await response.json();
-      if (response.ok) {
-        setData(content.data);
-        localStorage.setItem(REQUEST_EXPENSE, JSON.stringify(REQUEST_TRUE));
-      } else {
-        console.log(content);
-      }
+      const response = await billRequest.pay(_id, input);
+      setData(response);
     };
     if (pass) {
       sendData();

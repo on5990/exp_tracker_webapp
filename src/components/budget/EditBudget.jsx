@@ -3,6 +3,7 @@ import Modal from "../modal/Modal";
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
 import { BudgetContext } from "../../pages/dashboard/budgets";
 import getHelpers from "../../lib/frontendHelpers/getHelpers";
+import budgetRequest from "../../lib/frontendHelpers/requests/budget.request";
 
 function EditBudget({ _id }) {
   const { data, setData } = useContext(BudgetContext);
@@ -59,19 +60,21 @@ function EditBudget({ _id }) {
     e.preventDefault();
     const pass = checkErrors();
     const sendData = async () => {
-      const response = await fetch(`/api/budget/${_id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(input),
-      });
-      const content = await response.json();
-      if (response.ok) {
-        setData(content.data);
-      } else {
-        console.log(content);
-      }
+      const response = await budgetRequest.update(_id, input);
+      setData(response);
+      // const response = await fetch(`/api/budget/${_id}`, {
+      //   method: "PUT",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(input),
+      // });
+      // const content = await response.json();
+      // if (response.ok) {
+      //   setData(content.data);
+      // } else {
+      //   console.log(content);
+      // }
     };
     if (pass) {
       sendData();

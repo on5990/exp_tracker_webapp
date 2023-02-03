@@ -12,6 +12,7 @@ import {
 } from "../../global/constants";
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
 import { BillContext } from "../../pages/dashboard/bills";
+import billRequest from "../../lib/frontendHelpers/requests/bill.request";
 
 function AddBill() {
   const { data, setData } = useContext(BillContext);
@@ -148,7 +149,6 @@ function AddBill() {
   function handleSubmit(e) {
     e.preventDefault();
     const sendData = async () => {
-      // console.log("PASS", input);
       let bodyInput = {
         description: input.description,
         type: input.type,
@@ -169,19 +169,8 @@ function AddBill() {
       } else {
         bodyInput = { ...bodyInput, amount: 0 };
       }
-      const response = await fetch("/api/bill", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bodyInput),
-      });
-      const content = await response.json();
-      if (response.ok) {
-        setData(content.data);
-      } else {
-        console.log(content);
-      }
+      const response = await billRequest.create(bodyInput);
+      setData(response);
     };
     let pass = checkErrors();
     if (pass) {
