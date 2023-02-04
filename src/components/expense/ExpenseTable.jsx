@@ -101,7 +101,7 @@ function ExpenseTable() {
                         <button>Subir</button>
                         <button>Descargar</button>
                         <EditExpense _id={item._id} />
-                        <DeleteExpense _id={item._id} />
+                        {!item._billId && <DeleteExpense _id={item._id} />}
                       </div>
                     </td>
                   </tr>

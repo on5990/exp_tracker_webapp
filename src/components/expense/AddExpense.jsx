@@ -6,7 +6,6 @@ import moment from "moment/moment";
 import "moment/locale/es";
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
 import { ExpenseContext } from "../../pages/dashboard";
-import { REQUEST_BUDGET, REQUEST_TRUE } from "../../global/constants";
 import expenseRequest from "../../lib/frontendHelpers/requests/expense.request";
 
 function AddExpense() {
