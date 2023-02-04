@@ -523,7 +523,7 @@
   border: none;
   cursor: pointer;
   border-radius: 5px;
-  background-color: #03919b;
+  background-color: #2a9f97;
   color: #eeeeee;
   width: auto;
   height: 25px;
@@ -562,7 +562,7 @@
 }
 .modalTable .modalTh {
   background-color: #2a9f97;
-  min-width: 10vw;
+  min-width: 8vw;
   height: 40px;
   font-size: 1.1rem;
   font-weight: normal;

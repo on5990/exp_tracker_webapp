@@ -1,10 +1,8 @@
-import React, { useContext, useState } from "react";
-import billRequest from "../../lib/frontendHelpers/requests/bill.request";
-import { BillContext } from "../../pages/dashboard/bills";
+import React, { useState } from "react";
+import { REQUEST_EXPENSE, REQUEST_TRUE } from "../../global/constants";
 import Modal from "../modal/Modal";
 
-function DeleteBill({ _id }) {
-  const { setData } = useContext(BillContext);
+function DelPayment({ _id }) {
   const [isOpen, setIsOpen] = useState(false);
   function openModal() {
     setIsOpen(true);
@@ -16,25 +14,24 @@ function DeleteBill({ _id }) {
   function handleSubmit(e) {
     e.preventDefault();
     const submitRequest = async () => {
-      const response = await billRequest.remove(_id);
-      setData(response);
+      console.log("ELIMINAR PAGO");
+      localStorage.setItem(REQUEST_EXPENSE, JSON.stringify(REQUEST_TRUE));
+      //    const response = await billRequest.remove(_id);
+      //    setData(response);
     };
     submitRequest();
     setIsOpen(false);
   }
   return (
     <>
-      <button onClick={openModal}>Eliminar</button>
+      <button onClick={openModal}>X</button>
       <Modal
-        title={"Eliminar cuenta"}
+        title={"Eliminar pago"}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         closeModal={closeModal}
       >
-        <p className="modalP">
-          Confirme que desea eliminar esta cuenta, el historial también será
-          eliminado
-        </p>
+        <p className="modalP">Confirme si desea eliminar este pago</p>
         <div className="outerBtnBox">
           <div className="innerBtnBox">
             <button
@@ -54,4 +51,4 @@ function DeleteBill({ _id }) {
   );
 }
 
-export default DeleteBill;
+export default DelPayment;
