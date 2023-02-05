@@ -30,4 +30,16 @@ async function exists(_userId: string, name: string) {
   const res = await categoryRepository.exists(_userId, name);
   return res;
 }
-export default { getOne, getAll, createDefault, createCustom, remove, exists };
+async function getByName(name: string) {
+  const found = await categoryRepository.getByName(name);
+  return found;
+}
+export default {
+  getOne,
+  getAll,
+  getByName,
+  createDefault,
+  createCustom,
+  remove,
+  exists,
+};

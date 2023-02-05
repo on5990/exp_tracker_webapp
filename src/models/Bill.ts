@@ -18,6 +18,8 @@ const billSchema = new Schema(
     payments: { type: Number, required: false },
     // Not required if the amount of payments is undefined
     finalPayment: { type: Date, required: false },
+    totalPaid: { type: Number, required: false },
+    totalRemaining: { type: Number, required: false },
     _userId: {
       type: Schema.Types.ObjectId,
       required: [true, "userId is required"],

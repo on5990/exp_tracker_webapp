@@ -22,6 +22,8 @@ interface Data {
   _userId?: string;
   state?: string;
   finalPayment?: Date;
+  totalPaid: number;
+  totalRemaining?: number;
 }
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
@@ -49,7 +51,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         // PREPARE DATA
         const { description, sum, amount } = body;
         let data: Data = { ...bill._doc };
-        data = { ...data, description: description };
+        data = { ...data, description: description, totalPaid: bill.totalPaid };
         if (body.sum) data = { ...data, sum: sum };
         if (body.amount) data = { ...data, amount: amount };
         // CALC NEXT_PAYMENT
@@ -77,6 +79,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           state = BILL_OVERDUE;
         }
         data = { ...data, state };
+        // CALCULATE TOTAL REMAINING
+        const totalRemaining = mathService.calcTotalRemaining(
+          data.payments,
+          data.sum,
+          data.amount
+        );
+        data = { ...data, totalRemaining };
         console.log("UPDATE DATA", data);
         // UPDATE
         await billService.update(id, data);

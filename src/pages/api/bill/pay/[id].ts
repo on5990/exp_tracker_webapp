@@ -62,9 +62,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           _billId: id,
           payments: periods,
         };
-        // console.log("#########################################3\n\n");
-        // console.log("EXPENSE DATA", data);
-
         // CREATE EXPENSE
         await expenseService.create(data);
         // PREPARE BILL UPDATE

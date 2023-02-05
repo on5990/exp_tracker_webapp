@@ -16,8 +16,10 @@ const head = [
   { id: 7, name: "Pago final" },
   { id: 8, name: "Último pago" },
   { id: 9, name: "Próximo pago" },
-  { id: 10, name: "Estado" },
-  { id: 11, name: "" },
+  { id: 10, name: "Total pagado" },
+  { id: 11, name: "Total restante" },
+  { id: 12, name: "Estado" },
+  { id: 13, name: "" },
 ];
 function BillsTable() {
   const { data, search } = useContext(BillContext);
@@ -70,6 +72,14 @@ function BillsTable() {
                   <td className="tableTd">
                     {item.nextPayment
                       ? formatHelpers.formatDate(item.nextPayment)
+                      : "-"}
+                  </td>
+                  <td className="tableTd">
+                    {item.totalPaid ? `$${item.totalPaid}` : "-"}
+                  </td>
+                  <td className="tableTd">
+                    {item.totalRemaining && item.totalRemaining != -1
+                      ? `$${item.totalRemaining}`
                       : "-"}
                   </td>
                   <td className="tableTd">{item.state}</td>

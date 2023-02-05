@@ -335,6 +335,23 @@ function calcReversePayment(bill: any, revPaymemnts: number) {
   const output = { lastPayment, nextPayment, payments };
   return output;
 }
+function calcTotalPaid(expenses: any) {
+  let total = expenses.reduce((acc: number, curr: any) => {
+    return acc + curr.sum;
+  }, 0);
+  return total;
+}
+function calcTotalPaid2(payments: number, sum: number) {
+  let total = +payments * +sum;
+  return total;
+}
+function calcTotalRemaining(payments?: number, sum?: number, amount?: number) {
+  if (!sum || !payments || !amount) {
+    return -1;
+  }
+  const total = (+amount - +payments) * +sum;
+  return total;
+}
 export default {
   calcWeeklyTotal,
   calcMonthlyTotal,
@@ -348,4 +365,7 @@ export default {
   calcBillYear,
   calcFinalPayment,
   calcReversePayment,
+  calcTotalPaid,
+  calcTotalPaid2,
+  calcTotalRemaining,
 };

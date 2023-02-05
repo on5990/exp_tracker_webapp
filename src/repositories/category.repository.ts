@@ -20,6 +20,14 @@ async function getAll(userId: string) {
     console.log(error);
   }
 }
+async function getByName(name: string) {
+  try {
+    const found = await Category.findOne({ name, isDefault: true }).exec();
+    return found;
+  } catch (error) {
+    console.log(error);
+  }
+}
 // CREATE CATEGORY
 async function create(data: any) {
   try {
@@ -54,4 +62,12 @@ async function exists(_userId: string, name: string) {
   }).exec();
   return found.length > 0 ? true : false;
 }
-export default { getAll, getOne, create, createBillCategory, remove, exists };
+export default {
+  getAll,
+  getOne,
+  getByName,
+  create,
+  createBillCategory,
+  remove,
+  exists,
+};

@@ -2,6 +2,7 @@ import {
   ACT_CREATE,
   ACT_UPDATE,
   BILL_ACTIVE,
+  BILL_CATEGORY,
   BILL_FINISHED,
   BILL_OVERDUE,
   MONTHLY_FIXED,
@@ -9,6 +10,8 @@ import {
 } from "@/global/constants";
 import billValidation from "@/lib/backendHelpers/validations/bill.validation";
 import billService from "@/services/bill.service";
+import categoryService from "@/services/category.service";
+import expenseService from "@/services/expense.service";
 import mathService from "@/services/math.service";
 import { NextApiRequest, NextApiResponse } from "next";
 import { isDate } from "util/types";
@@ -25,6 +28,8 @@ interface Data {
   _userId?: string;
   state?: string;
   finalPayment?: Date;
+  totalPaid?: number;
+  totalRemaining?: number;
 }
 
 async function index(req: NextApiRequest, res: NextApiResponse) {
@@ -112,8 +117,36 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
           state = BILL_OVERDUE;
         }
         data = { ...data, state };
+        // CALCULATE TOTAL PAID
+        const totalPaid = mathService.calcTotalPaid2(
+          data.payments || 0,
+          data.sum || 0
+        );
+        // CALCULATE TOTAL REMAINING
+        const totalRemaining = mathService.calcTotalRemaining(
+          data.payments,
+          data.sum,
+          data.amount
+        );
+
+        data = { ...data, totalPaid };
+
+        data = { ...data, totalRemaining };
         // CREATE BILL
-        await billService.create(data);
+        const bill = await billService.create(data);
+        // CREATE EXPENSE
+        const billCategory = await categoryService.getByName(BILL_CATEGORY);
+        if (data.payments) {
+          await expenseService.create({
+            description: `Pago de cuenta "${data.description}". Cuotas pagadas: ${data.payments}`,
+            sum: totalPaid,
+            spentAt: data.firstPayment,
+            _userId: userId,
+            payments: bill.payments,
+            _billId: bill._id,
+            _categoryId: billCategory._id,
+          });
+        }
         // GET BILLS
         const _bills = await billService.getAll(userId);
         const _monthTotal = mathService.calcBillMonth(_bills || []);

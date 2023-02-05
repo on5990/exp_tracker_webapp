@@ -60,6 +60,8 @@ const BUDGET_SECTION = { section: "budget_section" };
 const BILL_SECTION = { section: "bill_section" };
 const CHARTS_SECTION = { section: "charts_section" };
 
+const BILL_CATEGORY = "Cuentas";
+
 export {
   SPECIFIC,
   CATEGORY,
@@ -94,4 +96,5 @@ export {
   BUDGET_SECTION,
   BILL_SECTION,
   CHARTS_SECTION,
+  BILL_CATEGORY,
 };
