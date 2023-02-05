@@ -1,5 +1,8 @@
 import {
   ACT_CREATE,
+  BILL_ACTIVE,
+  BILL_FINISHED,
+  BILL_OVERDUE,
   BUDGET_EXCEEDED,
   BUDGET_OK,
   MONTH,
@@ -125,10 +128,6 @@ function calcLastPayment(
     if (action == ACT_CREATE) {
       add = add - 1;
     }
-    console.log("PREV", prevPayment);
-    console.log("PAYMENTS", add);
-    console.log("type", type);
-
     const timeType =
       type == MONTHLY_FIXED || type == MONTHLY_UND ? MONTH : YEAR;
     if (timeType === MONTH) {
@@ -290,6 +289,52 @@ function calcBillYear(bills: Array<any>) {
   // if
   // YEARLY BILLS
 }
+function calcReversePayment(bill: any, revPaymemnts: number) {
+  let lastPayment = new Date();
+  let nextPayment = new Date();
+  const payments = +bill.payments - revPaymemnts;
+  if (bill.type === MONTHLY_FIXED || bill.type === MONTHLY_UND) {
+    const prevLast = new Date(bill.lastPayment);
+    const plMonth = +prevLast.getMonth() - +revPaymemnts;
+    const newLast = new Date(
+      prevLast.getFullYear(),
+      plMonth,
+      prevLast.getDay(),
+      prevLast.getHours()
+    );
+    lastPayment = newLast;
+    const prevNext = new Date(bill.nextPayment);
+    const pnMonth = +prevNext.getMonth() - +revPaymemnts;
+    const newNext = new Date(
+      prevNext.getFullYear(),
+      pnMonth,
+      prevNext.getDay(),
+      prevNext.getHours()
+    );
+    nextPayment = newNext;
+  } else {
+    const prevLast = new Date(bill.lastPayment);
+    const plYear = +prevLast.getFullYear() - +revPaymemnts;
+    const newLast = new Date(
+      plYear,
+      prevLast.getMonth(),
+      prevLast.getDay(),
+      prevLast.getHours()
+    );
+    lastPayment = newLast;
+    const prevNext = new Date(bill.nextPayment);
+    const pnYear = +prevNext.getFullYear() - +revPaymemnts;
+    const newNext = new Date(
+      pnYear,
+      prevNext.getMonth(),
+      prevNext.getDay(),
+      prevNext.getHours()
+    );
+    nextPayment = newNext;
+  }
+  const output = { lastPayment, nextPayment, payments };
+  return output;
+}
 export default {
   calcWeeklyTotal,
   calcMonthlyTotal,
@@ -302,4 +347,5 @@ export default {
   calcBillMonth,
   calcBillYear,
   calcFinalPayment,
+  calcReversePayment,
 };

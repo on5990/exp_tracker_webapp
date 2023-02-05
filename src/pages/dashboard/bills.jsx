@@ -12,6 +12,7 @@ import billRequest from "../../lib/frontendHelpers/requests/bill.request";
 export const BillContext = React.createContext();
 function Bills() {
   const [data, setData] = useState({});
+  const [reload1, setReload1] = useState(false);
   const [search, setSearch] = useState("");
   const getRequestCalled = useRef(false);
   useEffect(() => {
@@ -26,15 +27,16 @@ function Bills() {
     if (!getRequestCalled.current) {
       const getData = async () => {
         const response = await billRequest.get();
-        console.log("BILLS RES", response);
         setData(response);
       };
       getData();
       getRequestCalled.current = true;
     }
-  }, []);
+  }, [,]);
   return (
-    <BillContext.Provider value={{ data, setData, search, setSearch }}>
+    <BillContext.Provider
+      value={{ data, setData, search, setSearch, setReload1 }}
+    >
       <MainLayout>
         <h1 className="mainTitle">Cuentas</h1>
         <hr />

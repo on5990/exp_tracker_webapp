@@ -222,14 +222,6 @@ async function afterEditUpdate(expense: any, sum: number, _categoryId: string) {
       });
     }
   }
-  // // + INCREASE SUM, - DECREASE SUM, 0 SAME SUM
-  // const diff = +sum - +expense.sum;
-  // // AMOUNT TO SUBSTRACT IF CATEGORY CHANGE
-  // const subs = +expense.sum * -1;
-
-  // const budget1 = await budgetRepository.getByCategory(_categoryId);
-  // if (_categoryId != expense._categoryId) {
-  // }
 }
 async function afterDeleteUpdate(sum: number, _categoryId: string) {
   const budget = await budgetRepository.getByCategory(_categoryId);

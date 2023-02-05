@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import { REQUEST_BUDGET, REQUEST_TRUE } from "../../global/constants";
 import expenseRequest from "../../lib/frontendHelpers/requests/expense.request";
 import { ExpenseContext } from "../../pages/dashboard";
 import Modal from "../modal/Modal";

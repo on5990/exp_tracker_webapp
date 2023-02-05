@@ -1,6 +1,5 @@
-import { BUDGET_EXCEEDED, BUDGET_OK } from "@/global/constants";
 import expenseValidation from "@/lib/backendHelpers/validations/expense.validation";
-import budgetRepository from "@/repositories/budget.repository";
+import billService from "@/services/bill.service";
 import budgetService from "@/services/budget.service";
 import categoryService from "@/services/category.service";
 import expenseService from "@/services/expense.service";
@@ -14,6 +13,7 @@ interface Data {
   spentAt: Date;
   _categoryId?: any;
   _userId: any;
+  billData?: any;
 }
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -59,6 +59,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         await budgetService.afterEditUpdate(expense, sum, _categoryId);
         // FIND ALL INFO OF EXPENSES
         const expenses = await expenseService.getAll(userId);
+        // FIND CATEGORIES
+        const categories = await categoryService.getAll(userId);
         // UPDATE USER AVERAGES
         const avg = await userService.updateAvg(userId, expenses);
         // SUCCESSFUL REQUEST
@@ -70,6 +72,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             ...expenses,
             monthlyAvg: avg.monthAvg,
             yearlyAvg: avg.yearAvg,
+            categories,
           },
         });
       case "DELETE":
@@ -79,17 +82,30 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         await budgetService.afterDeleteUpdate(expense.sum, expense._categoryId);
         // FIND ALL INFO OF EXPENSES
         const _expenses = await expenseService.getAll(userId);
+        // FIND CATEGORIES
+        const _categories = await categoryService.getAll(userId);
         // UPDATE USER AVERAGES
         const { monthAvg, yearAvg } = await userService.updateAvg(
           userId,
           _expenses
         );
+        // CHECK IF ITS A PAYMENT
+        let billData: any = {};
+        if (expense._billId) {
+          billData = await billService.reversePayment(userId, expense);
+        }
         // SUCCESSFUL REQUEST
         res.status(200);
         return res.json({
           success: true,
           msg: `${dbDelete._id} was deleted`,
-          data: { ..._expenses, monthlyAvg: monthAvg, yearlyAvg: yearAvg },
+          data: {
+            ..._expenses,
+            monthlyAvg: monthAvg,
+            yearlyAvg: yearAvg,
+            categories: _categories,
+            billData,
+          },
         });
       default:
         res.status(404);

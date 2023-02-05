@@ -1,5 +1,7 @@
 import {
+  BILL_CACHE,
   EXPENSE_CACHE,
+  REQUEST_BILL,
   REQUEST_BUDGET,
   REQUEST_EXPENSE,
   REQUEST_FALSE,
@@ -76,5 +78,21 @@ async function remove(_id) {
     return false;
   }
 }
+async function removePayment(_id) {
+  const response = await fetch(`/api/expense/${_id}`, {
+    method: "DELETE",
+  });
+  let content = await response.json();
+  if (response.ok) {
+    content = content.data;
+    localStorage.setItem(EXPENSE_CACHE, JSON.stringify(content));
+    localStorage.setItem(BILL_CACHE, JSON.stringify(content.billData));
+    localStorage.setItem(REQUEST_BUDGET, JSON.stringify(REQUEST_TRUE));
+    return content.billData;
+  } else {
+    console.log(content);
+    return false;
+  }
+}
 async function getCharts() {}
-export default { get, create, update, remove, getCharts };
+export default { get, create, update, remove, removePayment, getCharts };

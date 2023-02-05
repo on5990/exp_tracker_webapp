@@ -1,8 +1,16 @@
-import React, { useState } from "react";
-import { REQUEST_EXPENSE, REQUEST_TRUE } from "../../global/constants";
+import React, { useContext, useState } from "react";
+import {
+  REQUEST_BILL,
+  REQUEST_BUDGET,
+  REQUEST_EXPENSE,
+  REQUEST_TRUE,
+} from "../../global/constants";
+import expenseRequest from "../../lib/frontendHelpers/requests/expense.request";
+import { BillContext } from "../../pages/dashboard/bills";
 import Modal from "../modal/Modal";
 
-function DelPayment({ _id }) {
+function DelPayment({ _id, setReload }) {
+  const { setReload1, setData } = useContext(BillContext);
   const [isOpen, setIsOpen] = useState(false);
   function openModal() {
     setIsOpen(true);
@@ -14,10 +22,9 @@ function DelPayment({ _id }) {
   function handleSubmit(e) {
     e.preventDefault();
     const submitRequest = async () => {
-      console.log("ELIMINAR PAGO");
-      localStorage.setItem(REQUEST_EXPENSE, JSON.stringify(REQUEST_TRUE));
-      //    const response = await billRequest.remove(_id);
-      //    setData(response);
+      const data = await expenseRequest.removePayment(_id);
+      setReload((prev) => !prev);
+      setData(data);
     };
     submitRequest();
     setIsOpen(false);

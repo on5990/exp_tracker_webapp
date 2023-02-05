@@ -1,6 +1,7 @@
 import {
   BILL_CACHE,
   REQUEST_BILL,
+  REQUEST_BUDGET,
   REQUEST_EXPENSE,
   REQUEST_FALSE,
   REQUEST_TRUE,
@@ -80,6 +81,7 @@ async function pay(_id, input) {
   const content = await response.json();
   if (response.ok) {
     localStorage.setItem(REQUEST_EXPENSE, JSON.stringify(REQUEST_TRUE));
+    localStorage.setItem(REQUEST_BUDGET, JSON.stringify(REQUEST_TRUE));
     return content.data;
   } else {
     console.log(content);

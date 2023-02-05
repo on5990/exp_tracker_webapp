@@ -41,7 +41,7 @@ function BillHistory({ _id }) {
       };
       getData();
     }
-  }, [, isOpen]);
+  }, [, isOpen, reload]);
   function closeModal(e) {
     e.preventDefault();
     setIsOpen(false);
