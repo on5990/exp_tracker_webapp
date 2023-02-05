@@ -90,8 +90,8 @@ async function afterEditUpdate(expense: any, sum: number, _categoryId: string) {
     console.log("ALL SAME");
     return;
   }
-  // 2) IF EXPENSE INCREASES AND CATEGORY DOES NOT CHANGE
-  else if (sum > expense.sum && expense._categoryId == _categoryId) {
+  // 2) IF SUM CHANGES AND CATEGORY IS THE SAME
+  else if (sum != expense.sum && expense._categoryId == _categoryId) {
     console.log("INCREASE, SAME CATEGORY");
     const budget = await budgetRepository.getByCategory(_categoryId);
     if (budget) {
@@ -108,25 +108,7 @@ async function afterEditUpdate(expense: any, sum: number, _categoryId: string) {
       });
     }
   }
-  // 3) IF EXPENSE DECREASES AND CATEGORY DOES NOT CHANGE (SAME AS 2)
-  else if (sum < expense.sum && expense._categoryId == _categoryId) {
-    console.log("DECREASE, SAME CATEGORY");
-    const budget = await budgetRepository.getByCategory(_categoryId);
-    if (budget) {
-      const diff = +sum - +expense.sum;
-      console.log("DIFF", diff);
-      const usedAmount = +budget.usedAmount + +diff;
-      console.log("USED AMOUNT", usedAmount);
-      const state =
-        usedAmount > budget.usedAmount ? BUDGET_EXCEEDED : BUDGET_OK;
-      console.log("STATE", state);
-      await budgetRepository.update(budget._id, {
-        usedAmount,
-        state,
-      });
-    }
-  }
-  // 4) IF EXPENSE DOES NOT CHANGE AND CATEGORY CHANGES
+  // 4) IF SUM IS THE SAME AND CATEGORY CHANGES
   else if (sum == expense.sum && expense._categoryId != _categoryId) {
     console.log("SAME SUM, DIFF CATEGORY");
     const prevBudget = await budgetRepository.getByCategory(
@@ -158,41 +140,9 @@ async function afterEditUpdate(expense: any, sum: number, _categoryId: string) {
       });
     }
   }
-  // 5) IF EXPENSE INCREASES AND CATEGORY CHANGES
-  else if (sum > expense.sum && expense._categoryId != _categoryId) {
+  // 5) IF EXPENSE AND CATEGORY CHANGE
+  else if (sum != expense.sum && expense._categoryId != _categoryId) {
     console.log("INCREASE, DIFF CATEGORY");
-    const prevBudget = await budgetRepository.getByCategory(
-      expense._categoryId
-    );
-    const substract = expense.sum;
-    const add = sum;
-    if (prevBudget) {
-      const usedAmount = +prevBudget.usedAmount - +substract;
-      console.log("USED AMOUNT", usedAmount);
-      const state =
-        usedAmount > prevBudget.usedAmount ? BUDGET_EXCEEDED : BUDGET_OK;
-      console.log("STATE", state);
-      await budgetRepository.update(prevBudget._id, {
-        usedAmount,
-        state,
-      });
-    }
-    const newBudget = await budgetRepository.getByCategory(_categoryId);
-    if (newBudget) {
-      const usedAmount = +newBudget.usedAmount + +add;
-      console.log("NEW BUDGET USED AMOUNT", usedAmount);
-      const state =
-        usedAmount > newBudget.usedAmount ? BUDGET_EXCEEDED : BUDGET_OK;
-      console.log("NEW BUDGET STATE", state);
-      await budgetRepository.update(newBudget._id, {
-        usedAmount,
-        state,
-      });
-    }
-  }
-  // 6) IF EXPENSE DECREASES AND CATEGORY CHANGES (SAME AS 5)
-  else if (sum < expense.sum && expense._categoryId != _categoryId) {
-    console.log("DECREASE, DIFF CATEGORY");
     const prevBudget = await budgetRepository.getByCategory(
       expense._categoryId
     );
