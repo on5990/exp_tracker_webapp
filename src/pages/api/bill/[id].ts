@@ -2,11 +2,16 @@ import {
   BILL_ACTIVE,
   BILL_FINISHED,
   BILL_OVERDUE,
+  BUDGET_EXCEEDED,
+  BUDGET_OK,
   MONTHLY_UND,
   YEARLY_UND,
 } from "@/global/constants";
 import billValidation from "@/lib/backendHelpers/validations/bill.validation";
+import budgetRepository from "@/repositories/budget.repository";
 import billService from "@/services/bill.service";
+import budgetService from "@/services/budget.service";
+import expenseService from "@/services/expense.service";
 import mathService from "@/services/math.service";
 import mongoose from "mongoose";
 import { NextApiRequest, NextApiResponse } from "next";
@@ -100,8 +105,26 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           data: { bills, monthTotal, yearTotal },
         });
       case "DELETE":
+        const { total, categoryId } = await expenseService.filterAndSumPayments(
+          userId,
+          id
+        );
         // DELETE
         const dbDelete = await billService.remove(id);
+        await expenseService.removeByBillId(id);
+        // UPDATE BUDGET
+        const budget = await budgetRepository.getByCategory(categoryId);
+        if (budget) {
+          // const lastExpense = new Date(date);
+          const usedAmount = +budget.usedAmount - +total;
+          const state = budget.sum < usedAmount ? BUDGET_EXCEEDED : BUDGET_OK;
+          await budgetService.update(budget._id, {
+            // lastExpense,
+            usedAmount,
+            state,
+          });
+        }
+
         // GET BILLS
         const _bills = await billService.getAll(userId);
         const _monthTotal = mathService.calcBillMonth(_bills || []);

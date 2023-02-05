@@ -38,8 +38,11 @@ async function create(input) {
     },
     body: JSON.stringify(input),
   });
-  const content = await response.json();
   if (response.ok) {
+    const content = await response.json();
+    console.log("RESPONSE", content);
+    localStorage.setItem(REQUEST_EXPENSE, JSON.stringify(REQUEST_TRUE));
+    localStorage.setItem(REQUEST_BUDGET, JSON.stringify(REQUEST_TRUE));
     return content.data;
   } else {
     console.log(content);
@@ -66,6 +69,8 @@ async function remove(_id) {
   });
   const content = await response.json();
   if (response.ok) {
+    localStorage.setItem(REQUEST_EXPENSE, JSON.stringify(REQUEST_TRUE));
+    localStorage.setItem(REQUEST_BUDGET, JSON.stringify(REQUEST_TRUE));
     return content.data;
   } else {
     console.log(content);

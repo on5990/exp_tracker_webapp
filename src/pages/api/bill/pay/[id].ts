@@ -99,11 +99,22 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           payments = bill.amount;
           state = BILL_FINISHED;
         }
+        // CALC TOTAL PAID
+        const totalPaid = +bill.totalPaid + +sum;
+        //CALC TOTAL REMAINING
+        const totalRemaining = mathService.calcTotalRemaining(
+          payments,
+          bill.sum,
+          bill.amount
+        );
+
         let _data = {
           payments,
           state,
           lastPayment: new Date(last as Date),
           nextPayment: new Date(next as Date),
+          totalPaid,
+          totalRemaining,
         };
         // console.log("BILL UPDATE", _data);
         // UPDATE BILL
@@ -114,7 +125,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           const lastExpense = new Date(date);
           const usedAmount = +budget.usedAmount + +sum;
           const state = budget.sum < usedAmount ? BUDGET_EXCEEDED : BUDGET_OK;
-          console.log("BUDGET UPDATE", { lastExpense, usedAmount, state });
           await budgetService.update(budget._id, {
             lastExpense,
             usedAmount,

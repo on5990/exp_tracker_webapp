@@ -10,7 +10,7 @@ import { BillContext } from "../../pages/dashboard/bills";
 import Modal from "../modal/Modal";
 
 function DelPayment({ _id, setReload }) {
-  const { setReload1, setData } = useContext(BillContext);
+  const { setData } = useContext(BillContext);
   const [isOpen, setIsOpen] = useState(false);
   function openModal() {
     setIsOpen(true);

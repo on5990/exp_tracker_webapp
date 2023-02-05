@@ -51,4 +51,28 @@ async function remove(id: string) {
   const res = await expenseRepository.remove(id);
   return res;
 }
-export default { getAll, getOne, getByBill, create, update, remove };
+async function removeByBillId(_billId: string) {
+  const res = await expenseRepository.removeByBillId(_billId);
+  return res;
+}
+async function filterAndSumPayments(_userId: string, _billId: string) {
+  const expenses = await expenseRepository.getAll(_userId);
+  const exp = expenses
+    ? expenses.filter((item) => item._billId && item._billId == _billId)
+    : [];
+  const total = exp.reduce((acc, curr) => {
+    return +acc + +curr.sum;
+  }, 0);
+  const categoryId = exp[0] ? exp[0]._categoryId : null;
+  return { expenses: exp, total, categoryId };
+}
+export default {
+  getAll,
+  getOne,
+  getByBill,
+  create,
+  update,
+  remove,
+  removeByBillId,
+  filterAndSumPayments,
+};

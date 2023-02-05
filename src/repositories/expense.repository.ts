@@ -65,6 +65,14 @@ async function remove(id: string) {
     console.log(error);
   }
 }
+async function removeByBillId(_billId: string) {
+  try {
+    const res = await Expense.deleteMany({ _billId });
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+}
 async function removeByCategoryId(_categoryId: string) {
   try {
     const res = await Expense.updateMany(
@@ -84,4 +92,5 @@ export default {
   update,
   remove,
   removeByCategoryId,
+  removeByBillId,
 };

@@ -5,11 +5,15 @@ import {
   BILL_CATEGORY,
   BILL_FINISHED,
   BILL_OVERDUE,
+  BUDGET_EXCEEDED,
+  BUDGET_OK,
   MONTHLY_FIXED,
   YEARLY_FIXED,
 } from "@/global/constants";
 import billValidation from "@/lib/backendHelpers/validations/bill.validation";
+import budgetRepository from "@/repositories/budget.repository";
 import billService from "@/services/bill.service";
+import budgetService from "@/services/budget.service";
 import categoryService from "@/services/category.service";
 import expenseService from "@/services/expense.service";
 import mathService from "@/services/math.service";
@@ -136,8 +140,10 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
         const bill = await billService.create(data);
         // CREATE EXPENSE
         const billCategory = await categoryService.getByName(BILL_CATEGORY);
-        if (data.payments) {
-          await expenseService.create({
+        console.log("DATA PAYMENTS CHECK", data.payments);
+        if (data.payments && data.payments > 0) {
+          console.log("DDDDDDDDDDDDDdd");
+          const exp = await expenseService.create({
             description: `Pago de cuenta "${data.description}". Cuotas pagadas: ${data.payments}`,
             sum: totalPaid,
             spentAt: data.firstPayment,
@@ -146,7 +152,21 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
             _billId: bill._id,
             _categoryId: billCategory._id,
           });
+          console.log("EXXXXXXXXXP", exp);
+          const budget = await budgetRepository.getByCategory(billCategory._id);
+          if (budget) {
+            const lastExpense = new Date(data.firstPayment as Date);
+            const usedAmount = +budget.usedAmount + +exp.sum;
+            const state = budget.sum < usedAmount ? BUDGET_EXCEEDED : BUDGET_OK;
+            await budgetService.update(budget._id, {
+              lastExpense,
+              usedAmount,
+              state,
+            });
+          }
         }
+        // UPDATE BUDGET
+
         // GET BILLS
         const _bills = await billService.getAll(userId);
         const _monthTotal = mathService.calcBillMonth(_bills || []);

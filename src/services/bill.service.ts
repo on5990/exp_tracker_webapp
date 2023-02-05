@@ -15,6 +15,8 @@ interface RevInput {
   nextPayment: Date | null;
   state?: string;
   payments: number;
+  totalPaid?: number;
+  totalRemaining?: number;
 }
 async function getOne(id: string) {
   const bill = await billRepository.getOne(id);
@@ -59,6 +61,13 @@ async function reversePayment(userId: string, expense: any) {
     state = BILL_OVERDUE;
   }
   data = { ...data, state };
+  const totalPaid = +bill.totalPaid - +expense.sum;
+  const totalRemaining = mathService.calcTotalRemaining(
+    data.payments,
+    bill.sum,
+    bill.amount
+  );
+  data = { ...data, totalPaid, totalRemaining };
   await billRepository.update(bill._id, data);
   // GET BILLS
   const bills = await billRepository.getAll(userId);
