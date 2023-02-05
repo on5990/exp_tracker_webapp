@@ -75,7 +75,9 @@ function BillsTable() {
                       : "-"}
                   </td>
                   <td className="tableTd">
-                    {item.totalPaid ? `$${item.totalPaid}` : "-"}
+                    {item.totalPaid || item.totalPaid == 0
+                      ? `$${item.totalPaid}`
+                      : "-"}
                   </td>
                   <td className="tableTd">
                     {item.totalRemaining && item.totalRemaining != -1

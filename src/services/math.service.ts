@@ -346,10 +346,14 @@ function calcTotalPaid2(payments: number, sum: number) {
   return total;
 }
 function calcTotalRemaining(payments?: number, sum?: number, amount?: number) {
-  if (!sum || !payments || !amount) {
-    return -1;
+  let total;
+  if (!sum || (!payments && payments != 0) || !amount) {
+    total = -1;
+  } else if (payments == 0 && amount && sum) {
+    total = +amount * +sum;
+  } else {
+    total = (+amount - +payments) * +sum;
   }
-  const total = (+amount - +payments) * +sum;
   return total;
 }
 export default {
