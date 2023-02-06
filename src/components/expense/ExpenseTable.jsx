@@ -98,8 +98,8 @@ function ExpenseTable() {
                     </td>
                     <td className="tableTd">
                       <div className="cellBtnDiv">
-                        <button>Subir</button>
-                        <button>Descargar</button>
+                        {false && <button>Subir</button>}
+                        {false && <button>Descargar</button>}
                         <EditExpense _id={item._id} />
                         {!item._billId && <DeleteExpense _id={item._id} />}
                       </div>

@@ -11,6 +11,9 @@ function Charts() {
       <MainLayout>
         <h1 className="mainTitle">Gráficos</h1>
         <hr />
+        <div className="indexWarning">
+          <p>Se está trabando en esto...</p>
+        </div>
       </MainLayout>
     </>
   );

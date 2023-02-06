@@ -5,11 +5,16 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Expense tracker</title>
+        <title>Controlador de gastos</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="indexMain">
         <Authentication />
+        <p className="indexWarning">
+          Advertencia: Este proyecto fue desarrollado por motivos de práctica y
+          demostración, no se recomienda su uso, puesto que los datos son
+          eliminados periodicamente.
+        </p>
       </main>
     </>
   );

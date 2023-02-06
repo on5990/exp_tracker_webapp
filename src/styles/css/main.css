@@ -1060,6 +1060,7 @@ body {
   min-height: 100vh;
   width: 100vw;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
@@ -1075,6 +1076,18 @@ hr {
   padding: 0;
   margin: 0;
   margin-bottom: 1vh;
+}
+
+.indexWarning {
+  color: #eeeeee;
+  width: 25vw;
+  font-size: 1.1rem;
+  text-align: center;
+}
+@media (orientation: portrait) {
+  .indexWarning {
+    min-width: 80vw;
+  }
 }
 
 /*# sourceMappingURL=main.css.map */
