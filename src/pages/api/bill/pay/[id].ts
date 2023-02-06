@@ -67,16 +67,22 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         // PREPARE BILL UPDATE
         let payments = +bill.payments + +periods;
         let state = BILL_ACTIVE;
-        const argLastPayment =
-          bill.lastPayment == undefined
-            ? new Date(
-                new Date(date).getFullYear(),
-                new Date(date).getMonth(),
-                0
-              )
-            : bill.lastPayment;
-
-        // console.log("ARG ", argLastPayment);
+        let argLastPayment = bill.lastPayment;
+        if (
+          !bill.lastPayment &&
+          (bill.type == MONTHLY_FIXED || bill.type == MONTHLY_UND)
+        ) {
+          argLastPayment = new Date(
+            new Date(date).getFullYear(),
+            new Date(date).getMonth(),
+            0
+          );
+        } else if (
+          !bill.lastPayment &&
+          (bill.type == YEARLY_FIXED || bill.type == YEARLY_UND)
+        ) {
+          argLastPayment = new Date(new Date(date).getFullYear() - 1, 11, 31);
+        }
         let last = mathService.calcLastPayment(
           bill.lastPayment || argLastPayment,
           periods,
