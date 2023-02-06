@@ -4,10 +4,10 @@ const MONTH = "Mes";
 const YEAR = "Año";
 const WEEK = "Semana";
 const TYPE_CATEGORY = "Categoría";
-const MONTHLY_UND = "Monthly-Undefined";
-const YEARLY_UND = "Yearly-Undefined";
-const MONTHLY_FIXED = "Monthly-Fixed";
-const YEARLY_FIXED = "Yearly-Fixed";
+const MONTHLY_UND = "Mensual indefinida";
+const YEARLY_UND = "Anual indefinida";
+const MONTHLY_FIXED = "Mensual finita";
+const YEARLY_FIXED = "Anual finita";
 const MONTHS = [
   "Enero",
   "Febrero",
