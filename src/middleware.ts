@@ -6,6 +6,7 @@ import JWT from "./lib/backendHelpers/JWT";
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get("access-token")?.value;
   const validToken = await JWT.verifyToken(token);
+  console.log("VALID TOKEN", validToken);
   // const validToken = token ? await JWT.verifyToken(token) : false;
 
   // console.log("PATHNAME", request.nextUrl.pathname);
