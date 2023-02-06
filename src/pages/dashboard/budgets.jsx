@@ -1,3 +1,4 @@
+import Head from "next/head";
 import React, { useEffect, useRef, useState } from "react";
 import AddBudget from "../../components/budget/AddBudget";
 import BudgetTable from "../../components/budget/BudgetTable";
@@ -35,6 +36,9 @@ function Budgets() {
   return (
     <BudgetContext.Provider value={{ data, setData, search, setSearch }}>
       <MainLayout>
+        <Head>
+          <title>Presupuesto</title>
+        </Head>
         <h1 className="mainTitle">Presupuesto</h1>
         <hr />
         <div className="greybox">

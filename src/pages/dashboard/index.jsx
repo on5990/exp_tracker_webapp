@@ -1,3 +1,4 @@
+import Head from "next/head";
 import React, { useEffect, useRef, useState } from "react";
 import AddCategory from "../../components/expense/AddCategory";
 import AddExpense from "../../components/expense/AddExpense";
@@ -101,6 +102,9 @@ function Dashboard() {
       value={{ setData, data, setParameters, parameters }}
     >
       <MainLayout>
+        <Head>
+          <title>Gastos</title>
+        </Head>
         <h1 className="mainTitle">Gastos</h1>
         <hr />
         <div className="greybox">

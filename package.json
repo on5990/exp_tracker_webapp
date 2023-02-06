@@ -5,7 +5,7 @@
   "scripts": {
     "build:css": "sass src/styles/sass/manifest.scss src/styles/css/main.css",
     "dev:css": "nodemon -e scss -x \"npm run build:css\"",
-    "dev": "npx next dev -p 3010",
+    "dev": "npx next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"

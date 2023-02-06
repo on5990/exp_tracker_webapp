@@ -1,3 +1,4 @@
+import Head from "next/head";
 import React, { useEffect, useRef, useState } from "react";
 import AddBill from "../../components/bills/AddBill";
 import BillsTable from "../../components/bills/BillsTable";
@@ -38,6 +39,9 @@ function Bills() {
       value={{ data, setData, search, setSearch, setReload1 }}
     >
       <MainLayout>
+        <Head>
+          <title>Cuentas</title>
+        </Head>
         <h1 className="mainTitle">Cuentas</h1>
         <hr />
         <div className="greybox">
