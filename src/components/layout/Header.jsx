@@ -30,7 +30,7 @@ function Header() {
       });
       if (response.ok) {
         localStorage.clear();
-        router.push("/dashboard");
+        router.push("/");
       }
       console.log(await response.json());
     };
