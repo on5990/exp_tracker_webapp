@@ -33,7 +33,7 @@ function Bills() {
       getData();
       getRequestCalled.current = true;
     }
-  }, [,]);
+  }, []);
   return (
     <BillContext.Provider
       value={{ data, setData, search, setSearch, setReload1 }}

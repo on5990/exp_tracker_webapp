@@ -141,7 +141,6 @@ function Dashboard() {
                   className={`category ${
                     parameters.category._id === item._id ? "activeCategory" : ""
                   }`}
-                  // onClick={handleCatClick}
                   onClick={
                     parameters.showType === SPECIFIC ? handleCatClick : () => {}
                   }

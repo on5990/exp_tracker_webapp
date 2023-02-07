@@ -44,7 +44,9 @@ function Header() {
     }
   }, []);
   function handleClick(e) {
-    setSection(e.target.value);
+    let id = e.currentTarget.getAttribute("data-value");
+    id = id.replace(/"/g, "");
+    localStorage.setItem(SECTION_CACHE, JSON.stringify({ section: id }));
   }
   return (
     <>
@@ -53,14 +55,15 @@ function Header() {
           <ul className="navUl">
             {sections.map((item) => {
               return (
-                <li key={item.id} value={item.id} onClick={handleClick}>
-                  <Link
-                    className={`${
-                      section == item.id ? "activeLink" : "navLink"
-                    }`}
-                    href={item.url}
-                  >
-                    {item.name}
+                <li key={item.id}>
+                  <Link className={"navLink"} href={item.url}>
+                    <span
+                      className={section == item.id && "activeLink"}
+                      data-value={JSON.stringify(item.id)}
+                      onClick={handleClick}
+                    >
+                      {item.name}
+                    </span>
                   </Link>
                 </li>
               );
@@ -68,7 +71,6 @@ function Header() {
           </ul>
         </nav>
         <div className="userSection">
-          <p>Oscar Navarro Mondaca</p>
           <button onClick={logout}>Salir</button>
         </div>
       </header>

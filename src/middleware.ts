@@ -6,12 +6,6 @@ import JWT from "./lib/backendHelpers/JWT";
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get("access-token")?.value;
   const validToken = await JWT.verifyToken(token);
-  console.log("VALID TOKEN", validToken);
-  // const validToken = token ? await JWT.verifyToken(token) : false;
-
-  // console.log("PATHNAME", request.nextUrl.pathname);
-  // console.log("TOKEN", token);
-  // console.log("VERIFICATION", validToken);
   if (request.nextUrl.pathname === "/api/auth/logout" && !validToken) {
     return NextResponse.redirect(
       new URL("/api/auth/unauthorized", request.url)

@@ -34,7 +34,7 @@ async function login(req: NextApiRequest, res: NextApiResponse) {
             req,
             res,
             maxAge: cookieAge,
-            httpOnly: false,
+            httpOnly: true,
           });
           res.status(200);
           return res.json({
