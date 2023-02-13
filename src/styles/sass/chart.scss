@@ -4,13 +4,17 @@
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  overflow-x: auto;
   .chartContainer {
     background-color: $light-1;
+    min-height: 200px;
+    min-width: 500px;
     border-radius: 5px;
     width: 48%;
     padding: 10px;
     color: $light-1;
     margin-bottom: 10px;
+    overflow-x: auto;
     h3 {
       font-weight: normal;
       margin: 0;
