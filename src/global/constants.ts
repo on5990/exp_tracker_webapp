@@ -22,6 +22,20 @@ const MONTHS = [
   "Noviembre",
   "Diciembre",
 ];
+const MONTHS_SHORT = [
+  "Ene",
+  "Feb",
+  "Mar",
+  "Abr",
+  "May",
+  "Jun",
+  "Jul",
+  "Ago",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dic",
+];
 const BUDGET_OK = "Ok";
 const BUDGET_EXCEEDED = "Excedido";
 const filterTypes = [
@@ -97,4 +111,5 @@ export {
   BILL_SECTION,
   CHARTS_SECTION,
   BILL_CATEGORY,
+  MONTHS_SHORT,
 };

@@ -7,19 +7,19 @@ import EditBill from "./EditBill";
 import PayBill from "./PayBill";
 import { BILL_FINISHED } from "../../global/constants";
 const head = [
-  { id: 1, name: "Descripción" },
-  { id: 2, name: "Valor cuota" },
-  { id: 3, name: "Tipo" },
-  { id: 4, name: "Cuotas" },
-  { id: 5, name: "Cuotas pagadas" },
-  { id: 6, name: "Primer pago" },
-  { id: 7, name: "Pago final" },
-  { id: 8, name: "Último pago" },
-  { id: 9, name: "Próximo pago" },
-  { id: 10, name: "Total pagado" },
-  { id: 11, name: "Total restante" },
-  { id: 12, name: "Estado" },
-  { id: 13, name: "" },
+  { id: 1, name: "Descripción", styleClass: "thBig" },
+  { id: 2, name: "Valor cuota", styleClass: "thMed" },
+  { id: 3, name: "Tipo", styleClass: "thMed" },
+  { id: 4, name: "Cuotas", styleClass: "thSmall" },
+  { id: 5, name: "Cuotas pagadas", styleClass: "thSmall" },
+  { id: 6, name: "Primer pago", styleClass: "thMed" },
+  { id: 7, name: "Pago final", styleClass: "thMed" },
+  { id: 8, name: "Último pago", styleClass: "thMed" },
+  { id: 9, name: "Próximo pago", styleClass: "thMed" },
+  { id: 10, name: "Total pagado", styleClass: "thMed" },
+  { id: 11, name: "Total restante", styleClass: "thMed" },
+  { id: 12, name: "Estado", styleClass: "thSmall" },
+  { id: 13, name: "", styleClass: "thMed" },
 ];
 function BillsTable() {
   const { data, search } = useContext(BillContext);
@@ -38,7 +38,7 @@ function BillsTable() {
             <tr className="tableTr">
               {head.map((item) => {
                 return (
-                  <th className="tableTh" key={item.id}>
+                  <th className={`tableTh ${item.styleClass}`} key={item.id}>
                     {item.name}
                   </th>
                 );

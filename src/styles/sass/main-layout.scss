@@ -6,6 +6,9 @@
   padding: 0;
   min-height: 100vw;
   width: 100vw;
+  @media (orientation: portrait) {
+    min-height: 100vh;
+  }
   .pageContent {
     margin-top: 6vh;
     width: 94%;

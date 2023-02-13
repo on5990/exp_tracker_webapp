@@ -1,6 +1,5 @@
 @import "variables";
 @import "index-form";
-@import "dashboard";
 @import "main-layout";
 @import "greybox";
 @import "header";
@@ -10,6 +9,7 @@
 @import "modal";
 @import "modal-form";
 @import "react-datetime-copy";
+@import "chart";
 body {
   font-family: "Lusitana";
   margin: 0;

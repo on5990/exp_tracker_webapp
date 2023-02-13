@@ -260,7 +260,7 @@ function AddBill() {
           </div>
           <div className="modalFlexDiv">
             <div className="modalHalfDiv">
-              <label htmlFor="amount">Cantidad de cuotas</label>
+              <label htmlFor="amount">Cuotas</label>
               <input
                 type="text"
                 disabled={
@@ -279,7 +279,7 @@ function AddBill() {
               </div>
             </div>
             <div className="modalHalfDiv lastHalf">
-              <label htmlFor="payments">Cantidad de cuotas pagadas</label>
+              <label htmlFor="payments">Cuotas pagadas</label>
               <input
                 type="text"
                 disabled={input.firstPayment == null && true}

@@ -99,13 +99,15 @@
   justify-content: center;
   flex-wrap: wrap;
   .innerBtnBox {
-    // background-color: #ff0000;
     margin-top: 2vh;
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 30%;
     margin-bottom: 2vh;
+    @media (orientation: portrait) {
+      justify-content: center;
+    }
     .modalButton {
       font-family: $font-1;
       background-color: $blue-1;
@@ -115,6 +117,9 @@
       height: 30px;
       width: auto;
       font-size: 1rem;
+      @media (orientation: portrait) {
+        margin-right: 1vw;
+      }
       &:hover {
         transition: background-color 0.5s;
         background-color: $green-2;
@@ -129,5 +134,4 @@
 }
 .modalP {
   font-size: 1.2rem;
-  // color: blue;
 }

@@ -78,10 +78,13 @@
     }
   }
   .modalContent {
-    // background-color: green;
     padding-left: 1vw;
     padding-right: 1vw;
     padding-bottom: 1vh;
     box-sizing: border-box;
+    @media (orientation: portrait) {
+      padding-right: 2vw;
+      padding-left: 2vw;
+    }
   }
 }

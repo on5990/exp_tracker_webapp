@@ -9,6 +9,9 @@
   border-spacing: 0;
   border-radius: 8px 8px 0px 0px;
   color: $light-1;
+  @media (orientation: portrait) {
+    margin-bottom: 15px;
+  }
   .tableTr {
     width: 100%;
     &:nth-child(even) {
@@ -20,7 +23,6 @@
   }
   .tableTh {
     background-color: $blue-1;
-    min-width: 10vw;
     height: 40px;
     font-size: 1.1rem;
     font-weight: normal;
@@ -28,11 +30,19 @@
       min-width: 25vw;
     }
   }
+  .thSmall {
+    min-width: 100px;
+  }
+  .thMed {
+    min-width: 150px;
+  }
+  .thBig {
+    min-width: 220px;
+  }
   .tableTd {
     padding-left: 0.5vw;
     padding-right: 1vw;
     text-align: center;
-    min-width: 5vw;
     height: 35px;
     font-size: 0.9rem;
     min-height: auto;
@@ -75,7 +85,6 @@
   margin-top: 10px;
   margin-bottom: 10px;
   border: $green-1 2px solid;
-  // border-radius: 8px 8px 0px 0px;
   color: $light-1;
   .modalTr {
     width: 100%;

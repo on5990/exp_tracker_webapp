@@ -8,10 +8,10 @@ import expenseClassification from "../../lib/frontendHelpers/expenseClassificati
 import { TYPE_CATEGORY } from "../../global/constants";
 
 const head = [
-  { id: 1, name: "Descripción" },
-  { id: 2, name: "Cantidad" },
-  { id: 3, name: "Fecha" },
-  { id: 4, name: "Categoría" },
+  { id: 1, name: "Descripción", styleClass: "thBig" },
+  { id: 2, name: "Cantidad", styleClass: "thMed" },
+  { id: 3, name: "Fecha", styleClass: "thMed" },
+  { id: 4, name: "Categoría", styleClass: "thSmall" },
   { id: 5, name: "" },
 ];
 
@@ -73,7 +73,7 @@ function ExpenseTable() {
             <tr className="tableTr">
               {head.map((item) => {
                 return (
-                  <th className="tableTh" key={item.id}>
+                  <th className={`tableTh ${item.styleClass}`} key={item.id}>
                     {item.name}
                   </th>
                 );

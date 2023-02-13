@@ -58,7 +58,7 @@ function Header() {
                 <li key={item.id}>
                   <Link className={"navLink"} href={item.url}>
                     <span
-                      className={section == item.id && "activeLink"}
+                      className={section == item.id ? "activeLink" : ""}
                       data-value={JSON.stringify(item.id)}
                       onClick={handleClick}
                     >

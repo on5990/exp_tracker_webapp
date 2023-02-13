@@ -119,6 +119,11 @@
   min-height: 100vw;
   width: 100vw;
 }
+@media (orientation: portrait) {
+  .mainLayout {
+    min-height: 100vh;
+  }
+}
 .mainLayout .pageContent {
   margin-top: 6vh;
   width: 94%;
@@ -140,7 +145,8 @@
   box-sizing: border-box;
   padding-left: 2%;
   padding-right: 2%;
-  padding-bottom: 1vh;
+  padding-bottom: 5px;
+  padding-top: 5px;
 }
 .greybox .infoList {
   margin: 0;
@@ -157,8 +163,8 @@
   margin: 0;
   padding: 0;
   margin-right: 2vw;
-  margin-top: 1vh;
-  margin-top: 1vh;
+  margin-top: 0.5vh;
+  margin-bottom: 0.5vh;
   font-size: 1.2rem;
 }
 .greybox .infoList p {
@@ -446,10 +452,20 @@
   font-size: 1.1rem;
   margin-bottom: 5px;
 }
+@media (orientation: portrait) {
+  .optionDiv .searchDiv {
+    width: 100%;
+  }
+}
 .optionDiv .searchDiv .filterItem {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+@media (orientation: portrait) {
+  .optionDiv .searchDiv .filterItem {
+    width: 48%;
+  }
 }
 .optionDiv .searchDiv .filterItem input {
   margin-left: 0.5vw;
@@ -469,6 +485,11 @@
   height: 20px;
   border: none;
 }
+@media (orientation: portrait) {
+  .optionDiv .searchDiv .filterItem select {
+    width: 75%;
+  }
+}
 .tableContainer {
   overflow-y: auto;
 }
@@ -482,6 +503,11 @@
   border-radius: 8px 8px 0px 0px;
   color: #eeeeee;
 }
+@media (orientation: portrait) {
+  .infoTable {
+    margin-bottom: 15px;
+  }
+}
 .infoTable .tableTr {
   width: 100%;
 }
@@ -493,7 +519,6 @@
 }
 .infoTable .tableTh {
   background-color: #03919b;
-  min-width: 10vw;
   height: 40px;
   font-size: 1.1rem;
   font-weight: normal;
@@ -503,11 +528,19 @@
     min-width: 25vw;
   }
 }
+.infoTable .thSmall {
+  min-width: 100px;
+}
+.infoTable .thMed {
+  min-width: 150px;
+}
+.infoTable .thBig {
+  min-width: 220px;
+}
 .infoTable .tableTd {
   padding-left: 0.5vw;
   padding-right: 1vw;
   text-align: center;
-  min-width: 5vw;
   height: 35px;
   font-size: 0.9rem;
   min-height: auto;
@@ -672,6 +705,12 @@
   padding-bottom: 1vh;
   box-sizing: border-box;
 }
+@media (orientation: portrait) {
+  .modalContainer .modalContent {
+    padding-right: 2vw;
+    padding-left: 2vw;
+  }
+}
 
 .datePickerDiv {
   color: #000;
@@ -774,6 +813,11 @@
   width: 30%;
   margin-bottom: 2vh;
 }
+@media (orientation: portrait) {
+  .outerBtnBox .innerBtnBox {
+    justify-content: center;
+  }
+}
 .outerBtnBox .innerBtnBox .modalButton {
   font-family: "Lusitana";
   background-color: #03919b;
@@ -783,6 +827,11 @@
   height: 30px;
   width: auto;
   font-size: 1rem;
+}
+@media (orientation: portrait) {
+  .outerBtnBox .innerBtnBox .modalButton {
+    margin-right: 1vw;
+  }
 }
 .outerBtnBox .innerBtnBox .modalButton:hover {
   transition: background-color 0.5s;
@@ -1046,6 +1095,27 @@ td.rdtYear:hover {
 
 .rdtTime td {
   cursor: default;
+}
+
+.chartSection {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+.chartSection .chartContainer {
+  background-color: #eeeeee;
+  border-radius: 5px;
+  width: 48%;
+  padding: 10px;
+  color: #eeeeee;
+  margin-bottom: 10px;
+}
+.chartSection .chartContainer h3 {
+  font-weight: normal;
+  margin: 0;
+  padding: 0;
 }
 
 body {
