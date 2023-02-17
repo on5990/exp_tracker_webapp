@@ -14,7 +14,15 @@ export default function Home() {
           Advertencia: Este proyecto fue desarrollado por motivos de práctica y
           demostración, no se recomienda su uso, puesto que los datos son
           eliminados periodicamente.
+          <br />
+          <br />
+          Credenciales de prueba:
+          <br />
+          Email: usuario@prueba.com
+          <br />
+          Contraseña: @Prueba123
         </p>
+        <p className="indexWarning"></p>
       </main>
     </>
   );
