@@ -44,7 +44,11 @@ async function index(req: NextApiRequest, res: NextApiResponse) {
     switch (method) {
       case "GET":
         // GET BILLS
-        const bills = await billService.getAll(userId);
+        let bills = await billService.getAll(userId);
+        const changeState = await billService.checkAndUpdate(bills);
+        if (changeState) {
+          bills = await billService.getAll(userId);
+        }
         const monthTotal = mathService.calcBillMonth(bills || []);
         const yearTotal = mathService.calcBillYear(bills || []);
         // SUCCESSFUL REQUEST

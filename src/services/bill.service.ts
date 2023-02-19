@@ -76,6 +76,27 @@ async function reversePayment(userId: string, expense: any) {
   const output = { bills, monthTotal, yearTotal };
   return output;
 }
+async function checkAndUpdate(bills: any) {
+  try {
+    let changed = false;
+    await Promise.all(
+      bills.map(async (item: any) => {
+        if (
+          new Date().getTime() > new Date(item.nextPayment).getTime() &&
+          item.state === BILL_ACTIVE
+        ) {
+          const state = BILL_OVERDUE;
+          await billRepository.update(item.id, { state });
+          changed = true;
+        }
+        return;
+      })
+    );
+    return changed;
+  } catch (error) {
+    console.log(error);
+  }
+}
 export default {
   getAll,
   getOne,
@@ -83,4 +104,5 @@ export default {
   update,
   remove,
   reversePayment,
+  checkAndUpdate,
 };
