@@ -1,7 +1,14 @@
 import formatHelpers from "@/lib/frontendHelpers/formatHelpers";
 import { encryptData } from "@/lib/frontendHelpers/encryptData.tsx";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
+import BeatLoader from "react-spinners/BeatLoader";
+
+const override = {
+  display: "flex",
+  margin: "5% 30%",
+  borderColor: "#2a9f97",
+};
 
 function Login(props) {
   const { setShowLogin } = props;
@@ -9,6 +16,7 @@ function Login(props) {
   const [errorMsg, setErrorMsg] = useState("");
   const [disableSubmit, setDisableSubmit] = useState(false);
   const [errors, setErrors] = useState({ emailError: "", passError: "" });
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   function renderSignup() {
     setShowLogin(false);
@@ -31,6 +39,11 @@ function Login(props) {
       }, 5000);
     }
   }, [errorMsg, disableSubmit]);
+  useEffect(() => {
+    if (errorMsg !== "") {
+      setLoading(false);
+    }
+  }, [errorMsg]);
   function handleSubmit(event) {
     event.preventDefault();
     let pass = true;
@@ -54,8 +67,8 @@ function Login(props) {
       });
     }
     if (pass) {
+      setLoading(true);
       const login = async () => {
-        console.log("PASS");
         const encryptedData = encryptData({
           email: trEmail,
           password: trPass,
@@ -70,15 +83,15 @@ function Login(props) {
           }),
         });
         console.log(await response.json());
-        if (response.status === 404) {
+        if (response.status === 200) {
+          router.push("/dashboard");
+        } else if (response.status === 404) {
           setErrorMsg("Usuario no existe");
         } else if (response.status === 401) {
           setErrorMsg("Contraseña incorrecta");
           setDisableSubmit(true);
         } else if (response.status === 400) {
           setErrorMsg("Ocurrió un error, intente más tarde");
-        } else if (response.status === 200) {
-          router.push("/dashboard");
         }
         setData((prev) => {
           return { ...prev, email: "", password: "" };
@@ -131,14 +144,31 @@ function Login(props) {
             />
             <br />
             <p className="error">{errors.passError}</p>
-            {!disableSubmit && (
-              <button type="submit" className="formBtn" onClick={handleSubmit}>
-                Ingresar
-              </button>
-            )}
-            {errorMsg && (
-              <div className="errorMsg">
-                <p>{errorMsg}</p>
+            {loading ? (
+              <BeatLoader
+                color={"#03afbc"}
+                loading={loading}
+                cssOverride={override}
+                size={30}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+              />
+            ) : (
+              <div>
+                {!disableSubmit && (
+                  <button
+                    type="submit"
+                    className="formBtn"
+                    onClick={handleSubmit}
+                  >
+                    Ingresar
+                  </button>
+                )}
+                {errorMsg && (
+                  <div className="errorMsg">
+                    <p>{errorMsg}</p>
+                  </div>
+                )}
               </div>
             )}
           </form>
