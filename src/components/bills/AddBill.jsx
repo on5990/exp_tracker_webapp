@@ -32,22 +32,10 @@ function AddBill() {
     amount: "",
     payments: "",
   });
-  const [disable, setDisable] = useState({
-    amount: false,
-    payments: false,
-  });
   useEffect(() => {
     if (input.type == MONTHLY_UND || input.type === YEARLY_UND) {
-      setDisable((prev) => {
-        return { ...prev, amount: true };
-      });
       setErrors((prev) => {
         return { ...prev, amount: "" };
-      });
-    }
-    if (input.firstPayment == null) {
-      setDisable((prev) => {
-        return { ...prev, payments: true };
       });
     }
   }, [, input]);
@@ -77,9 +65,6 @@ function AddBill() {
         amount: "",
         payments: "",
       };
-    });
-    setDisable((prev) => {
-      return { ...prev, amount: false, payments: false };
     });
   }
   function handleInputChange(e) {

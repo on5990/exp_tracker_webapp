@@ -13,7 +13,6 @@ import billRequest from "../../lib/frontendHelpers/requests/bill.request";
 export const BillContext = React.createContext();
 function Bills() {
   const [data, setData] = useState({});
-  const [reload1, setReload1] = useState(false);
   const [search, setSearch] = useState("");
   const getRequestCalled = useRef(false);
   useEffect(() => {
@@ -36,7 +35,7 @@ function Bills() {
   }, []);
   return (
     <BillContext.Provider
-      value={{ data, setData, search, setSearch, setReload1 }}
+      value={{ data, setData, search, setSearch}}
     >
       <MainLayout>
         <Head>

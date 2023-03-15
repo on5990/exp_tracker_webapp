@@ -4,9 +4,6 @@ import Signup from "./Signup";
 
 function Authentication() {
   const [showLogin, setShowLogin] = useState(true);
-  const loginProps = {
-    setShowLogin: setShowLogin,
-  };
   return (
     <>
       {showLogin && <Login setShowLogin={setShowLogin} />}
