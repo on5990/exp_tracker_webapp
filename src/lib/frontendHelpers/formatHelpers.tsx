@@ -66,15 +66,7 @@ function generateYearArray(): Array<any> {
   });
   return yearsArray;
 }
-// function generateMonthArray(): Array<any> {
-//   const startYear = 2022;
-//   const length = 348;
-//   const months = Array.from(
-//     { length },
-//     (_, i) => `${i / 11} ${startYear + Math.floor(i / 11)}`
-//   );
-//   return months;
-// }
+
 function generateMonthArray(): Array<any> {
   const startYear = 2022;
   const length = 348;
