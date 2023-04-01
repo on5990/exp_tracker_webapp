@@ -9,11 +9,11 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="indexMain">
+        <p className="indexTitle">CONTROLADOR DE GASTOS</p>
         <Authentication />
         <p className="indexWarning">
           Advertencia: Este proyecto fue desarrollado por motivos de práctica y
-          demostración, no se recomienda su uso, puesto que los datos son
-          eliminados periodicamente.
+          demostración, no se recomienda su uso.
           <br />
           <br />
           Credenciales de prueba:

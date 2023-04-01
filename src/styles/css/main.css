@@ -1139,6 +1139,14 @@ body {
   justify-content: center;
 }
 
+.indexTitle {
+  margin-bottom: 3vh;
+  padding: 0;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #eeeeee;
+}
+
 .mainTitle {
   margin: 0;
   padding: 0;
@@ -1154,8 +1162,8 @@ hr {
 
 .indexWarning {
   color: #eeeeee;
+  font-size: 0.9rem;
   width: 25vw;
-  font-size: 1.1rem;
   text-align: center;
 }
 @media (orientation: portrait) {

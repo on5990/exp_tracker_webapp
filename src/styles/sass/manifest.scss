@@ -25,6 +25,13 @@ body {
   align-items: center;
   justify-content: center;
 }
+.indexTitle {
+  margin-bottom: 3vh;
+  padding: 0;
+  font-size: 2rem;
+  font-weight: bold;
+  color: $light-1;
+}
 .mainTitle {
   margin: 0;
   padding: 0;
@@ -38,8 +45,9 @@ hr {
 }
 .indexWarning {
   color: $light-1;
+  font-size: 0.9rem;
   width: 25vw;
-  font-size: 1.1rem;
+  // font-size: 1.1rem;
   text-align: center;
   @media (orientation: portrait) {
     min-width: 80vw;
